@@ -799,13 +799,16 @@ function gInit() {
   gClient = google.accounts.oauth2.initTokenClient({
     client_id: GCAL_CLIENT, scope: GCAL_SCOPE,
     callback: function (r) {
+      if (r && r.access_token && google.accounts.oauth2.hasGrantedAllScopes && !google.accounts.oauth2.hasGrantedAllScopes(r, GCAL_SCOPE)) {
+        S.calStatus = { state: "noscope" }; render(); return;
+      }
       if (r && r.access_token) {
         gTok = { t: r.access_token, exp: Date.now() + ((+r.expires_in || 3600) - 60) * 1000 };
         lsSet("myday-gtok", gTok); gWanted = true; lsSet("myday-gcal", true);
         calKey = ""; S.calStatus = { state: "" }; render(); watchCal();
-      } else { S.calStatus = { state: "gerr" }; render(); }
+      } else { S.calStatus = { state: "gerr", why: (r && (r.error_description || r.error)) || "" }; render(); }
     },
-    error_callback: function (e) { S.calStatus = { state: gWanted ? "expired" : "need" }; render(); }
+    error_callback: function (e) { var ty = (e && e.type) || ""; S.calStatus = { state: ty === "popup_failed_to_open" ? "popup" : ty === "popup_closed" ? "closed" : (gWanted ? "expired" : "need"), why: ty }; render(); }
   });
   return true;
 }
@@ -858,9 +861,12 @@ function calStatusHtml(inToday) {
   if (st === "off") return "";
   var msg, btn = "";
   if (st === "need") { msg = "אפשר לראות כאן את כל הפגישות מיומן Google."; btn = '<button class="btn primary" data-act="calApprove">חיבור ליומן Google</button>'; return '<span class="calsrc">' + msg + "</span>" + btn; }
-  if (st === "expired") { msg = "החיבור ליומן Google צריך רענון (Google מבקש את זה פעם בשעה)."; btn = '<button class="btn" data-act="calApprove">חיבור מחדש ליומן</button>'; }
+  if (st === "noscope") { msg = "החיבור עבר, אבל לא סומנה ההרשאה לצפייה ביומן. לחץ שוב, ובמסך של Google סמן את התיבה של היומן."; btn = '<button class="btn primary" data-act="calApprove">חיבור ליומן Google</button>'; }
+  else if (st === "closed") { msg = "החלון של Google נסגר לפני שהחיבור הסתיים. נסה שוב, וחכה שהחלון ייסגר לבד."; btn = '<button class="btn primary" data-act="calApprove">חיבור ליומן Google</button>'; }
+  else if (st === "popup") { msg = "הדפדפן חסם את החלון של Google. אפשר חלונות קופצים לאתר הזה ונסה שוב."; btn = '<button class="btn primary" data-act="calApprove">חיבור ליומן Google</button>'; }
+  else if (st === "expired") { msg = "החיבור ליומן Google צריך רענון (Google מבקש את זה פעם בשעה)."; btn = '<button class="btn" data-act="calApprove">חיבור מחדש ליומן</button>'; }
   else if (st === "gload") { msg = "רכיב החיבור של Google עוד נטען. נסה שוב בעוד כמה שניות."; btn = '<button class="btn" data-act="calApprove">ניסיון נוסף</button>'; }
-  else { msg = "לא הצלחתי לטעון את יומן Google כרגע."; btn = '<button class="btn" data-act="calApprove">ניסיון נוסף</button>'; }
+  else { msg = "לא הצלחתי לטעון את יומן Google כרגע." + (S.calStatus.why ? " (" + esc(S.calStatus.why) + ")" : ""); btn = '<button class="btn" data-act="calApprove">ניסיון נוסף</button>'; }
   return '<span class="calsrc warn">' + msg + "</span>" + btn;
 }
 
