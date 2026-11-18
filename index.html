@@ -1049,7 +1049,10 @@ document.getElementById("composer").addEventListener("submit", function (e) {
   store.put(newId(), t);
   qa.value = ""; S.cmpCtx = null;
   renderChips();
-  if (isPhone()) { closeComposer(); toast("המשימה נוספה" + (t.date ? " · " + relDate(t.date) : "")); }
+  var where = !t.date ? "לרשימה בלי תאריך" : t.date === T() ? "להיום" : t.date === TM(1) ? "למחר" : "ל" + relDate(t.date);
+  if (t.time) where += " · " + t.time;
+  if (isPhone()) closeComposer();
+  toast("המשימה נוספה " + where, (S.view === "today" && t.date !== T()) || S.view === "projects" ? "הצגה" : "", function () { go(t.date && t.date !== T() ? "up" : "today"); });
 });
 function openComposer(ctx) {
   S.cmpCtx = ctx || null;
