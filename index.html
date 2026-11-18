@@ -405,7 +405,7 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
 .barcol i { display: block; width: 70%; max-width: 36px; align-self: end; background: var(--accent); border-radius: 6px 6px 2px 2px; min-height: 2px; }
 .barcol .bn { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; } .barcol .bd { font-size: 12px; color: var(--muted); }
 .pbars { padding: 10px 14px; display: grid; gap: 8px; }
-.pbar { display: grid; grid-template-columns: minmax(80px, 160px) 1fr 40px; gap: 10px; align-items: center; font-size: 14px; } .pbar b { font-variant-numeric: tabular-nums; text-align: end; }
+.pbar { display: grid; grid-template-columns: minmax(80px, 160px) 1fr minmax(40px, auto); gap: 10px; align-items: center; font-size: 14px; } .pbar b { font-variant-numeric: tabular-nums; text-align: end; }
 .review { display: grid; } .rstep { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-top: 1px solid var(--line); flex-wrap: wrap; } .rstep:first-child { border-top: 0; }
 .rstep > div { flex: 1; min-width: 180px; display: grid; gap: 2px; } .rstep span { color: var(--muted); font-size: 13.5px; } .rstep a { color: var(--accent); font-weight: 600; }
 .rn { width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid !important; place-items: center; font-weight: 700; font-size: 14px !important; }
@@ -650,6 +650,10 @@ body.ldragging .dz.zover, .dz.zover { background: var(--accent); color: var(--ac
 .hplay { border: 0; background: var(--c); color: #fff; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; flex: none; }
 .hplay svg.i { width: 18px; height: 18px; }
 .habcard { margin-bottom: 8px; overflow: hidden; }
+.wkp { display: grid; } .wkrow { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-top: 1px solid var(--line); } .wkrow:first-child { border-top: 0; }
+.wkt { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; } .wkrow.on .wkt { font-weight: 700; color: var(--accent); }
+.wkin { font-size: 11.5px; background: color-mix(in srgb, #8a5cc7 14%, var(--surface)); color: #8a5cc7; border-radius: 999px; padding: 1px 7px; font-weight: 700; flex: none; }
+.pbar small { color: var(--muted); font-weight: 400; }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -694,7 +698,7 @@ body.ldragging .dz.zover, .dz.zover { background: var(--accent); color: var(--ac
   .colb { flex-basis: 86%; }
   .matrix { grid-template-columns: 1fr; }
   .tiles b { font-size: 24px; }
-  .pbar { grid-template-columns: 90px 1fr 36px; }
+  .pbar { grid-template-columns: 100px 1fr minmax(36px, auto); }
   .tab { font-size: 11px; }
   .colnew { flex-basis: 70%; }
 }
@@ -857,7 +861,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "25";
+var APP_VERSION = "26";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -886,7 +890,7 @@ function fbStore(uid) {
     S.settings = Object.assign({ projects: [], habits: [], templates: [] }, data || {}); render();
   }, function () {});
   return {
-    put: function (id, t) { if (t.inbox && t.date && !t.done) { t = Object.assign({}, t, { inbox: false, fromInbox: true, backFrom: "" }); } t = clean(t); S.tasks[id] = t; col.doc(id).set(t).catch(fail); render(); },
+    put: function (id, t) { if (t.date && t.week) t = Object.assign({}, t, { week: "" }); if (t.inbox && (t.date || t.week) && !t.done) { t = Object.assign({}, t, { inbox: false, fromInbox: true, backFrom: "" }); } t = clean(t); S.tasks[id] = t; col.doc(id).set(t).catch(fail); render(); },
     del: function (id) { delete S.tasks[id]; col.doc(id).delete().catch(fail); render(); },
     putSettings: function (s) { s = clean(s); S.settings = Object.assign({}, S.settings, s); setRef.set(s, { merge: true }).catch(fail); render(); },
     putMany: function (items) {
@@ -1424,7 +1428,7 @@ function laterButton(n) {
   return '<button class="laterbtn" data-act="go" data-view="later">' + ic("list") + '<span style="display:grid;gap:2px"><b>משימות להמשך</b><span>כל המשימות שעוד אין להן תאריך, מסודרות לפי נושאים</span></span><span class="cnt">' + n + "</span></button>";
 }
 function viewLater() {
-  var L = list().filter(function (t) { return !t.done && !t.date; });
+  var L = list().filter(function (t) { return !t.done && !t.date && !t.week; });
   var h = '<div class="dropbar"><div class="dz"' + zoneAttr({ date: T(), time: "keep" }) + '>' + ic("sun") + '<b>להיום</b></div><div class="dz"' + zoneAttr({ date: TM(1), time: "keep" }) + '>' + ic("cal") + '<b>למחר</b></div></div>' +
     '<p class="mhint">' + (isPhone() ? "לחיצה ארוכה על משימה, ואז גרירה" : "גרור משימה") + ' ל"להיום" או ל"למחר" שלמעלה. אפשר גם לגרור לנושא אחר.</p>';
   if (!L.length) return h + '<div class="empty">' + emptyArt("done") + "<b>אין משימות בלי תאריך</b></div>";
@@ -1467,6 +1471,7 @@ function viewUp() {
   var s0 = pd(TM(uo));
   h += '<div class="upnav"><button class="iconbtn" data-act="upPrev" aria-label="יום קודם"' + (uo ? "" : " disabled") + ">" + ic("back") + '</button><b>' + (uo === 0 ? "מהיום והלאה" : "החל מ" + (uo === 1 ? "מחר" : "יום " + DAYS[s0.getDay()] + " " + s0.getDate() + "." + (s0.getMonth() + 1))) + '</b><button class="iconbtn" data-act="upNext" aria-label="יום הבא">' + ic("chev") + "</button>" + (uo ? '<button class="btn" data-act="upToday">היום</button>' : "") + (isPhone() ? '<span class="uphint">החלק כדי לזוז בין הימים</span>' : "") + "</div>";
   if (late.length) h += section("ulate", "באיחור", late, { late: true, act: '<button class="act" data-act="lateToday">הכול להיום</button>' });
+  if (!uo) { var wbu = weekBucket(list()); if (wbu.length) h += section("uwb", "השבוע · עוד בלי יום", wbu, { icon: ["cal", "#3a73c9"], row: { date: false }, zone: { date: "", time: "keep", sort: 1 }, act: '<span class="n" style="margin-inline-start:auto">גרור כל משימה ליום שלה</span>' }); }
   for (var i = uo; i < uo + 14; i++) {
     var ds = TM(i), d = pd(ds);
     var items = L.filter(function (t) { return t.date === ds; }).sort(dayOrder);
@@ -2001,6 +2006,9 @@ document.addEventListener("click", function (e) {
   else if (a === "plan") openPlan();
   else if (a === "planSkip") { lsSet("myday-plan-skip", T()); render(); }
   else if (a === "groupBy") { S.groupBy = b.getAttribute("data-v"); lsSet("myday-groupby", S.groupBy); render(); }
+  else if (a === "wkPlan") { var twid = b.getAttribute("data-id"); if (S.tasks[twid]) { save(twid, { week: b.getAttribute("data-w") }); toast("נוסף לתכנון השבוע ✓"); } }
+  else if (a === "wkUnplan") save(b.getAttribute("data-id"), { week: "" });
+  else if (a === "wkMore") { S.wkMore = !S.wkMore; render(); }
   else if (a === "lateNextWeek") { var nw = ymd(addD(sunday(new Date()), 7)); list().filter(isLate).forEach(function (t) { save(t.id, { date: nw, time: "" }); }); toast("המשימות שבאיחור עברו לשבוע הבא"); }
   else if (a === "reviewDone") { lsSet("myday-review", T()); toast("כל הכבוד! הסקירה השבועית הושלמה"); render(); }
   else if (a === "wkPrev") { weekOff--; render(); }
@@ -2831,6 +2839,7 @@ function viewWeek() {
   var mx = Math.max.apply(null, perDay.concat([1]));
   var h = '<div class="weeknav2"><button class="iconbtn" data-act="wkPrev" aria-label="שבוע קודם">' + ic("next") + '</button><b>' + start.getDate() + "." + (start.getMonth() + 1) + " – " + addD(end, -1).getDate() + "." + (addD(end, -1).getMonth() + 1) + (weekOff === 0 ? " · השבוע" : weekOff === -1 ? " · שבוע שעבר" : "") + '</b><button class="iconbtn" data-act="wkNext" aria-label="שבוע הבא"' + (weekOff >= 0 ? " disabled" : "") + ">" + ic("prev") + "</button></div>";
   h += '<div class="tiles"><div class="tile"><b>' + done.length + '</b><span>משימות בוצעו</span></div><div class="tile"><b>' + created + '</b><span>משימות חדשות</span></div><div class="tile"><b>' + L.filter(function (t) { return !t.done; }).length + "</b><span>פתוחות עכשיו</span></div></div>";
+  h += weekStatsHtml(done, L, start, end);
   h += '<section class="sec"><div class="sec-h"><span>מה בוצע בכל יום</span></div><div class="card bars">' + perDay.map(function (n, i) { return '<div class="barcol"><span class="bn">' + (n || "") + '</span><i style="height:' + Math.round(n / mx * 100) + '%"></i><span class="bd">' + DL[i] + "</span></div>"; }).join("") + "</div></section>";
   var byP = {}; done.forEach(function (t) { var k = t.proj || ""; byP[k] = (byP[k] || 0) + 1; });
   var pk = Object.keys(byP).sort(function (a, b) { return byP[b] - byP[a]; });
@@ -2839,6 +2848,7 @@ function viewWeek() {
   if (hs.length) h += '<section class="sec"><div class="sec-h"><span>הרגלים השבוע</span></div><div class="card pbars">' + hs.map(function (hb) { var n = 0; for (var i = 0; i < 7; i++) if ((hb.days || {})[ymd(addD(start, i))]) n++; return '<div class="pbar" style="--c:' + esc(hb.color) + '"><span>' + esc(hb.name) + '</span><span class="bar"><i style="width:' + Math.round(n / 7 * 100) + '%"></i></span><b>' + n + "/7</b></div>"; }).join("") + "</div></section>";
   var post = L.filter(function (t) { return !t.done && (t.postponed || 0) >= 2; }).sort(function (a, b) { return b.postponed - a.postponed; }).slice(0, 6);
   if (post.length) h += section("wpost", "נדחו הכי הרבה פעמים", post, { act: '<span class="n" style="margin-inline-start:auto">אולי כדאי לפרק אותן לשלבים קטנים, או לוותר עליהן</span>' });
+  if (weekOff >= 0) h += weekPlanHtml(L);
   // weekly review
   var inbox = L.filter(function (t) { return !t.done && !t.date; }).length, late = L.filter(isLate).length;
   var nextW = L.filter(function (t) { return !t.done && t.date && dayDiff(t.date) > 0 && dayDiff(t.date) <= 7; }).length;
@@ -2851,6 +2861,43 @@ function viewWeek() {
     '<div class="rstep end"><button class="btn primary" data-act="reviewDone">' + ic("check") + "סיימתי את הסקירה</button></div></div></section>";
   return h;
 }
+
+function wkBars(rows, total) {
+  var mx = Math.max.apply(null, rows.map(function (r) { return r[1]; }).concat([1]));
+  return '<div class="card pbars">' + rows.map(function (r) { return '<div class="pbar" style="--c:' + r[2] + '"><span>' + r[0] + '</span><span class="bar"><i style="width:' + Math.round(r[1] / mx * 100) + '%"></i></span><b>' + r[1] + (total ? '<small> (' + Math.round(r[1] / total * 100) + "%)</small>" : "") + "</b></div>"; }).join("") + "</div>";
+}
+function weekStatsHtml(done, L, start, end) {
+  var h = "", n = done.length, sd = ymd(start), ed = ymd(end);
+  if (n) {
+    var q = [0, 0, 0, 0, 0];
+    done.forEach(function (t) { if (!t.mxq && !t.cls && !t.imp && !t.pri) q[0]++; else q[quadOf(t)]++; });
+    var qr = QUADS.map(function (x) { return [x.sub, q[x.q], x.color]; }); if (q[0]) qr.push(["עוד לא סווגו", q[0], "var(--line)"]);
+    h += '<section class="sec"><div class="sec-h">' + shic("target", "#c92a2a") + "<span>מה עשיתי, לפי דחיפות וחשיבות</span></div>" + wkBars(qr, n) + (q[2] < q[1] + q[3] && n > 3 ? '<p class="mhint">💡 רוב הזמן הלך על דברים דחופים. כדאי לשריין זמן קבוע גם ל"חשוב, לא דחוף", שם נמצאים הדברים שמקדמים אותך.</p>' : "") + "</section>";
+    var w = [0, 0, 0, 0];
+    done.forEach(function (t) { var at = t.doneAt || t.lastDone || 0, c = t.created || at, days = Math.floor((new Date(at).setHours(0, 0, 0, 0) - new Date(c).setHours(0, 0, 0, 0)) / 864e5); w[days <= 0 ? 0 : days <= 7 ? 1 : days <= 30 ? 2 : 3]++; });
+    h += '<section class="sec"><div class="sec-h">' + shic("clock", "#3a73c9") + "<span>כמה זמן משימות חיכו עד שבוצעו</span></div>" + wkBars([["⚡ באותו יום שנכתבו", w[0], "var(--accent)"], ["עד שבוע", w[1], "#3a73c9"], ["יותר משבוע", w[2], "var(--p2)"], ["🐢 יותר מחודש", w[3], "var(--p3)"]], n) + "</section>";
+  }
+  var miss = L.filter(function (t) { return t.date && t.date >= sd && t.date < ed && t.date < T() && (!t.done || (t.doneAt && ymd(new Date(t.doneAt)) > t.date)); });
+  var missOpen = miss.filter(function (t) { return !t.done; });
+  h += '<section class="sec"><div class="sec-h">' + shic("x", "#e8590c") + "<span>לא בוצעו בזמן</span><span class=\"n\">" + (miss.length || "") + "</span></div>" + (miss.length ? '<div class="card pbars">' +
+    '<div class="pbar" style="--c:var(--p3)"><span>עדיין פתוחות</span><span></span><b>' + missOpen.length + '</b></div><div class="pbar" style="--c:var(--p2)"><span>בוצעו, אבל באיחור</span><span></span><b>' + (miss.length - missOpen.length) + "</b></div></div>" +
+    (missOpen.length ? section("wmiss", "המשימות שעדיין פתוחות", missOpen.slice(0, 8), { fold: true }) : "") : '<div class="empty" style="padding:14px">כל מה שתוכנן לימים שעברו בוצע בזמן 👏</div>') + "</section>";
+  return h;
+}
+function weekPlanHtml(L) {
+  var nw = ymd(addD(sunday(new Date()), 7 * (weekOff + 1)));
+  var planned = L.filter(function (t) { return !t.done && !t.date && t.week === nw; });
+  var cand = L.filter(function (t) { return !t.done && !t.date && !t.week; }).sort(function (a, b) { return (b.inbox ? 1 : 0) - (a.inbox ? 1 : 0) || (b.created || 0) - (a.created || 0); });
+  var more = S.wkMore, shown = more ? cand : cand.slice(0, 8);
+  var h = '<section class="sec wkplan"><div class="sec-h">' + shic("cal", "var(--accent)") + "<span>תכנון לשבוע " + (weekOff === 0 ? "הבא" : "שאחרי") + '</span><span class="n">' + (planned.length || "") + "</span></div>" +
+    '<p class="mhint">בוחרים מה נכנס לשבוע, בלי לקבוע יום. בתחילת השבוע המשימות יחכו לך ב"היום" וב"הקרוב", ושם גוררים כל אחת ליום שלה.</p>';
+  h += '<div class="card wkp">' + (planned.length ? planned.map(function (t) { return '<div class="wkrow on"><span class="wkt">✓ ' + esc(t.title) + '</span><button class="linkbtn" data-act="wkUnplan" data-id="' + esc(t.id) + '">הוצאה</button></div>'; }).join("") : '<div class="empty" style="padding:12px">עוד לא בחרת משימות לשבוע הזה. בחר מהרשימה למטה ⬇</div>') + "</div>";
+  if (cand.length) h += '<div class="sec-h" style="margin-top:12px"><span>משימות בלי תאריך</span><span class="n">' + cand.length + "</span></div>" +
+    '<div class="card wkp">' + shown.map(function (t) { var p = proj(t.proj); return '<div class="wkrow"><span class="wkt">' + (t.inbox ? '<span class="wkin">📥 סל</span>' : p ? '<i class="dot" style="--c:' + esc(p.color) + '"></i>' : "") + esc(t.title) + '</span><button class="btn" data-act="wkPlan" data-id="' + esc(t.id) + '" data-w="' + nw + '">' + ic("plus") + "לשבוע</button></div>"; }).join("") +
+    (cand.length > 8 ? '<button class="linkbtn" style="padding:10px" data-act="wkMore">' + (more ? "פחות" : "להציג את כולן (" + cand.length + ")") + "</button>" : "") + "</div>";
+  return h + "</section>";
+}
+function weekBucket(L) { var sw = ymd(sunday(new Date())); return L.filter(function (t) { return !t.done && !t.date && t.week && t.week <= sw; }).sort(byOrder); }
 
 /* ---------- templates ---------- */
 function viewTemplates() {
@@ -3037,9 +3084,12 @@ function viewToday() {
   var dayTasks = L.filter(function (t) { return !t.done && t.date === D; }).sort(byOrder);
   var ttl = isT ? "המשימות שלי להיום" : "המשימות " + (off === 1 ? "למחר" : off === -1 ? "של אתמול" : "ליום " + DAYS[pd(D).getDay()]);
   var acts = '<span style="margin-inline-start:auto;display:flex;gap:6px;align-items:center">' + (dayTasks.filter(function (t) { return t.time; }).length > 1 ? '<button class="act" data-act="sortByTime" data-date="' + D + '">לפי שעות</button>' : "") + '<span class="seg mini"><button data-act="groupBy" data-v="order" aria-pressed="' + (S.groupBy !== "topic") + '">לפי סדר</button><button data-act="groupBy" data-v="topic" aria-pressed="' + (S.groupBy === "topic") + '">לפי נושא</button></span></span>';
+  var wb = (D >= T() && D < ymd(addD(sunday(new Date()), 7))) ? weekBucket(L) : [];
+  var wbHtml = wb.length ? section("wbucket", "השבוע · עוד בלי יום", wb, { fold: true, icon: ["cal", "#3a73c9"], row: { date: false }, zone: { date: "", time: "keep", sort: 1 }, act: '<span class="n" style="margin-inline-start:auto">' + (isPhone() ? "לחיצה ארוכה וגרירה" : "גרור") + " לרשימה של היום</span>" }) : "";
   var hRows = habitRowsHtml(D, "early"), hLate = habitRowsHtml(D, "late");
   if (S.groupBy === "topic" && dayTasks.length) h += '<div class="sec-h" style="margin-top:18px">' + shic("check", "var(--accent)") + "<span>" + ttl + "</span>" + acts + "</div>" + (hRows ? '<div class="card habcard">' + hRows + "</div>" : "") + groupedSections("dg", "", dayTasks, { date: D, time: "keep", sort: 1 });
   else h += section("dtasks", ttl, dayTasks, { pre: hRows, post: hLate, icon: ["check", "var(--accent)"], cls: "numbered", row: { date: false }, zone: { date: D, time: "keep", sort: 1 }, always: true, act: acts, emptyHtml: '<div class="empty" style="padding:18px">' + emptyArt(isT && L.some(doneToday) ? "done" : "") + "<b>" + (isT && L.some(doneToday) ? "סיימת את כל מה שתכננת להיום 🎉" : "עוד אין משימות " + (isT ? "להיום" : "ליום הזה")) + "</b><span>הוסף משימה בשורה למעלה, או גרור לכאן מ\"משימות להמשך\". את הסדר קובעים בגרירה: 1, 2, 3…</span></div>" });
+  h += wbHtml;
   if (isT) {
     var inboxN = L.filter(function (t) { return !t.done && t.inbox; }).length;
     if (inboxN) h += '<button class="inboxpill" data-act="go" data-view="inbox">' + ic("inbox") + "<span>בסל מחכות <b>" + inboxN + "</b> משימות למיון</span>" + ic("chev") + "</button>";
