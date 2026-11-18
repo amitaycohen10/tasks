@@ -174,7 +174,7 @@ button.chip:hover { border-color: var(--accent); }
 .btn:hover { border-color: var(--accent); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .btn.danger { color: var(--p3); }
-.btn.ghost { border-color: transparent; background: none; }
+.btn.plain { border-color: transparent; background: none; }
 .phead { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 8px; }
 .phead input.pname { font-family: var(--display); font-weight: 700; font-size: 20px; border: 1px solid transparent; background: none; border-radius: 8px; padding: 2px 6px; min-width: 0; flex: 1; }
 .phead input.pname:hover, .phead input.pname:focus { border-color: var(--line); background: var(--surface); outline: none; }
@@ -306,6 +306,20 @@ button.chip:hover { border-color: var(--accent); }
 .acct { display: grid; gap: 6px; padding: 10px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); margin-top: 6px; }
 .acct b { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
 .acct button { justify-self: start; border: 0; background: none; color: var(--accent); font-weight: 700; padding: 0; }
+.impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
+.impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
+.impcard .tx b { font-family: var(--display); font-weight: 600; }
+.impcard .tx span { font-size: 13.5px; color: var(--muted); }
+.ibox { width: min(520px, 100%); background: var(--surface); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 20px; display: grid; gap: 14px; max-height: 80vh; overflow-y: auto; }
+.ibox h2 { font-family: var(--display); margin: 0; font-size: 20px; }
+.ibox .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.ibox .stat { background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px; text-align: center; }
+.ibox .stat b { display: block; font-family: var(--display); font-size: 22px; font-variant-numeric: tabular-nums; }
+.ibox .stat span { font-size: 12.5px; color: var(--muted); }
+.ibox ul { margin: 0; padding-inline-start: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 2px; }
+.ibox label.ck { display: flex; gap: 8px; align-items: center; font-size: 15px; }
+.ibox .row { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.ibox input[type=text] { border: 1px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 8px 10px; width: 100%; }
 .acctcard { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; font-size: 14px; color: var(--muted); }
 @media (max-width: 899px) {
   body { font-size: 16px; }
@@ -386,6 +400,8 @@ button.chip:hover { border-color: var(--accent); }
   </div>
 </div>
 
+<div class="overlay" id="imp" hidden><div class="ibox" role="dialog" aria-label="ייבוא מ-Trello" id="impBox"></div></div>
+<input type="file" id="impFile" accept=".json,application/json" hidden>
 <script>
 (function () {
 "use strict";
@@ -503,6 +519,16 @@ function fbStore(uid) {
     put: function (id, t) { t = clean(t); S.tasks[id] = t; col.doc(id).set(t).catch(fail); render(); },
     del: function (id) { delete S.tasks[id]; col.doc(id).delete().catch(fail); render(); },
     putSettings: function (s) { s = clean(s); S.settings = s; setRef.set(s).catch(fail); render(); },
+    putMany: function (items) {
+      items = items.map(function (it) { return { id: it.id, t: clean(it.t) }; });
+      items.forEach(function (it) { S.tasks[it.id] = it.t; });
+      for (var i = 0; i < items.length; i += 400) {
+        var b = fsdb.batch();
+        items.slice(i, i + 400).forEach(function (it) { b.set(col.doc(it.id), it.t); });
+        b.commit().catch(fail);
+      }
+      render();
+    },
     stop: function () { u1(); u2(); clearTimeout(timer); }
   };
 }
@@ -786,7 +812,7 @@ function go(view, projId) {
 
 function renderSide() {
   var st = todayStats(), L = list();
-  var h = '<div class="brand"><span class="logo">' + ic("check") + "</span>היום שלי</div>";
+  var h = '<div class="brand"><span class="logo">' + ic("check") + "</span>ביצוע משימות</div>";
   VIEWS.forEach(function (v) {
     var cnt = v.id === "today" ? (st.open || "") : v.id === "up" ? (L.filter(function (t) { return !t.done && t.date > T() && dayDiff(t.date) <= 7; }).length || "") : "";
     var cur = S.view === v.id || (v.id === "projects" && S.view === "project" && false);
@@ -896,6 +922,7 @@ function viewProjects() {
     h += '<button class="pcard" style="--c:' + esc(p.color) + '" data-act="go" data-view="project" data-proj="' + esc(p.id) + '"><span class="pn"><i class="dot"></i>' + esc(p.name) + '</span><span class="pm">' + open + " פתוחות" + (late ? ' · <span style="color:var(--late);font-weight:700">' + late + " באיחור</span>" : "") + (done ? " · " + done + " בוצעו" : "") + '</span><span class="bar"><i style="width:' + (all.length ? Math.round(done / all.length * 100) : 0) + '%"></i></span></button>';
   });
   h += "</div>";
+  h += '<div class="impcard"><div class="tx"><b>ייבוא מ-Trello</b><span>מורידים מ-Trello קובץ JSON של לוח, ובוחרים אותו כאן. כל כרטיס הופך למשימה, והלוח הופך לפרויקט.</span></div><button class="btn" data-act="impPick">בחירת קובץ…</button></div>';
   if (S.user) h += '<div class="acctcard"><span>מחובר כ-<b style="color:var(--ink)">' + esc(S.user.email) + '</b></span><button class="btn" data-act="logout">התנתקות</button></div>';
   return h;
 }
@@ -906,7 +933,7 @@ function viewProject() {
   var L = list().filter(function (t) { return t.proj === p.id; });
   var h = '<div class="phead"><label for="pName" class="sr">שם הפרויקט</label><input class="pname" id="pName" value="' + esc(p.name) + '"><div class="swatches">' +
     COLORS.map(function (c) { return '<button type="button" class="sw" style="--c:' + c + '" data-act="pColor" data-c="' + c + '" aria-pressed="' + (c === p.color) + '" aria-label="צבע"></button>'; }).join("") +
-    '</div><button class="btn ghost danger" data-act="pDel">' + ic("trash") + "מחיקת הפרויקט</button></div>";
+    '</div><button class="btn plain danger" data-act="pDel">' + ic("trash") + "מחיקת הפרויקט</button></div>";
   var open = L.filter(function (t) { return !t.done; });
   h += section("pdated", "עם תאריך", open.filter(function (t) { return t.date; }).sort(byDate), { row: { proj: false } });
   h += section("pnone", "בלי תאריך", open.filter(function (t) { return !t.date; }).sort(function (a, b) { return (b.pri || 0) - (a.pri || 0); }), { row: { proj: false } });
@@ -1248,6 +1275,7 @@ document.addEventListener("click", function (e) {
   else if (a === "toggleEv") { S.showEv = !S.showEv; lsSet("myday-showev", S.showEv); if (S.showEv) watchCal(); else stopCal(); render(); }
   else if (a === "calApprove") approveCal();
   else if (a === "logout") { if (auth) auth.signOut(); }
+  else if (a === "impPick") { var fi = document.getElementById("impFile"); fi.value = ""; fi.click(); }
   else if (a === "npColor") { newProjColor = b.getAttribute("data-c"); document.querySelectorAll('[data-act="npColor"]').forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); }
   else if (a === "pColor") { var ps = S.settings.projects.map(function (p) { return p.id === S.projId ? Object.assign({}, p, { color: b.getAttribute("data-c") }) : p; }); store.putSettings({ projects: ps }); }
   else if (a === "pDel") {
@@ -1404,6 +1432,81 @@ document.addEventListener("pointerup", function () { endDrag(true); });
 document.addEventListener("pointercancel", function () { endDrag(false); });
 document.addEventListener("touchmove", function (e) { if (drag && drag.active) e.preventDefault(); }, { passive: false });
 document.addEventListener("contextmenu", function (e) { if (e.target.closest(".blk, .adchip, [data-drag]") && S.view === "cal") e.preventDefault(); });
+
+/* ---------------- Trello import ---------------- */
+var IMP = null;
+var DONE_RE = /done|complete|finished|בוצע|הושלם|גמור|סיימ|נעשה/i;
+var URGENT_RE = /urgent|דחוף|חשוב/i;
+function parseTrello(j) {
+  if (!j || !Array.isArray(j.cards) || !Array.isArray(j.lists)) throw new Error("not trello");
+  var lists = {}; j.lists.forEach(function (l) { lists[l.id] = l; });
+  var checks = {}; (j.checklists || []).forEach(function (c) { (checks[c.idCard] = checks[c.idCard] || []).push(c); });
+  var have = {}; list().forEach(function (t) { if (t.trelloId) have[t.trelloId] = 1; });
+  var out = [], skipped = 0, dup = 0, perList = {};
+  j.cards.slice().sort(function (a, b) { return (a.pos || 0) - (b.pos || 0); }).forEach(function (c) {
+    var l = lists[c.idList] || { name: "", closed: false };
+    if (c.closed || l.closed) { skipped++; return; }
+    if (have[c.id]) { dup++; return; }
+    var t = { title: (c.name || "").trim() || "(ללא כותרת)", notes: (c.desc || "").trim(), date: "", time: "", dur: 0, pri: 0, proj: "", rep: "", subs: [], done: false, doneAt: 0, created: Date.now(), trelloId: c.id };
+    if (c.due) {
+      var d = new Date(c.due);
+      if (!isNaN(d)) { t.date = ymd(d); var hm = d.getHours() * 60 + d.getMinutes(); if (hm !== 0 && hm !== 12 * 60) { t.time = hhmm(hm); t.dur = 30; } }
+    }
+    var labels = (c.labels || []).map(function (x) { return x.name; }).filter(Boolean);
+    if (labels.some(function (n) { return URGENT_RE.test(n); })) t.pri = 3;
+    var extra = [];
+    if (l.name) extra.push("רשימה ב-Trello: " + l.name);
+    if (labels.length) extra.push("תוויות: " + labels.join(", "));
+    if (extra.length) t.notes = (t.notes ? t.notes + "\n\n" : "") + extra.join("\n");
+    (checks[c.id] || []).sort(function (a, b) { return (a.pos || 0) - (b.pos || 0); }).forEach(function (cl) {
+      (cl.checkItems || []).slice().sort(function (a, b) { return (a.pos || 0) - (b.pos || 0); }).forEach(function (it) { t.subs.push({ t: it.name || "", d: it.state === "complete" }); });
+    });
+    if (c.dueComplete || DONE_RE.test(l.name || "")) { t.done = true; t.doneAt = c.dateLastActivity ? new Date(c.dateLastActivity).getTime() : Date.now(); }
+    perList[l.name || "—"] = (perList[l.name || "—"] || 0) + 1;
+    out.push(t);
+  });
+  return { board: (j.name || "Trello").trim(), tasks: out, skipped: skipped, dup: dup, perList: perList };
+}
+function impDraw() {
+  var box = document.getElementById("impBox");
+  if (IMP.error) {
+    box.innerHTML = "<h2>ייבוא מ-Trello</h2><p>" + esc(IMP.error) + '</p><div class="row"><button class="btn" data-imp="close">סגירה</button></div>';
+    return;
+  }
+  var open = IMP.tasks.filter(function (t) { return !t.done; }).length, done = IMP.tasks.length - open;
+  var lists = Object.keys(IMP.perList).map(function (k) { return "<li>" + esc(k) + ": " + IMP.perList[k] + "</li>"; }).join("");
+  box.innerHTML = "<h2>ייבוא הלוח ‟" + esc(IMP.board) + "”</h2>" +
+    '<div class="stats"><div class="stat"><b>' + open + '</b><span>משימות פתוחות</span></div><div class="stat"><b>' + done + '</b><span>מסומנות כבוצעו</span></div><div class="stat"><b>' + (IMP.skipped + IMP.dup) + "</b><span>יידלגו</span></div></div>" +
+    (lists ? "<div><b>לפי רשימות ב-Trello:</b><ul>" + lists + "</ul></div>" : "") +
+    (IMP.dup ? '<p style="margin:0;color:var(--muted);font-size:14px">' + IMP.dup + " כרטיסים כבר יובאו בעבר ולא ייובאו שוב.</p>" : "") +
+    (IMP.skipped ? '<p style="margin:0;color:var(--muted);font-size:14px">' + IMP.skipped + " כרטיסים בארכיון של Trello לא ייובאו.</p>" : "") +
+    '<label for="impProj">שם הפרויקט באפליקציה<input type="text" id="impProj" value="' + esc(IMP.board) + '"></label>' +
+    (done ? '<label class="ck"><input type="checkbox" id="impDone"> לייבא גם את ' + done + " המשימות שכבר בוצעו</label>" : "") +
+    '<div class="row"><button class="btn" data-imp="close">ביטול</button><button class="btn primary" data-imp="go"' + (open || done ? "" : " disabled") + ">ייבוא</button></div>";
+}
+document.getElementById("impFile").addEventListener("change", function (e) {
+  var f = e.target.files && e.target.files[0]; if (!f) return;
+  var rd = new FileReader();
+  rd.onload = function () {
+    try { IMP = parseTrello(JSON.parse(rd.result)); }
+    catch (err) { IMP = { error: "הקובץ הזה לא נראה כמו קובץ JSON של לוח Trello. ב-Trello: תפריט הלוח ← הדפסה, ייצוא ושיתוף ← ייצוא כ-JSON." }; }
+    document.getElementById("imp").hidden = false; impDraw();
+  };
+  rd.onerror = function () { IMP = { error: "לא הצלחתי לקרוא את הקובץ. נסה שוב." }; document.getElementById("imp").hidden = false; impDraw(); };
+  rd.readAsText(f);
+});
+document.getElementById("imp").addEventListener("click", function (e) {
+  var b = e.target.closest("[data-imp]");
+  if (e.target.id === "imp" || (b && b.getAttribute("data-imp") === "close")) { document.getElementById("imp").hidden = true; IMP = null; return; }
+  if (!b || b.getAttribute("data-imp") !== "go" || !IMP || !store) return;
+  var name = (document.getElementById("impProj").value || IMP.board).trim();
+  var withDone = document.getElementById("impDone") && document.getElementById("impDone").checked;
+  var pid = findOrMakeProject(name);
+  var items = IMP.tasks.filter(function (t) { return withDone || !t.done; }).map(function (t, i) { t.proj = pid; t.created = Date.now() + i; return { id: newId() + i, t: t }; });
+  store.putMany(items);
+  document.getElementById("imp").hidden = true; IMP = null;
+  toast("יובאו " + items.length + " משימות לפרויקט " + name, "הצגה", function () { go("project", pid); });
+});
 
 /* ---------------- boot ---------------- */
 S.calDays = lsGet("myday-caldays", null) || (isPhone() ? 3 : 7);
