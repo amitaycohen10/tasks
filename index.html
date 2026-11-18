@@ -557,6 +557,23 @@ body { background: radial-gradient(1200px 500px at 80% -10%, color-mix(in srgb, 
 .medal.got { background: linear-gradient(135deg, #f2c94c, #e08a1e); color: #fff; box-shadow: 0 2px 6px rgba(224,138,30,.4); }
 .hpc-n { font-size: 12.5px; color: var(--accent); font-weight: 600; }
 .fab { background: linear-gradient(135deg, var(--accent), #1f8a8a); }
+.trig { color: #3a73c9; font-weight: 600; }
+.friendform { display: grid; gap: 6px; } .friendform label { font-size: 13px; font-weight: 700; color: var(--muted); }
+.friendform input { border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; background: var(--surface-2); }
+.friendform .btn { justify-self: start; margin-top: 4px; }
+.donelist { display: grid; gap: 4px; background: color-mix(in srgb, #2f9e44 8%, var(--surface)); border-radius: 12px; padding: 10px 12px; color: #2b7a3b; font-weight: 600; }
+.inlinerow { display: flex; gap: 8px; } .inlinerow input { flex: 1; }
+.sdlist { display: grid; } .sdrow { display: flex; align-items: center; gap: 6px; padding: 9px 12px; border-top: 1px solid var(--line); flex-wrap: wrap; } .sdrow:first-child { border-top: 0; } .sdrow span { flex: 1; min-width: 140px; font-weight: 600; }
+.sdrow.moved { opacity: .4; }
+.moods { display: flex; gap: 8px; justify-content: center; } .mood { font-size: 30px; width: 54px; height: 54px; border-radius: 16px; border: 2px solid var(--line); background: var(--surface); }
+.mood.on { border-color: var(--accent); background: var(--accent-soft); transform: scale(1.08); }
+.frogopt.sel { background: color-mix(in srgb, #5cb85c 16%, var(--surface)); }
+.banner.night { border-inline-start-color: #3a4a8a; background: linear-gradient(135deg, color-mix(in srgb, #3a4a8a 10%, var(--surface)), var(--surface)); }
+.hafter { font-size: 12.5px; color: #3a73c9; font-weight: 600; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.hafter select, .hafter input { border: 1px solid var(--line); border-radius: 8px; padding: 3px 8px; background: var(--surface-2); font-size: 13px; }
+.habchip .af { font-size: 11px; color: var(--muted); font-weight: 500; }
+.chainbox { margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13.5px; }
+.chainbox .lk { color: var(--muted); }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -664,6 +681,7 @@ body { background: radial-gradient(1200px 500px at 80% -10%, color-mix(in srgb, 
 <div class="overlay" id="cls" hidden><div class="clsbox" role="dialog" aria-label="מיון משימות" id="clsBox"></div></div>
 <div class="overlay" id="cap" hidden><div class="capbox" role="dialog" aria-label="הוספה מהירה" id="capBox"></div></div>
 <div class="overlay" id="refl" hidden><div class="clsbox" role="dialog" aria-label="מה עוצר אותי" id="reflBox"></div></div>
+<div class="overlay" id="sd" hidden style="place-items:center;padding:12px"><div class="clsbox" role="dialog" aria-label="סגירת היום" id="sdBox"></div></div>
 <div class="overlay" id="plan" hidden><div class="pbox" role="dialog" aria-label="תכנון היום" id="planBox"></div></div>
 <script>
 (function () {
@@ -763,7 +781,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "14";
+var APP_VERSION = "15";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -896,6 +914,7 @@ function complete(id) {
   } else if (!t.done) {
     save(id, { done: true, doneAt: Date.now(), xpGot: pointsFor(t, id) });
     rw = reward(id, before);
+    if (before.shared && friend()) { var fn = (friend().name || "החבר"); setTimeout(function () { toast("🤝 לספר ל" + fn + " שסיימת?", "לשלוח", function () { openWA(friendMsg("done", before)); }); }, 2200); }
     toast(rw.msg, "ביטול", function () { store.put(id, before); unreward(before, rw.pts); });
   } else {
     save(id, { done: false, doneAt: 0 });
@@ -973,6 +992,8 @@ function taskRow(t, o) {
   if (t.due) { var dd = dayDiff(t.due); meta.push('<span class="dueb' + (!t.done && dd < 0 ? " late" : !t.done && dd <= 2 ? " soon" : "") + '">' + ic("due") + "יעד " + relDate(t.due) + "</span>"); }
   if (t.imp) meta.push('<span class="impstar">' + ic("star") + "</span>");
   (t.tags || []).forEach(function (g) { meta.push('<span class="tg">@' + esc(g) + "</span>"); });
+  if (t.trigger) meta.push('<span class="trig">🔗 ' + esc(t.trigger) + "</span>");
+  if (t.shared) meta.push("<span>🤝</span>");
   if (t.status === "waiting") meta.push("<span>⏳ מחכה</span>");
   if (t.status === "someday") meta.push("<span>💭 אולי פעם</span>");
   if (t.est) meta.push("<span>" + ic("clock") + (t.est < 60 ? t.est + " דק׳" : t.est / 60 + " ש׳") + "</span>");
@@ -1627,6 +1648,7 @@ function buildDetail() {
   h += '<div class="d-row"><span class="lab">' + ic("clock") + 'שעה ומשך</span><div class="d-2"><div><label for="dTime" class="sr">שעה</label><input type="time" id="dTime" value="' + esc(t.time || "") + '"></div><div><label for="dDur" class="sr">משך</label><select id="dDur"' + (t.time ? "" : " disabled") + ">" + durOpts + "</select></div></div>" + (t.time ? '<div><button type="button" class="chip" data-dact="noTime">בלי שעה</button></div>' : "") + "</div>";
   h += '<div class="d-row"><span class="lab">' + ic("flag") + 'עדיפות</span><div class="flags">' + [3, 2, 1, 0].map(function (p) { return '<button type="button" class="flag' + (p ? " p" + p : "") + '" data-dact="pri" data-v="' + p + '" aria-pressed="' + ((t.pri || 0) === p) + '">' + ic("flag") + PRI[p] + "</button>"; }).join("") + "</div></div>";
   h += '<div class="d-row"><span class="lab">' + ic("due") + 'תאריך יעד (עד מתי צריך לסיים)</span><div class="d-2"><div><label for="dDue" class="sr">תאריך יעד</label><input type="date" id="dDue" value="' + esc(t.due || "") + '"></div><div><button type="button" class="flag' + (t.imp ? "" : "") + '" data-dact="imp" aria-pressed="' + !!t.imp + '" style="width:100%;--pc:#e0a800">' + ic("star") + (t.imp ? "חשוב" : "לסמן כחשוב") + "</button></div></div></div>";
+  h += '<div class="d-row"><span class="lab">🔗 מתי בדיוק? (אם… אז…)</span><label for="dTrig" class="sr">טריגר</label><input type="text" id="dTrig" class="sub-add" list="trigList" placeholder="למשל: אחרי הקפה של הבוקר" value="' + esc(t.trigger || "") + '"><datalist id="trigList">' + TRIG_SUG.map(function (s) { return '<option value="' + esc(s) + '">'; }).join("") + "</datalist></div>";
   h += '<div class="d-row"><span class="lab">' + ic("tag") + 'תגיות</span><label for="dTags" class="sr">תגיות</label><input type="text" id="dTags" class="sub-add" placeholder="למשל: טלפון, מחשב" value="' + esc((t.tags || []).map(function (g) { return "@" + g; }).join(" ")) + '"></div>';
   h += '<div class="d-row"><span class="lab">' + ic("hash") + 'פרויקט</span><label for="dProj" class="sr">פרויקט</label><select id="dProj"><option value="">ללא פרויקט</option>' + ps.map(function (p) { return '<option value="' + esc(p.id) + '"' + (t.proj === p.id ? " selected" : "") + ">" + esc(p.name) + "</option>"; }).join("") + "</select></div>";
   h += '<div class="d-row"><span class="lab">' + ic("subs") + "שלבים" + (t.subs && t.subs.length ? " (" + t.subs.filter(function (s) { return s.d; }).length + "/" + t.subs.length + ")" : "") + '</span><div class="subs">' +
@@ -1635,7 +1657,7 @@ function buildDetail() {
   h += '<div class="d-row"><span class="lab">' + ic("note") + 'הערות</span><label for="dNotes" class="sr">הערות</label><textarea class="d-notes" id="dNotes" placeholder="פרטים, טלפון, קישור…">' + esc(t.notes || "") + "</textarea></div>";
   h += "</div>";
   var created = t.created ? new Date(t.created) : null;
-  h += '<div class="d-foot"><span class="meta">' + (created ? "נוצרה " + created.getDate() + "." + (created.getMonth() + 1) : "") + (t.rep && t.lastDone ? " · בוצעה לאחרונה " + relDate(ymd(new Date(t.lastDone))) : "") + '</span><button class="btn" data-dact="cls">' + ic("target") + 'מיון</button><button class="btn" data-dact="refl">🧭 מה עוצר אותי?</button><button class="btn" data-dact="tpl">' + ic("copy") + 'שמירה כתבנית</button><button class="btn" data-dact="focus">' + ic("timer") + 'פוקוס</button><button class="btn danger" data-dact="del">' + ic("trash") + "מחיקה</button></div>";
+  h += '<div class="d-foot"><span class="meta">' + (created ? "נוצרה " + created.getDate() + "." + (created.getMonth() + 1) : "") + (t.rep && t.lastDone ? " · בוצעה לאחרונה " + relDate(ymd(new Date(t.lastDone))) : "") + '</span><button class="btn" data-dact="cls">' + ic("target") + 'מיון</button><button class="btn" data-dact="refl">🧭 מה עוצר אותי?</button><button class="btn" data-dact="share">🤝 לשתף חבר</button><button class="btn" data-dact="tpl">' + ic("copy") + 'שמירה כתבנית</button><button class="btn" data-dact="focus">' + ic("timer") + 'פוקוס</button><button class="btn danger" data-dact="del">' + ic("trash") + "מחיקה</button></div>";
   dEl.innerHTML = h;
   autosize(document.getElementById("dTitle"));
 }
@@ -1666,6 +1688,7 @@ dEl.addEventListener("change", function (e) {
   else if (id === "dRep") dPatch({ rep: v, date: v && !t.date ? T() : t.date }, true);
   else if (id === "dDue") dPatch({ due: v }, true);
   else if (id === "dTags") dPatch({ tags: parseTagsInput(v) }, true);
+  else if (id === "dTrig") dPatch({ trigger: v.trim() });
 });
 dEl.addEventListener("keydown", function (e) {
   if (e.target.id === "dTitle" && e.key === "Enter") { e.preventDefault(); flushDetail(); e.target.blur(); }
@@ -1690,6 +1713,7 @@ dEl.addEventListener("click", function (e) {
   else if (a === "imp") dPatch({ imp: !t.imp }, true);
   else if (a === "cls") { flushDetail(); var cid = S.detailId; closeDetail(); openClassify([cid], "מיון"); }
   else if (a === "refl") { flushDetail(); var rid = S.detailId; closeDetail(); openReflect(rid); }
+  else if (a === "share") { flushDetail(); openShare(S.detailId); }
   else if (a === "tpl") {
     flushDetail(); t = S.tasks[S.detailId];
     var steps = (t.subs || []).map(function (s) { return s.t; }).filter(Boolean);
@@ -1813,6 +1837,7 @@ document.addEventListener("click", function (e) {
   else if (a === "sortByTime") { var dsT = b.getAttribute("data-date"), base = Date.now(); list().filter(function (t) { return !t.done && t.date === dsT; }).sort(dayOrder).forEach(function (t, i) { save(t.id, { order: base + i }); }); toast("סודר לפי שעות"); }
   else if (a === "clsStart") { var src = b.getAttribute("data-src"), ids = clsIds(src); if (!ids.length) { toast("אין משימות למיון כאן"); return; } openClassify(ids, src === "inbox" ? "מיון הסל" : src === "uncls" ? "מיון משימות" : "מיון נושא"); }
   else if (a === "capture") openCapture("");
+  else if (a === "shutdown") openShutdown();
   else if (a === "reflect") openReflect(b.getAttribute("data-id"));
   else if (a === "stuckSkip") { lsSet("myday-stuck-day", T()); render(); }
   else if (a === "frogPick") openFrogPick();
@@ -1870,10 +1895,18 @@ document.addEventListener("submit", function (e) {
     if (quickCreate(inp.value, { proj: S.projId, sec: sec })) { inp.value = ""; setTimeout(function () { var again = document.getElementById(inp.id); if (again) again.focus(); }, 0); }
     return;
   }
+  if (e.target.id === "friendForm") {
+    e.preventDefault(); var fnm = document.getElementById("frName").value.trim(), fph = document.getElementById("frPhone").value.trim();
+    if (waNumber(fph).length < 11) { toast("מספר הטלפון לא נראה תקין"); return; }
+    store.putSettings({ friend: { name: fnm, phone: fph } }); toast("החבר נשמר 🤝");
+    if (!document.getElementById("sd").hidden && SHARE_ID) openShare(SHARE_ID);
+    return;
+  }
   if (e.target.id === "newHabit") {
     e.preventDefault(); var hn = document.getElementById("hbName").value.trim(); if (!hn) return;
     var hs0 = settingsArr("habits");
-    putSet("habits", hs0.concat([{ id: "h" + newId(), name: hn, color: COLORS[(hs0.length + 2) % COLORS.length], days: {} }]));
+    var af = (document.getElementById("hbAfter").value || "").trim(), afh = hs0.filter(function (x) { return x.name === af; })[0];
+    putSet("habits", hs0.concat([{ id: "h" + newId(), name: hn, color: COLORS[(hs0.length + 2) % COLORS.length], days: {}, after: afh ? afh.id : af }]));
     return;
   }
   if (e.target.id === "newTpl") {
@@ -1899,6 +1932,10 @@ document.addEventListener("submit", function (e) {
   store.putSettings({ projects: ps });
 });
 document.addEventListener("change", function (e) {
+  if (e.target.hasAttribute && e.target.hasAttribute("data-hafter")) {
+    var hid = e.target.getAttribute("data-hafter"), val = e.target.value.trim(), hs1 = settingsArr("habits"), ah = hs1.filter(function (x) { return x.name === val && x.id !== hid; })[0];
+    putSet("habits", hs1.map(function (x) { return x.id === hid ? Object.assign({}, x, { after: ah ? ah.id : val }) : x; })); return;
+  }
   if (e.target.id === "soundTog") { var gs = ensureGame(); gs.sound = e.target.checked; putGame(gs); if (gs.sound) ding(false); return; }
   if (e.target.hasAttribute && e.target.hasAttribute("data-secname")) {
     var sid = e.target.getAttribute("data-secname"), nv = e.target.value.trim(); if (!nv) return;
@@ -1922,6 +1959,7 @@ document.addEventListener("keydown", function (e) {
     if (!fEl.hidden) return;
     if (!document.getElementById("cls").hidden) { document.getElementById("cls").hidden = true; render(); return; }
     if (!document.getElementById("cap").hidden) { document.getElementById("cap").hidden = true; render(); return; }
+    if (!document.getElementById("sd").hidden) { document.getElementById("sd").hidden = true; render(); return; }
     if (!document.getElementById("refl").hidden) { document.getElementById("refl").hidden = true; return; }
     if (!document.getElementById("plan").hidden) { document.getElementById("plan").hidden = true; render(); }
     else if (!sEl.hidden) closeSearch();
@@ -2497,13 +2535,14 @@ function habitDots(h, n) {
 }
 function viewHabits() {
   var hs = settingsArr("habits");
-  var h = '<form class="newproj" id="newHabit"><label for="hbName" class="sr">הרגל חדש</label><input id="hbName" placeholder="הרגל חדש, למשל: הליכה, קריאה, שתיית מים"><button class="btn primary" type="submit">' + ic("plus") + "הוספה</button></form>";
+  var h = '<div class="explain" style="margin-top:4px"><b>🔗 שרשור הרגלים</b><p>הדרך הכי קלה לבנות הרגל חדש: להצמיד אותו למשהו שאתה כבר עושה כל יום. למשל: "אחרי צחצוח שיניים ← 5 דקות קריאה". כשתסמן הרגל, האפליקציה תזכיר לך מה בא אחריו.</p></div>' +
+    '<form class="newproj" id="newHabit"><label for="hbName" class="sr">הרגל חדש</label><input id="hbName" placeholder="הרגל חדש, למשל: 5 דקות קריאה"><label for="hbAfter" class="sr">אחרי מה</label><input id="hbAfter" list="anchorList" placeholder="אחרי… (למשל: צחצוח שיניים בבוקר)"><datalist id="anchorList">' + HAB_ANCHORS.concat(settingsArr("habits").map(function (x) { return x.name; })).map(function (s) { return '<option value="' + esc(s) + '">'; }).join("") + '</datalist><button class="btn primary" type="submit">' + ic("plus") + "הוספה</button></form>";
   if (!hs.length) return h + '<div class="empty" style="margin-top:14px">' + emptyArt() + "<b>עוד אין הרגלים</b><span>הוסף הרגל שאתה רוצה לעשות כמה שיותר ימים, וסמן כאן כל יום שעשית אותו. הרצף 🔥 יגדל מיום ליום.</span></div>";
   h += '<div class="habits">';
   hs.forEach(function (hb) {
     var st = habitStreak(hb), week = 0;
     for (var i = 0; i < 7; i++) if ((hb.days || {})[ymd(addD(new Date(), -i))]) week++;
-    h += '<div class="habit" style="--c:' + esc(hb.color) + '"><div class="hhead"><b>' + esc(hb.name) + '</b><span class="streak' + (st ? " on" : "") + '">' + ic("fire") + st + ' ימים ברצף</span><span class="hweek">' + week + '/7 השבוע</span><button class="del" data-act="habDel" data-h="' + esc(hb.id) + '" aria-label="מחיקת ההרגל">' + ic("trash") + '</button></div><div class="hdots">' + habitDots(hb, isPhone() ? 7 : 14) + "</div></div>";
+    h += '<div class="habit" style="--c:' + esc(hb.color) + '"><div class="hhead"><b>' + esc(hb.name) + '</b><span class="streak' + (st ? " on" : "") + '">' + ic("fire") + st + ' ימים ברצף</span><span class="hweek">' + week + '/7 השבוע</span><button class="del" data-act="habDel" data-h="' + esc(hb.id) + '" aria-label="מחיקת ההרגל">' + ic("trash") + '</button></div><div class="hafter">🔗 אחרי: <input data-hafter="' + esc(hb.id) + '" list="anchorList" value="' + esc(habitAfterLabel(hb)) + '" placeholder="על איזה הרגל קיים לבנות?"></div><div class="hdots">' + habitDots(hb, isPhone() ? 7 : 14) + "</div></div>";
   });
   return h + "</div>";
 }
@@ -2597,7 +2636,10 @@ var TOOLS = [
 ];
 function viewMore() {
   var h = '<div class="tools">' + TOOLS.map(function (t) { return '<button class="tool" data-act="go" data-view="' + t.v + '">' + ic(t.i) + "<b>" + t.n + "</b><span>" + t.d + "</span></button>"; }).join("") +
-    '<button class="tool" data-act="plan">' + ic("sun") + "<b>תכנון היום</b><span>לעבור על מה שמחכה להחלטה</span></button></div>";
+    '<button class="tool" data-act="plan">' + ic("sun") + "<b>תכנון היום</b><span>לעבור על מה שמחכה להחלטה</span></button>" +
+    '<button class="tool" data-act="shutdown"><span style="font-size:22px">🌙</span><b>סגירת היום</b><span>מה הספקתי, מה למחר, והצפרדע של מחר</span></button></div>';
+  var fr = friend();
+  h += '<section class="sec"><div class="sec-h"><span class="shic" style="--c:#25a244">🤝</span><span>חבר למחויבות</span></div><div class="card backup"><p>' + (fr && fr.phone ? "החבר שלך: <b>" + esc(fr.name || "") + "</b> · " + esc(fr.phone) + ". בכל משימה יש כפתור \"🤝 לשתף חבר\", שפותח הודעה מוכנה בווטסאפ." : "בחר חבר שיחזיק אותך: מספרים לו מה מתחייבים לעשות, או עובדים יחד בזמן אמת. הפרטים נשמרים רק בחשבון שלך.") + "</p>" + friendForm() + "</div></section>";
   h += '<section class="sec"><div class="sec-h"><span>גיבוי</span></div><div class="card backup"><p>הורדת כל המשימות, הפרויקטים וההרגלים לקובץ במחשב או בטלפון. אפשר לשחזר ממנו בכל רגע.</p><div class="row2"><button class="btn" data-act="bkDown">' + ic("download") + 'הורדת גיבוי</button><button class="btn" data-act="bkUp">' + ic("upload") + "שחזור מגיבוי</button></div></div></section>";
   if (S.user) h += '<div class="acctcard"><span>מחובר כ-<b style="color:var(--ink)">' + esc(S.user.email) + "</b> · גרסה " + APP_VERSION + '</span><button class="btn" data-act="logout">התנתקות</button></div>';
   return h;
@@ -2752,11 +2794,12 @@ function viewToday() {
       h += '<div class="banner"><div class="tx"><b>' + (hr0 < 12 ? "בוקר טוב! " : "") + "לתכנן את היום?</b><span>" + pc + ' משימות מחכות להחלטה: מתי לעשות אותן.</span></div><button class="btn primary" data-act="plan">' + ic("sun") + 'תכנון היום</button><button class="btn plain" data-act="planSkip">לא עכשיו</button></div>';
     if (st.length && lsGet("myday-stuck-day", "") !== T())
       h += '<div class="banner stuck"><div class="tx"><b>🧭 משימה שתקועה אצלך: ' + esc(st[0].title) + "</b><span>" + stuckInfo(st[0]) + '. בוא נבין יחד מה עוצר אותך, ומה יעזור להתחיל.</span></div><button class="btn primary" data-act="reflect" data-id="' + esc(st[0].id) + '">לחשוב על זה</button><button class="btn plain" data-act="stuckSkip">לא היום</button></div>';
+    if (new Date().getHours() >= 17 && lsGet("myday-shutdown", "") !== T()) h += '<div class="banner night"><div class="tx"><b>🌙 לסגור את היום?</b><span>2 דקות: מה הספקת, מה עובר למחר, ומה הצפרדע של מחר. אחרי זה הראש נח.</span></div><button class="btn primary" data-act="shutdown">לסגור את היום</button></div>';
     h += gameBarHtml();
     var dueSoon = L.filter(function (t) { return !t.done && t.due && dayDiff(t.due) <= 3 && t.date !== T() && !isLate(t); }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
     if (dueSoon.length) h += section("duesoon", "יעדים מתקרבים", dueSoon, { icon: ["due", "#e08a1e"], fold: true });
     var hs = settingsArr("habits");
-    if (hs.length) h += '<section class="sec"><div class="sec-h">' + shic("fire", "#e8590c") + '<span>ההרגלים שלי היום</span></div><div class="habchips">' + hs.map(function (hb) { var on = !!(hb.days || {})[T()], sk = habitStreak(hb); return '<button class="habchip' + (on ? " on" : "") + '" style="--c:' + esc(hb.color) + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + T() + '" aria-pressed="' + on + '"><span class="hc">' + ic("check") + "</span>" + esc(hb.name) + (sk ? '<span class="fs">' + ic("fire") + sk + "</span>" : "") + "</button>"; }).join("") + "</div></section>";
+    if (hs.length) h += '<section class="sec"><div class="sec-h">' + shic("fire", "#e8590c") + '<span>ההרגלים שלי היום</span></div><div class="habchips">' + hs.map(function (hb) { var on = !!(hb.days || {})[T()], sk = habitStreak(hb); return '<button class="habchip' + (on ? " on" : "") + '" style="--c:' + esc(hb.color) + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + T() + '" aria-pressed="' + on + '"><span class="hc">' + ic("check") + "</span>" + esc(hb.name) + (habitAfterLabel(hb) ? '<span class="af">אחרי ' + esc(habitAfterLabel(hb)) + "</span>" : "") + (sk ? '<span class="fs">' + ic("fire") + sk + "</span>" : "") + "</button>"; }).join("") + "</div></section>";
   }
   h += scheduleHtml(D, isT);
   if (isT) h += section("done", "בוצע היום", L.filter(doneToday).sort(function (a, b) { return (b.doneAt || b.lastDone || 0) - (a.doneAt || a.lastDone || 0); }), { fold: true, icon: ["check", "#2f9e44"] });
@@ -2802,7 +2845,7 @@ function openClassify(ids, label) {
 function clsLoad() {
   while (CL.i < CL.ids.length && (!S.tasks[CL.ids[CL.i]] || S.tasks[CL.ids[CL.i]].done)) CL.i++;
   var t = S.tasks[CL.ids[CL.i]]; if (!t) return;
-  CL.d = { title: t.title, q: t.cls || t.imp || t.pri === 3 ? quadOf(t) : 0, proj: t.proj || "", sec: t.sec || "", date: t.date || "", dmode: t.date ? "keep" : "", tags: (t.tags || []).slice(), est: t.est || 0, energy: t.energy || "", status: t.status || "", edit: false };
+  CL.d = { trigger: t.trigger || "", title: t.title, q: t.cls || t.imp || t.pri === 3 ? quadOf(t) : 0, proj: t.proj || "", sec: t.sec || "", date: t.date || "", dmode: t.date ? "keep" : "", tags: (t.tags || []).slice(), est: t.est || 0, energy: t.energy || "", status: t.status || "", edit: false };
 }
 function chip(on, attrs, label, color) { return '<button type="button" class="chip' + (on ? " on" : "") + '"' + (color ? ' style="--c:' + color + '"' : "") + " " + attrs + ' aria-pressed="' + !!on + '">' + label + "</button>"; }
 function drawCls() {
@@ -2829,6 +2872,7 @@ function drawCls() {
   h += '<div class="cls-sec"><h4>5 · כמה זמן, כמה אנרגיה, ומה המצב?</h4><div class="chips">' + [5, 15, 30, 60, 120].map(function (m) { return chip(d.est === m, 'data-cl="est" data-v="' + m + '"', m < 60 ? m + " דק׳" : m === 60 ? "שעה" : "שעתיים+"); }).join("") + "</div>" +
     '<div class="chips" style="margin-top:8px">' + chip(d.energy === "high", 'data-cl="energy" data-v="high"', "🧠 צריך ריכוז") + chip(d.energy === "low", 'data-cl="energy" data-v="low"', "🍃 קליל") + "</div>" +
     '<div class="chips" style="margin-top:8px">' + chip(!d.status, 'data-cl="status" data-v=""', "▶️ לעשות") + chip(d.status === "waiting", 'data-cl="status" data-v="waiting"', "⏳ מחכה למישהו") + chip(d.status === "someday", 'data-cl="status" data-v="someday"', "💭 אולי פעם") + "</div>" +
+    '<h4 style="margin-top:14px">6 · מתי בדיוק? <small>(אם… אז… · לא חובה)</small></h4><div class="chips">' + TRIG_SUG.slice(0, 5).map(function (s) { return chip(d.trigger === s, 'data-cl="trig" data-v="' + esc(s) + '"', "🔗 " + esc(s)); }).join("") + '</div><input id="clTrig" class="sub-add" style="margin-top:8px" placeholder="או כתוב בעצמך: כש… / אחרי…" value="' + esc(d.trigger || "") + '">' +
     (d.est === 5 ? '<div class="twomin">⚡ לוקח רק כמה דקות? הכי טוב לעשות את זה עכשיו ולגמור עם זה. <button type="button" class="btn primary" data-cl="doneNow">' + ic("check") + "עשיתי</button></div>" : "") + "</div>";
   h += '<div class="cls-actions"><button type="button" class="btn plain danger" data-cl="del">' + ic("trash") + '</button><button type="button" class="btn" data-cl="skip">דילוג</button><button type="button" class="btn primary big" data-cl="send">' + ic("check") + "שליחה למקום</button></div>";
   box.innerHTML = h;
@@ -2837,7 +2881,8 @@ function drawCls() {
 function clsApply() {
   var id = CL.ids[CL.i], t = S.tasks[id], d = CL.d; if (!t) return;
   var ti = document.getElementById("clTitle"); if (ti && ti.value.trim()) d.title = ti.value.trim();
-  var patch = { title: d.title, inbox: false, cls: true, proj: d.proj, sec: d.sec, tags: d.tags, est: d.est, energy: d.energy, status: d.status };
+  var tg = document.getElementById("clTrig"); if (tg) d.trigger = tg.value.trim();
+  var patch = { trigger: d.trigger, title: d.title, inbox: false, cls: true, proj: d.proj, sec: d.sec, tags: d.tags, est: d.est, energy: d.energy, status: d.status };
   if (d.q) { patch.imp = d.q <= 2; patch.pri = d.q === 1 || d.q === 3 ? 3 : (t.pri === 3 ? 2 : (t.pri || 0)); }
   if (d.dmode !== "keep") { patch.date = d.date; if (d.date !== t.date) patch.time = ""; }
   save(id, patch); CL.n++;
@@ -2975,6 +3020,8 @@ function habitCheered(id, ds) {
   if (ms) g.hm[id + ":" + sk] = T();
   putGame(g); celebrate(ms);
   toast(ms ? "🏅 " + sk + " ימים ברצף ב" + hb.name + "! אתה מתמיד, וזה מה שבונה הרגל" : sk > 1 ? "🔥 " + hb.name + ": " + sk + " ימים ברצף, ממשיכים!" : "✅ " + hb.name + ": התחלה טובה! +5");
+  var nx = stackNext(id);
+  if (nx) setTimeout(function () { toast("🔗 ועכשיו, כמו שתכננת: " + nx.name, "סימנתי", function () { toggleHabit(nx.id, T()); }); }, 2400);
 }
 function habitsProgressHtml() {
   var hs = settingsArr("habits"), g = G(); if (!hs.length) return '<section class="sec"><div class="sec-h"><span>ההרגלים שלי</span></div><div class="empty">עוד אין הרגלים. <a href="#" data-act="go" data-view="habits">להוסיף הרגל</a></div></section>';
@@ -2992,12 +3039,14 @@ document.getElementById("clsBox").addEventListener("click", function (e) {
   if (a === "close") { document.getElementById("cls").hidden = true; var gv = b.getAttribute("data-go"); if (gv) go(gv); else render(); return; }
   if (a === "edit") { d.edit = true; drawCls(); var ti = document.getElementById("clTitle"); if (ti) ti.focus(); return; }
   var ti2 = document.getElementById("clTitle"); if (ti2 && ti2.value.trim()) d.title = ti2.value.trim();
+  var tg2 = document.getElementById("clTrig"); if (tg2 && a !== "trig") d.trigger = tg2.value.trim();
   if (a === "q") d.q = d.q === +v ? 0 : +v;
   else if (a === "proj") { if (d.proj !== v) d.sec = ""; d.proj = v; }
   else if (a === "sec") d.sec = v;
   else if (a === "when") { if (v === "keep") { d.dmode = "keep"; } else { d.dmode = ""; d.date = v; } }
   else if (a === "tag") { var k = d.tags.indexOf(v); if (k >= 0) d.tags.splice(k, 1); else d.tags.push(v); }
   else if (a === "est") d.est = d.est === +v ? 0 : +v;
+  else if (a === "trig") { var tgi = document.getElementById("clTrig"); d.trigger = d.trigger === v ? "" : v; if (tgi) tgi.value = d.trigger; }
   else if (a === "energy") d.energy = d.energy === v ? "" : v;
   else if (a === "status") d.status = v;
   else if (a === "doneNow") { clsApply(); complete(CL.ids[CL.i]); CL.i++; clsLoad(); }
@@ -3045,6 +3094,121 @@ document.getElementById("reflBox").addEventListener("click", function (e) {
     setTimeout(function () { openCapture(pre); }, 50);
   }
 })();
+
+/* ================= v15: if-then, shutdown ritual, friend, habit stacking ================= */
+var TRIG_SUG = ["אחרי הקפה של הבוקר", "כשאני מגיע לעבודה", "לפני שאני פותח מייל", "אחרי ארוחת הצהריים", "כשאני נכנס לאוטו", "כשאני חוזר הביתה", "בסוף יום העבודה"];
+var HAB_ANCHORS = ["צחצוח שיניים בבוקר", "הקפה של הבוקר", "ארוחת הצהריים", "הגעה הביתה", "ארוחת ערב", "לפני השינה"];
+
+/* ---------- friend (accountability / body doubling) ---------- */
+function friend() { return (S.settings && S.settings.friend) || null; }
+function waNumber(p) { var d = String(p || "").replace(/\D/g, ""); if (d.indexOf("0") === 0) d = "972" + d.slice(1); return d; }
+function openWA(text) {
+  var f = friend(); if (!f || !f.phone) return;
+  var url = "https://wa.me/" + waNumber(f.phone) + "?text=" + encodeURIComponent(text);
+  var a = document.createElement("a"); a.href = url; a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
+}
+function friendMsg(kind, t) {
+  var f = friend() || {}, n = f.name ? " " + f.name : "";
+  if (kind === "commit") return "היי" + n + "! אני מתחייב לעשות היום: *" + t.title + "*. תבדוק אותי בערב אם עשיתי? 💪";
+  if (kind === "together") return "היי" + n + ", אני מתחיל עכשיו 25 דקות על: *" + t.title + "*. בא לך לעבוד במקביל על משהו שלך? נתעדכן בסוף 🙂";
+  if (kind === "help") return "היי" + n + ", אני תקוע עם: *" + t.title + "*. יש לך כמה דקות לעזור לי לחשוב איך להתחיל?";
+  return "סיימתי! ✅ *" + t.title + "* 🎉 תודה שהחזקת אותי.";
+}
+function openShare(id) {
+  var t = S.tasks[id]; if (!t) return;
+  var f = friend(), box = document.getElementById("sdBox");
+  var h = '<div class="cls-top"><span>🤝 לשתף עם חבר</span><button class="iconbtn" data-sh="close" aria-label="סגירה" style="margin-inline-start:auto">' + ic("x") + '</button></div><div class="rf-task" style="border-color:#25a244">' + esc(t.title) + "</div>";
+  if (!f || !f.phone) {
+    h += '<p class="mhint" style="margin:0">כשמישהו אחר יודע על המשימה, הרבה יותר קשה לדחות אותה. בחר חבר שתשלח לו בווטסאפ. הפרטים נשמרים רק בחשבון שלך.</p>' + friendForm();
+  } else {
+    h += '<p class="mhint" style="margin:0">ההודעה תיפתח בווטסאפ אל <b>' + esc(f.name || f.phone) + "</b>, ותוכל לערוך אותה לפני השליחה.</p>" +
+      '<div class="rf-dec"><button class="btn primary big" data-sh="commit" data-id="' + esc(id) + '">💪 "תבדוק אותי": אני מתחייב לעשות היום</button><button class="btn" data-sh="together" data-id="' + esc(id) + '">👥 לעבוד יחד עכשיו</button><button class="btn" data-sh="help" data-id="' + esc(id) + '">🙋 לבקש עזרה</button>' + (t.done ? '<button class="btn" data-sh="done" data-id="' + esc(id) + '">✅ לספר שסיימתי</button>' : "") + "</div>" +
+      '<button class="btn plain" data-sh="edit" style="justify-self:start">לשנות את החבר</button>';
+  }
+  box.innerHTML = h; document.getElementById("sd").hidden = false; SD = null;
+}
+function friendForm() {
+  var f = friend() || {};
+  return '<form id="friendForm" class="friendform"><label for="frName">שם החבר</label><input id="frName" value="' + esc(f.name || "") + '" placeholder="למשל: יוסי"><label for="frPhone">מספר טלפון (ווטסאפ)</label><input id="frPhone" type="tel" inputmode="tel" value="' + esc(f.phone || "") + '" placeholder="05X-XXXXXXX"><button class="btn primary" type="submit">שמירה</button></form>';
+}
+
+/* ---------- shutdown ritual ---------- */
+var SD = null;
+function openShutdown() { SD = { step: 0, extra: [], mood: 0, note: "" }; document.getElementById("sd").hidden = false; drawShutdown(); }
+function drawShutdown() {
+  var box = document.getElementById("sdBox"), td = T(), L = list(), s = SD.step;
+  var done = L.filter(doneToday), open = L.filter(function (t) { return !t.done && t.date && t.date <= td; }).sort(byOrder), tom = L.filter(function (t) { return !t.done && t.date === TM(1); }).sort(byOrder);
+  var h = '<div class="cls-top"><span>🌙 סגירת היום</span><span class="pn">' + (s + 1) + ' / 4</span><button class="iconbtn" data-sd="close" aria-label="סגירה">' + ic("x") + '</button></div><div class="bar" style="--c:#3a4a8a"><i style="width:' + Math.round(s / 4 * 100) + '%"></i></div>';
+  if (s === 0) {
+    h += '<div class="rf-q"><h3>מה הספקת היום? ' + (done.length ? "🎉" : "") + "</h3>" + (done.length ? '<div class="donelist">' + done.map(function (t) { return "<span>✓ " + esc(t.title) + "</span>"; }).join("") + "</div>" : "<p>לא סימנת משימות היום. גם זה קורה.</p>") +
+      "<p>עשית עוד משהו שלא היה ברשימה? גם זה נחשב:</p>" + (SD.extra.length ? '<div class="donelist">' + SD.extra.map(function (x) { return "<span>✓ " + esc(x) + "</span>"; }).join("") + "</div>" : "") +
+      '<form id="sdExtra" class="inlinerow"><input id="sdExtraIn" class="sub-add" placeholder="למשל: עזרתי לחבר לעבור דירה"><button class="btn" type="submit">הוספה</button></form></div>';
+  }
+  if (s === 1) {
+    h += '<div class="rf-q"><h3>מה נשאר פתוח מהיום?</h3>' + (open.length ? "<p>לכל משימה, החלט: למחר, להמשך (בלי תאריך), או להשאיר.</p>" + '<div class="card sdlist">' + open.map(function (t) { return '<div class="sdrow"><span>' + esc(t.title) + '</span><button class="chip" data-sd="mv" data-v="tom" data-id="' + esc(t.id) + '">למחר</button><button class="chip" data-sd="mv" data-v="later" data-id="' + esc(t.id) + '">להמשך</button></div>'; }).join("") + '</div><button class="btn" data-sd="allTom">הכול למחר</button>' : "<p>אין משימות פתוחות מהיום. יום נקי! ✨</p>") + "</div>";
+  }
+  if (s === 2) {
+    var g = G(), fr = g.frog && g.frog.date === TM(1) ? g.frog.id : "";
+    h += '<div class="rf-q"><h3>🐸 מה הצפרדע של מחר?</h3><p>המשימה הכי קשה או הכי חשובה, שתעשה מחר ראשונה. כשמחליטים מראש, הבוקר מתחיל בלי התלבטות.</p>' +
+      (tom.length ? '<div class="card frogl">' + tom.map(function (t) { return '<button class="frogopt' + (fr === t.id ? " sel" : "") + '" data-sd="frog" data-id="' + esc(t.id) + '">' + (fr === t.id ? "🐸 " : "") + esc(t.title) + "</button>"; }).join("") + "</div>" : "<p>עוד אין משימות למחר. אפשר לבחור צפרדע מחר בבוקר.</p>") + "</div>";
+  }
+  if (s === 3) {
+    h += '<div class="rf-q"><h3>איך היה היום?</h3><div class="moods">' + ["😫", "😕", "😐", "🙂", "😄"].map(function (m, i) { return '<button class="mood' + (SD.mood === i + 1 ? " on" : "") + '" data-sd="mood" data-v="' + (i + 1) + '">' + m + "</button>"; }).join("") + '</div><textarea id="sdNote" rows="2" placeholder="משפט אחד על היום: מה היה טוב? מה למדתי?">' + esc(SD.note) + "</textarea></div>";
+  }
+  h += '<div class="cls-actions">' + (s > 0 ? '<button class="btn" data-sd="back">חזרה</button>' : '<button class="btn plain" data-sd="close">לא עכשיו</button>') + '<button class="btn primary big" data-sd="' + (s < 3 ? "next" : "finish") + '">' + (s < 3 ? "המשך" : "🌙 לסגור את היום") + "</button></div>";
+  box.innerHTML = h;
+}
+function shutdownFinish() {
+  var n = document.getElementById("sdNote"); if (n) SD.note = n.value;
+  var td = T();
+  SD.extra.forEach(function (x, i) { store.put(newId() + i, { title: x, notes: "", date: td, time: "", pri: 0, proj: "", subs: [], done: true, doneAt: Date.now(), created: Date.now(), order: Date.now(), tags: [], extra: true }); });
+  var j = Object.assign({}, (S.settings && S.settings.journal) || {}); j[td] = { mood: SD.mood, note: SD.note, done: list().filter(doneToday).length + SD.extra.length };
+  store.putSettings({ journal: j });
+  var g = ensureGame(); g.xp += 10; SD.extra.forEach(function () { g.log[td] = (g.log[td] || 0) + 1; }); putGame(g);
+  lsSet("myday-shutdown", td);
+  document.getElementById("sdBox").innerHTML = '<div class="plan-end"><div style="font-size:54px">🌙</div><h2>היום סגור</h2><p>הספקת ' + j[td].done + ' דברים. מחר מתחיל עם תוכנית. ערב טוב ומנוחה טובה!</p><button class="btn primary" data-sd="close">סגירה</button></div>';
+  celebrate(true);
+}
+
+/* ---------- habit stacking ---------- */
+function habitAfterLabel(hb) { if (!hb.after) return ""; var a = settingsArr("habits").filter(function (x) { return x.id === hb.after; })[0]; return a ? a.name : hb.after; }
+function stackNext(id) {
+  var hs = settingsArr("habits"), me = hs.filter(function (x) { return x.id === id; })[0]; if (!me) return null;
+  return hs.filter(function (x) { return (x.after === id || x.after === me.name) && !(x.days || {})[T()]; })[0] || null;
+}
+
+var SHARE_ID = null;
+var _openShare = openShare; openShare = function (id) { SHARE_ID = id; _openShare(id); };
+document.getElementById("sdBox").addEventListener("click", function (e) {
+  var sh = e.target.closest("[data-sh]");
+  if (sh) {
+    var k = sh.getAttribute("data-sh"), tid = sh.getAttribute("data-id");
+    if (k === "close") { document.getElementById("sd").hidden = true; SHARE_ID = null; render(); return; }
+    if (k === "edit") { document.getElementById("sdBox").insertAdjacentHTML("beforeend", friendForm()); sh.remove(); return; }
+    var t = S.tasks[tid]; if (!t) return;
+    openWA(friendMsg(k, t));
+    if (k === "commit" || k === "together") save(tid, { shared: true, date: t.date || T() });
+    document.getElementById("sd").hidden = true; SHARE_ID = null;
+    if (k === "together") { F.len = 25; startFocus(tid); }
+    toast(k === "commit" ? "🤝 עכשיו יש מי שמחכה לשמוע שסיימת. בהצלחה!" : k === "together" ? "👥 בהצלחה! הטיימר התחיל" : "נשלח 👍");
+    return;
+  }
+  var b = e.target.closest("[data-sd]"); if (!b || !SD) return;
+  var a = b.getAttribute("data-sd"), n = document.getElementById("sdNote"); if (n) SD.note = n.value;
+  if (a === "close") { document.getElementById("sd").hidden = true; render(); return; }
+  if (a === "next") SD.step++;
+  else if (a === "back") SD.step--;
+  else if (a === "mv") { var id = b.getAttribute("data-id"); save(id, b.getAttribute("data-v") === "tom" ? { date: TM(1), time: "" } : { date: "", time: "" }); }
+  else if (a === "allTom") { list().filter(function (t) { return !t.done && t.date && t.date <= T(); }).forEach(function (t) { save(t.id, { date: TM(1), time: "" }); }); toast("הכול עבר למחר"); }
+  else if (a === "frog") { var g = ensureGame(); g.frog = { date: TM(1), id: b.getAttribute("data-id"), done: false }; putGame(g); }
+  else if (a === "mood") SD.mood = +b.getAttribute("data-v");
+  else if (a === "finish") { shutdownFinish(); return; }
+  drawShutdown();
+});
+document.getElementById("sdBox").addEventListener("submit", function (e) {
+  if (e.target.id === "sdExtra") { e.preventDefault(); var v = document.getElementById("sdExtraIn").value.trim(); if (v) SD.extra.push(v); drawShutdown(); setTimeout(function () { var i = document.getElementById("sdExtraIn"); if (i) i.focus(); }, 30); }
+});
+document.getElementById("sd").addEventListener("click", function (e) { if (e.target.id === "sd") { this.hidden = true; render(); } });
 
 /* ---------------- boot ---------------- */
 S.calDays = lsGet("myday-caldays", null) || (isPhone() ? 3 : 7);
