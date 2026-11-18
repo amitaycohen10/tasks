@@ -12,6 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="משימות">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
+<script src="https://accounts.google.com/gsi/client" async></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -317,6 +318,27 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
 .acct { display: grid; gap: 6px; padding: 10px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); margin-top: 6px; }
 .acct b { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
 .acct button { justify-self: start; border: 0; background: none; color: var(--accent); font-weight: 700; padding: 0; }
+.board { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 18px; margin-top: 12px; align-items: flex-start; scroll-snap-type: x proximity; overscroll-behavior-x: contain; }
+.colb { flex: 0 0 300px; scroll-snap-align: start; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; display: grid; gap: 8px; }
+.colh { display: flex; align-items: center; gap: 6px; }
+.colh .n { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.colname { flex: 1; min-width: 0; font-family: var(--display); font-weight: 600; font-size: 16px; border: 1px solid transparent; background: none; border-radius: 8px; padding: 3px 6px; }
+.colname:hover, .colname:focus { border-color: var(--line); background: var(--surface); outline: none; }
+.colh .colt { flex: 1; font-family: var(--display); font-weight: 600; font-size: 16px; padding: 3px 6px; }
+.colh .del { border: 0; background: none; color: var(--muted); padding: 4px; border-radius: 6px; display: grid; }
+.colh .del:hover { color: var(--p3); background: var(--line); }
+.colh .del.sure { color: #fff; background: var(--p3); font-size: 12px; font-weight: 700; padding: 3px 8px; }
+.colcards { min-height: 54px; }
+.colcards:empty::after { content: "גרור לכאן משימות"; display: grid; place-items: center; min-height: 54px; color: var(--muted); font-size: 13px; }
+.coladd input, .colnew input { width: 100%; border: 1px dashed var(--line); background: transparent; border-radius: 10px; padding: 8px 10px; }
+.coladd input:focus, .colnew input:focus { border-style: solid; border-color: var(--accent); background: var(--surface); outline: none; }
+.colnew { flex: 0 0 240px; display: grid; gap: 8px; padding: 10px; border: 1px dashed var(--line); border-radius: var(--r); }
+.trellofix { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--accent-soft); color: var(--accent); border-radius: var(--r); padding: 10px 14px; font-weight: 600; font-size: 14px; }
+.trellofix .btn { margin-inline-start: auto; }
+@keyframes inFromL { from { transform: translateX(-36px); opacity: .2; } to { transform: none; opacity: 1; } }
+@keyframes inFromR { from { transform: translateX(36px); opacity: .2; } to { transform: none; opacity: 1; } }
+.content.slideL { animation: inFromL .2s ease; }
+.content.slideR { animation: inFromR .2s ease; }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -358,6 +380,8 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
   .dock { display: none; }
   .toast { bottom: calc(150px + env(safe-area-inset-bottom)); }
   .pgrid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .colb { flex-basis: 86%; }
+  .colnew { flex-basis: 70%; }
 }
 @media (max-width: 420px) { .pgrid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
@@ -579,6 +603,7 @@ function connect() {
       loaded = false; store = fbStore(u.uid);
       document.getElementById("login").hidden = true;
       render();
+      watchCal();
     } else {
       store = null; S.user = null; S.tasks = {}; S.settings = { projects: [] };
       showLogin("המשימות שלך, בטלפון ובמחשב. היכנס עם חשבון Google כדי להתחיל.", true);
@@ -711,7 +736,7 @@ function section(key, title, items, o) {
     (items.length || o.pre ? '<div class="card"' + zoneAttr(o.zone) + ">" + (o.pre || "") + items.map(function (t) { return taskRow(t, o.row); }).join("") + "</div>" : (o.emptyHtml ? o.emptyHtml.replace("<div ", "<div" + zoneAttr(o.zone) + " ") : "")) +
     "</section>";
 }
-function zoneAttr(z) { return z ? ' data-zone="1" data-zdate="' + esc(z.date) + '" data-ztime="' + (z.time || "keep") + '" data-zsort="' + (z.sort ? 1 : 0) + '"' : ""; }
+function zoneAttr(z) { return z ? ' data-zone="1" data-zdate="' + esc(z.date) + '" data-ztime="' + (z.time || "keep") + '" data-zsort="' + (z.sort ? 1 : 0) + '"' + (z.sec != null ? ' data-zsec="' + esc(z.sec) + '"' : "") : ""; }
 function ordKey(t) { return t.order != null ? t.order : (t.created || 0); }
 function byOrder(a, b) { return ordKey(a) - ordKey(b); }
 function dayOrder(a, b) { if (a.time && b.time) return a.time < b.time ? -1 : a.time > b.time ? 1 : 0; if (a.time) return -1; if (b.time) return 1; return byOrder(a, b); }
@@ -729,7 +754,7 @@ var mcpNS = null, calUnsub = null, calKey = "", calInput = null;
 function evFor(ds) { return S.showEv ? (S.events[ds] || []) : []; }
 function evRow(e) {
   var end = e.allDay ? "" : hhmm(mins(e.time) + e.dur);
-  return '<a class="trow evrow" href="' + esc(e.link) + '" target="_blank" rel="noopener"><span class="evic">' + ic("cal") + '</span><span class="tmain"><span class="ttitle">' + esc(e.title) + '</span><span class="tmeta"><span>' + (e.allDay ? "כל היום" : e.time + "–" + end) + " · יומן Google</span></span></span>" + (e.allDay ? "" : '<span class="ttime">' + e.time + "</span>") + "</a>";
+  return '<a class="trow evrow" href="' + esc(e.link) + '" target="_blank" rel="noopener"><span class="evic"' + (e.color ? ' style="color:' + esc(e.color) + '"' : "") + ">" + ic("cal") + '</span><span class="tmain"><span class="ttitle">' + esc(e.title) + '</span><span class="tmeta"><span>' + (e.allDay ? "כל היום" : e.time + "–" + end) + " · יומן Google</span></span></span>" + (e.allDay ? "" : '<span class="ttime">' + e.time + "</span>") + "</a>";
 }
 function evRows(ds) {
   var ev = evFor(ds).slice().sort(function (a, b) { return (a.allDay ? "" : a.time) < (b.allDay ? "" : b.time) ? -1 : 1; });
@@ -745,14 +770,15 @@ function ingest(evs) {
   function push(ds, o) { (out[ds] = out[ds] || []).push(o); }
   (evs || []).forEach(function (e) {
     if (!e || e.status === "cancelled" || !e.start) return;
-    var title = e.summary || "(ללא כותרת)", link = e.htmlLink || "";
+    if (e.attendees && e.attendees.some(function (a) { return a.self && a.responseStatus === "declined"; })) return;
+    var title = e.summary || "(ללא כותרת)", link = e.htmlLink || "", color = e._color || "";
     if (e.start.date) {
       var d = pd(e.start.date), end = e.end && e.end.date ? pd(e.end.date) : addD(d, 1), guard = 0;
-      for (var x = d; x < end && guard < 62; x = addD(x, 1), guard++) push(ymd(x), { id: e.id, title: title, allDay: true, link: link });
+      for (var x = d; x < end && guard < 62; x = addD(x, 1), guard++) push(ymd(x), { id: e.id, title: title, allDay: true, link: link, color: color });
     } else if (e.start.dateTime) {
       var s = new Date(e.start.dateTime), en = e.end && e.end.dateTime ? new Date(e.end.dateTime) : new Date(s.getTime() + 30 * 6e4);
       var ds = ymd(s), sm = s.getHours() * 60 + s.getMinutes(), em = ymd(en) === ds ? en.getHours() * 60 + en.getMinutes() : 24 * 60;
-      push(ds, { id: e.id, title: title, allDay: false, time: hhmm(sm), dur: Math.max(15, em - sm), link: link, ev: true });
+      push(ds, { id: e.id, title: title, allDay: false, time: hhmm(sm), dur: Math.max(15, em - sm), link: link, ev: true, color: color });
     }
   });
   S.events = out;
@@ -763,36 +789,67 @@ function calError(e) {
   if (DENY.indexOf(c) >= 0) S.events = {};
   S.calStatus = { state: c };
 }
-function watchCal() {
-  if (!mcpNS || !S.showEv) return;
-  var w = calWindow(), key = w.join("|");
-  if (key === calKey) return;
-  if (calUnsub) { calUnsub(); calUnsub = null; }
-  calKey = key;
-  calInput = { startTime: w[0] + "T00:00:00", endTime: w[1] + "T00:00:00", orderBy: "startTime", pageSize: 250 };
-  calUnsub = mcpNS.watchTool("Google Calendar", "list_events", calInput, function (ev) {
-    if (ev.type === "data") {
-      var p = ev.result && ev.result.payload;
-      ingest(p && p.events ? p.events : []);
-      S.calStatus = { state: "ok", at: ev.result.cache ? ev.result.cache.storedAt : Date.now() };
-    } else calError(ev.error);
-    render();
-  }, { cache: { staleTime: 120000, gcTime: 86400000 }, refetchInterval: 300000 });
-}
-function stopCal() { if (calUnsub) { calUnsub(); calUnsub = null; } calKey = ""; S.events = {}; }
-async function initCal() {
-  try { if (window.claude && window.claude.use) mcpNS = await window.claude.use("mcp"); } catch (e) { mcpNS = null; }
-  if (!mcpNS) { S.calStatus = { state: "off" }; render(); return; }
-  watchCal();
+var GCAL_CLIENT = "390355883230-rrgbnmidh7s2tmahjag7ufut7p5c2u9d.apps.googleusercontent.com";
+var GCAL_SCOPE = "https://www.googleapis.com/auth/calendar.readonly";
+var gTok = lsGet("myday-gtok", null), gWanted = lsGet("myday-gcal", false), gClient = null, calAt = 0;
+function tokOk() { return !!(gTok && gTok.t && gTok.exp > Date.now()); }
+function gInit() {
+  if (gClient) return true;
+  if (!(window.google && google.accounts && google.accounts.oauth2)) return false;
+  gClient = google.accounts.oauth2.initTokenClient({
+    client_id: GCAL_CLIENT, scope: GCAL_SCOPE,
+    callback: function (r) {
+      if (r && r.access_token) {
+        gTok = { t: r.access_token, exp: Date.now() + ((+r.expires_in || 3600) - 60) * 1000 };
+        lsSet("myday-gtok", gTok); gWanted = true; lsSet("myday-gcal", true);
+        calKey = ""; S.calStatus = { state: "" }; render(); watchCal();
+      } else { S.calStatus = { state: "gerr" }; render(); }
+    },
+    error_callback: function (e) { S.calStatus = { state: gWanted ? "expired" : "need" }; render(); }
+  });
+  return true;
 }
 function approveCal() {
-  if (!mcpNS || !calInput) return;
-  S.calStatus = { state: "" }; render();
-  mcpNS.callTool("Google Calendar", "list_events", calInput).then(function (r) {
-    ingest(r && r.payload && r.payload.events ? r.payload.events : []);
-    S.calStatus = { state: "ok", at: Date.now() }; render();
-  }).catch(function (e) { calError(e); render(); });
+  if (!gInit()) { S.calStatus = { state: "gload" }; render(); return; }
+  var opt = { prompt: gWanted ? "" : "consent" };
+  if (S.user && S.user.email) opt.login_hint = S.user.email;
+  gClient.requestAccessToken(opt);
 }
+function watchCal(force) {
+  if (!S.showEv || !S.user) return;
+  if (!gWanted) { S.calStatus = { state: "need" }; return; }
+  if (!tokOk()) { if (S.calStatus.state !== "expired") { S.calStatus = { state: "expired" }; render(); } return; }
+  var w = calWindow(), key = w.join("|");
+  if (key === calKey && !force) return;
+  calKey = key; fetchCal(w);
+}
+function gget(u) {
+  return fetch(u, { headers: { Authorization: "Bearer " + gTok.t } }).then(function (r) {
+    if (!r.ok) { var er = new Error("http " + r.status); er.status = r.status; throw er; }
+    return r.json();
+  });
+}
+function fetchCal(w) {
+  var tMin = encodeURIComponent(pd(w[0]).toISOString()), tMax = encodeURIComponent(pd(w[1]).toISOString());
+  gget("https://www.googleapis.com/calendar/v3/users/me/calendarList?minAccessRole=reader&maxResults=250").then(function (cl) {
+    var cals = (cl.items || []).filter(function (c) { return c.selected !== false && !c.hidden; });
+    if (!cals.length) cals = [{ id: "primary", backgroundColor: "" }];
+    return Promise.all(cals.map(function (c) {
+      return gget("https://www.googleapis.com/calendar/v3/calendars/" + encodeURIComponent(c.id) + "/events?singleEvents=true&orderBy=startTime&maxResults=250&timeMin=" + tMin + "&timeMax=" + tMax)
+        .then(function (r) { return (r.items || []).map(function (e) { e._color = c.backgroundColor || ""; e._cal = c.summaryOverride || c.summary || ""; return e; }); })
+        .catch(function () { return []; });
+    }));
+  }).then(function (lists) {
+    var all = []; lists.forEach(function (l) { all = all.concat(l); });
+    ingest(all); calAt = Date.now(); S.calStatus = { state: "ok", at: calAt }; render();
+  }).catch(function (e) {
+    calKey = "";
+    if (e && (e.status === 401 || e.status === 403)) { gTok = null; lsSet("myday-gtok", null); S.calStatus = { state: "expired" }; }
+    else S.calStatus = { state: "gerr" };
+    render();
+  });
+}
+function stopCal() { calKey = ""; S.events = {}; }
 function calStatusHtml(inToday) {
   var st = S.calStatus.state, at = S.calStatus.at;
   if (!S.showEv) return inToday ? "" : '<span class="calsrc">הפגישות מיומן Google מוסתרות</span>';
@@ -800,11 +857,10 @@ function calStatusHtml(inToday) {
   if (st === "") return inToday ? "" : '<span class="calsrc">טוען פגישות מיומן Google…</span>';
   if (st === "off") return "";
   var msg, btn = "";
-  if (st === "approval_required" || st === "not_in_manifest") { msg = "כדי להציג את הפגישות שלך, צריך לאשר לעמוד לקרוא מיומן Google."; btn = '<button class="btn" data-act="calApprove">אישור גישה ליומן</button>'; }
-  else if (st === "needs_reauth") msg = "החיבור ליומן Google פג. חבר אותו מחדש בהגדרות Claude, בחלק של החיבורים.";
-  else if (st === "server_not_connected" || st === "selection_required" || st === "server_not_found") msg = "יומן Google לא מחובר לחשבון. אפשר לחבר אותו בהגדרות Claude, בחלק של החיבורים.";
-  else if (st === "blocked_by_policy") msg = "הארגון לא מאפשר לעמוד הזה לקרוא מיומן Google.";
-  else msg = "לא הצלחתי לטעון את יומן Google כרגע. אנסה שוב בעוד כמה דקות.";
+  if (st === "need") { msg = "אפשר לראות כאן את כל הפגישות מיומן Google."; btn = '<button class="btn primary" data-act="calApprove">חיבור ליומן Google</button>'; return '<span class="calsrc">' + msg + "</span>" + btn; }
+  if (st === "expired") { msg = "החיבור ליומן Google צריך רענון (Google מבקש את זה פעם בשעה)."; btn = '<button class="btn" data-act="calApprove">חיבור מחדש ליומן</button>'; }
+  else if (st === "gload") { msg = "רכיב החיבור של Google עוד נטען. נסה שוב בעוד כמה שניות."; btn = '<button class="btn" data-act="calApprove">ניסיון נוסף</button>'; }
+  else { msg = "לא הצלחתי לטעון את יומן Google כרגע."; btn = '<button class="btn" data-act="calApprove">ניסיון נוסף</button>'; }
   return '<span class="calsrc warn">' + msg + "</span>" + btn;
 }
 
@@ -943,19 +999,54 @@ function viewProjects() {
   return h;
 }
 
+function projSecs(p) { return (p && p.sections) || []; }
+function trelloListOf(t) { var m = (t.notes || "").match(/רשימה ב-Trello: ([^\n]+)/); return m ? m[1].trim() : ""; }
 function viewProject() {
   var p = proj(S.projId);
   if (!p) return '<div class="empty">הפרויקט לא נמצא.</div>';
   var L = list().filter(function (t) { return t.proj === p.id; });
+  var secs = projSecs(p);
   var h = '<div class="phead"><label for="pName" class="sr">שם הפרויקט</label><input class="pname" id="pName" value="' + esc(p.name) + '"><div class="swatches">' +
     COLORS.map(function (c) { return '<button type="button" class="sw" style="--c:' + c + '" data-act="pColor" data-c="' + c + '" aria-pressed="' + (c === p.color) + '" aria-label="צבע"></button>'; }).join("") +
     '</div><button class="btn plain danger" data-act="pDel">' + ic("trash") + "מחיקת הפרויקט</button></div>";
   var open = L.filter(function (t) { return !t.done; });
-  h += section("pdated", "עם תאריך", open.filter(function (t) { return t.date; }).sort(byDate), { row: { proj: false } });
-  h += section("pnone", "בלי תאריך", open.filter(function (t) { return !t.date; }).sort(byOrder), { row: { proj: false }, zone: { date: "", time: "clear", sort: 1 } });
-  if (!open.length) h += '<div class="empty" style="margin-top:14px">' + emptyArt("done") + "<b>אין משימות פתוחות בפרויקט</b><span>משימות שתוסיף מכאן ישויכו אליו אוטומטית.</span></div>";
+  var ids = {}; secs.forEach(function (s) { ids[s.id] = 1; });
+  var orphan = open.filter(function (t) { return !t.sec || !ids[t.sec]; });
+  if (orphan.some(function (t) { return trelloListOf(t); })) h += '<div class="trellofix">' + ic("list") + 'למשימות שיובאו מ-Trello יש רשימות. לסדר אותן בעמודות לפי הרשימות?<button class="btn primary" data-act="trelloSecs">לסדר לפי Trello</button></div>';
+  var cols = secs.map(function (s) { return { id: s.id, name: s.name, items: open.filter(function (t) { return t.sec === s.id; }) }; });
+  if (orphan.length || !secs.length) cols.unshift({ id: "", name: secs.length ? "ללא רשימה" : "משימות", items: orphan });
+  h += '<div class="board" id="board">';
+  cols.forEach(function (c) {
+    c.items.sort(byOrder);
+    h += '<section class="colb"><div class="colh">' +
+      (c.id ? '<label class="sr" for="sec_' + esc(c.id) + '">שם הרשימה</label><input class="colname" id="sec_' + esc(c.id) + '" data-secname="' + esc(c.id) + '" value="' + esc(c.name) + '">' : '<span class="colt">' + esc(c.name) + "</span>") +
+      '<span class="n">' + (c.items.length || "") + "</span>" +
+      (c.id ? '<button class="del" data-act="secDel" data-sec="' + esc(c.id) + '" aria-label="מחיקת הרשימה">' + ic("trash") + "</button>" : "") +
+      '</div><div class="card colcards"' + zoneAttr({ date: "keep", time: "keep", sort: 1, sec: c.id }) + ">" + c.items.map(function (t) { return taskRow(t, { proj: false }); }).join("") + "</div>" +
+      '<form class="coladd" data-sec="' + esc(c.id) + '" autocomplete="off"><label class="sr" for="ca_' + esc(c.id || "none") + '">משימה חדשה ברשימה</label><input id="ca_' + esc(c.id || "none") + '" placeholder="+ הוספת משימה" enterkeyhint="done"></form></section>';
+  });
+  h += '<form class="colnew" id="secNew" autocomplete="off"><label class="sr" for="secNewName">רשימה חדשה</label><input id="secNewName" placeholder="+ רשימה חדשה (למשל: לביצוע, בתהליך)"><button class="btn" type="submit">' + ic("plus") + "הוספת רשימה</button></form></div>";
   h += section("pdone", "בוצעו", L.filter(function (t) { return t.done; }).sort(function (a, b) { return (b.doneAt || 0) - (a.doneAt || 0); }).slice(0, 30), { fold: true, row: { proj: false } });
   return h;
+}
+function setProj(pid, fn) {
+  store.putSettings({ projects: (S.settings.projects || []).map(function (p) { return p.id === pid ? fn(Object.assign({}, p, { sections: projSecs(p).slice() })) : p; }) });
+}
+function ensureSections(pid, names) {
+  var p = proj(pid), secs = projSecs(p).slice(), map = {}, added = false;
+  secs.forEach(function (s) { map[s.name] = s.id; });
+  names.forEach(function (n) { if (n && !map[n]) { var id = "s" + newId(); secs.push({ id: id, name: n }); map[n] = id; added = true; } });
+  if (added) setProj(pid, function (q) { q.sections = secs; return q; });
+  return map;
+}
+function quickCreate(raw, def) {
+  var r = parseQuick(raw); if (!r.title || !store) return null;
+  var t = { title: r.title, notes: "", date: r.date || def.date || "", time: r.time || "", dur: r.dur || 0, pri: r.pri, proj: r.proj ? findOrMakeProject(r.proj) : def.proj || "", sec: def.sec || "", rep: r.rep, subs: [], done: false, doneAt: 0, created: Date.now(), order: Date.now() };
+  if (t.time && !t.date) t.date = T();
+  if (t.time && !t.dur) t.dur = 30;
+  if (t.rep && !t.date) t.date = T();
+  store.put(newId(), t);
+  return t;
 }
 
 /* ---------------- calendar ---------------- */
@@ -989,7 +1080,7 @@ function blkHtml(it, hp) {
   var t = it.t, p = t.proj ? proj(t.proj) : null;
   var top = (it.s - CS * 60) / 60 * hp, h = Math.max(20, (it.e - it.s) / 60 * hp - 2);
   var w = 100 / it.lanes;
-  if (t.ev) return '<a class="blk ev" href="' + esc(t.link) + '" target="_blank" rel="noopener" title="' + esc(t.title) + ' · יומן Google" style="top:' + top + "px;height:" + h + "px;inset-inline-start:calc(" + (it.lane * w) + "% + 2px);width:calc(" + w + '% - 4px)"><div class="bt">' + esc(t.title) + '</div><div class="bm">' + hhmm(it.s) + "–" + hhmm(it.e) + "</div></a>";
+  if (t.ev) return '<a class="blk ev" href="' + esc(t.link) + '" target="_blank" rel="noopener" title="' + esc(t.title) + ' · יומן Google" style="' + (t.color ? "border-inline-start-color:" + esc(t.color) + ";" : "") + "top:" + top + "px;height:" + h + "px;inset-inline-start:calc(" + (it.lane * w) + "% + 2px);width:calc(" + w + '% - 4px)"><div class="bt">' + esc(t.title) + '</div><div class="bm">' + hhmm(it.s) + "–" + hhmm(it.e) + "</div></a>";
   var color = taskColor(t);
   return '<div class="blk' + (t.done ? " done" : "") + '" data-id="' + esc(t.id) + '" data-act="open" style="--c:' + esc(color) + ";top:" + top + "px;height:" + h + "px;inset-inline-start:calc(" + (it.lane * w) + "% + 2px);width:calc(" + w + '% - 4px)"><div class="bt">' + esc(t.title) + '</div><div class="bm">' + hhmm(it.s) + "–" + hhmm(it.e) + '</div><div class="rs" data-rs="1"></div></div>';
 }
@@ -998,13 +1089,13 @@ function viewCal() {
   var a = pd(days[0]), b = pd(days[days.length - 1]);
   var rng = days.length === 1 ? longDate(a) : a.getDate() + (a.getMonth() !== b.getMonth() ? " ב" + MONTHS[a.getMonth()] : "") + " – " + b.getDate() + " ב" + MONTHS[b.getMonth()];
   var segs = (isPhone() ? [1, 3] : [1, 3, 7]).map(function (n) { return '<button data-act="calDays" data-n="' + n + '" aria-pressed="' + (S.calDays === n) + '">' + (n === 1 ? "יום" : n === 3 ? "3 ימים" : "שבוע") + "</button>"; }).join("");
-  var h = '<div class="calwrap"><div class="cal"><div class="calbar"><span class="rng">' + rng + '</span><button class="btn" data-act="calToday">היום</button><button class="iconbtn" data-act="calPrev" aria-label="קודם">' + ic("next") + '</button><button class="iconbtn" data-act="calNext" aria-label="הבא">' + ic("prev") + '</button><div class="seg">' + segs + '</div><div class="seg" title="צבע המשימות ביומן"><button data-act="calColor" data-v="proj" aria-pressed="' + (S.calColor !== "pri") + '">לפי פרויקט</button><button data-act="calColor" data-v="pri" aria-pressed="' + (S.calColor === "pri") + '">לפי דחיפות</button></div>' + (mcpNS ? '<button class="chip" data-act="toggleEv" aria-pressed="' + S.showEv + '">' + ic("cal") + "פגישות מהיומן</button>" : "") + calStatusHtml(false) + "</div>";
+  var h = '<div class="calwrap"><div class="cal"><div class="calbar"><span class="rng">' + rng + '</span><button class="btn" data-act="calToday">היום</button><button class="iconbtn" data-act="calPrev" aria-label="קודם">' + ic("next") + '</button><button class="iconbtn" data-act="calNext" aria-label="הבא">' + ic("prev") + '</button><div class="seg">' + segs + '</div><div class="seg" title="צבע המשימות ביומן"><button data-act="calColor" data-v="proj" aria-pressed="' + (S.calColor !== "pri") + '">לפי פרויקט</button><button data-act="calColor" data-v="pri" aria-pressed="' + (S.calColor === "pri") + '">לפי דחיפות</button></div><button class="chip" data-act="toggleEv" aria-pressed="' + S.showEv + '">' + ic("cal") + "פגישות מהיומן</button>" + calStatusHtml(false) + "</div>";
   h += '<div class="calgrid" style="--days:' + days.length + '"><div class="chead"><div></div>';
   days.forEach(function (ds) { var d = pd(ds); h += '<div class="' + (ds === td ? "today" : "") + '"><span class="dn">' + (days.length > 3 && isPhone() ? DL[d.getDay()] : DAYS[d.getDay()]) + '</span><span class="dd">' + d.getDate() + "</span></div>"; });
   h += '</div><div class="callday"><div>ללא שעה</div>';
   days.forEach(function (ds) {
     var items = L.filter(function (t) { return t.date === ds && !t.time; }).sort(function (x, y) { return (x.done - y.done) || ((y.pri || 0) - (x.pri || 0)); });
-    h += '<div data-allday="' + ds + '">' + evFor(ds).filter(function (e) { return e.allDay; }).map(function (e) { return '<a class="adchip ev" href="' + esc(e.link) + '" target="_blank" rel="noopener">' + esc(e.title) + "</a>"; }).join("") + items.map(function (t) { return '<div class="adchip' + (t.done ? " done" : "") + '" data-id="' + esc(t.id) + '" data-drag="1" data-act="open" style="--c:' + esc(taskColor(t)) + '">' + esc(t.title) + "</div>"; }).join("") + "</div>";
+    h += '<div data-allday="' + ds + '">' + evFor(ds).filter(function (e) { return e.allDay; }).map(function (e) { return '<a class="adchip ev" href="' + esc(e.link) + '" target="_blank" rel="noopener"' + (e.color ? ' style="--c:' + esc(e.color) + '"' : "") + ">" + esc(e.title) + "</a>"; }).join("") + items.map(function (t) { return '<div class="adchip' + (t.done ? " done" : "") + '" data-id="' + esc(t.id) + '" data-drag="1" data-act="open" style="--c:' + esc(taskColor(t)) + '">' + esc(t.title) + "</div>"; }).join("") + "</div>";
   });
   h += '</div><div class="cbody" id="cbody"><div class="cgrid" style="height:' + ((CE - CS) * hp) + 'px"><div class="hours">';
   for (var hr = CS; hr < CE; hr++) h += "<div>" + pad(hr) + ":00</div>";
@@ -1292,6 +1383,20 @@ document.addEventListener("click", function (e) {
   else if (a === "calNext") { S.calStart = ymd(addD(pd(S.calStart), S.calDays)); render(); watchCal(); }
   else if (a === "toggleEv") { S.showEv = !S.showEv; lsSet("myday-showev", S.showEv); if (S.showEv) watchCal(); else stopCal(); render(); }
   else if (a === "calApprove") approveCal();
+  else if (a === "secDel") {
+    var sd = b.getAttribute("data-sec");
+    if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = "למחוק?"; setTimeout(function () { if (b.isConnected) { b.classList.remove("sure"); b.innerHTML = ic("trash"); } }, 3000); return; }
+    list().filter(function (t) { return t.proj === S.projId && t.sec === sd; }).forEach(function (t) { save(t.id, { sec: "" }); });
+    setProj(S.projId, function (q) { q.sections = q.sections.filter(function (s) { return s.id !== sd; }); return q; });
+    toast("הרשימה נמחקה. המשימות שלה עברו ל\"ללא רשימה\".");
+  }
+  else if (a === "trelloSecs") {
+    var pidT = S.projId, tasksT = list().filter(function (t) { return t.proj === pidT && !t.done && trelloListOf(t); }).sort(byOrder);
+    var names = []; tasksT.forEach(function (t) { var n = trelloListOf(t); if (names.indexOf(n) < 0) names.push(n); });
+    var mp = ensureSections(pidT, names);
+    tasksT.forEach(function (t) { if (!t.sec) save(t.id, { sec: mp[trelloListOf(t)] }); });
+    toast("המשימות סודרו ב-" + names.length + " רשימות");
+  }
   else if (a === "calColor") { S.calColor = b.getAttribute("data-v"); lsSet("myday-calcolor", S.calColor); render(); }
   else if (a === "logout") { if (auth) auth.signOut(); }
   else if (a === "impPick") { var fi = document.getElementById("impFile"); fi.value = ""; fi.click(); }
@@ -1307,6 +1412,20 @@ document.addEventListener("click", function (e) {
   }
 });
 document.addEventListener("submit", function (e) {
+  if (e.target.classList.contains("coladd")) {
+    e.preventDefault();
+    var inp = e.target.querySelector("input"), sec = e.target.getAttribute("data-sec");
+    if (quickCreate(inp.value, { proj: S.projId, sec: sec })) { inp.value = ""; setTimeout(function () { var again = document.getElementById(inp.id); if (again) again.focus(); }, 0); }
+    return;
+  }
+  if (e.target.id === "secNew") {
+    e.preventDefault();
+    var nm = document.getElementById("secNewName").value.trim(); if (!nm) return;
+    var pid = S.projId;
+    setProj(pid, function (q) { q.sections.push({ id: "s" + newId(), name: nm }); return q; });
+    setTimeout(function () { var b = document.getElementById("board"); if (b) b.scrollLeft = -b.scrollWidth; var n = document.getElementById("secNewName"); if (n) n.focus(); }, 0);
+    return;
+  }
   if (e.target.id !== "newProj") return;
   e.preventDefault();
   var name = document.getElementById("npName").value.trim(); if (!name) return;
@@ -1316,6 +1435,11 @@ document.addEventListener("submit", function (e) {
   store.putSettings({ projects: ps });
 });
 document.addEventListener("change", function (e) {
+  if (e.target.hasAttribute && e.target.hasAttribute("data-secname")) {
+    var sid = e.target.getAttribute("data-secname"), nv = e.target.value.trim(); if (!nv) return;
+    setProj(S.projId, function (q) { q.sections = q.sections.map(function (s) { return s.id === sid ? { id: s.id, name: nv } : s; }); return q; });
+    return;
+  }
   if (e.target.id === "pName") {
     var v = e.target.value.trim(); if (!v) return;
     store.putSettings({ projects: S.settings.projects.map(function (p) { return p.id === S.projId ? Object.assign({}, p, { name: v }) : p; }) });
@@ -1452,6 +1576,25 @@ document.addEventListener("pointercancel", function () { endDrag(false); });
 document.addEventListener("touchmove", function (e) { if ((drag && drag.active) || (ldrag && ldrag.active)) e.preventDefault(); }, { passive: false });
 document.addEventListener("contextmenu", function (e) { if (e.target.closest(".blk, .adchip, [data-drag]") && S.view === "cal") e.preventDefault(); });
 
+/* ---------------- swipe between views (phone) ---------------- */
+var SW_ORDER = ["today", "cal", "up", "projects"], sw = null;
+var contentEl = document.getElementById("content");
+contentEl.addEventListener("touchstart", function (e) {
+  if (e.touches.length !== 1 || e.target.closest(".board, input, textarea, select")) { sw = null; return; }
+  sw = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
+}, { passive: true });
+contentEl.addEventListener("touchend", function (e) {
+  if (!sw || (ldrag && ldrag.active) || (drag && drag.active)) { sw = null; return; }
+  var tc = e.changedTouches[0], dx = tc.clientX - sw.x, dy = tc.clientY - sw.y, dt = Date.now() - sw.t; sw = null;
+  if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.8 || dt > 700) return;
+  var cur = S.view === "project" ? 3 : SW_ORDER.indexOf(S.view), n = cur + (dx > 0 ? 1 : -1);
+  if (n < 0 || n >= SW_ORDER.length) return;
+  go(SW_ORDER[n]);
+  contentEl.classList.remove("slideL", "slideR"); void contentEl.offsetWidth;
+  contentEl.classList.add(dx > 0 ? "slideL" : "slideR");
+}, { passive: true });
+contentEl.addEventListener("animationend", function () { contentEl.classList.remove("slideL", "slideR"); });
+
 /* ---------------- drag to reorder / move between lists ---------------- */
 var ldrag = null;
 function zoneUnder(x, y) {
@@ -1481,6 +1624,8 @@ function lMove(x, y) {
   ldrag.ghost.style.left = x + "px"; ldrag.ghost.style.top = y + "px";
   var c = document.getElementById("content"), cr = c.getBoundingClientRect();
   if (y < cr.top + 40) c.scrollTop -= 14; else if (y > cr.bottom - 60) c.scrollTop += 14;
+  var bd = document.getElementById("board");
+  if (bd) { var br = bd.getBoundingClientRect(); if (y > br.top && y < br.bottom) { if (x < br.left + 40) bd.scrollLeft -= 16; else if (x > br.right - 40) bd.scrollLeft += 16; } }
   document.querySelectorAll(".zover").forEach(function (z) { z.classList.remove("zover"); });
   if (ldrag.line.parentNode) ldrag.line.remove();
   var z = zoneUnder(x, y);
@@ -1520,6 +1665,7 @@ function lEnd(apply) {
   var zd = z.getAttribute("data-zdate"), zt = z.getAttribute("data-ztime");
   if (zd !== "keep") patch.date = zd;
   if (zt === "clear" || patch.date === "") patch.time = "";
+  var zs = z.getAttribute("data-zsec"); if (zs !== null) patch.sec = zs;
   if (z.getAttribute("data-zsort") === "1") {
     var rows = Array.prototype.filter.call(z.querySelectorAll(".trow[data-id]"), function (r) { return r.getAttribute("data-id") !== d.id; });
     var idx = d.before ? rows.indexOf(d.before) : rows.length;
@@ -1567,9 +1713,11 @@ function parseTrello(j) {
     });
     if (c.dueComplete || DONE_RE.test(l.name || "")) { t.done = true; t.doneAt = c.dateLastActivity ? new Date(c.dateLastActivity).getTime() : Date.now(); }
     perList[l.name || "—"] = (perList[l.name || "—"] || 0) + 1;
+    t._list = l.name || "";
     out.push(t);
   });
-  return { board: (j.name || "Trello").trim(), tasks: out, skipped: skipped, dup: dup, perList: perList };
+  var listOrder = j.lists.filter(function (l) { return !l.closed; }).sort(function (a, b) { return (a.pos || 0) - (b.pos || 0); }).map(function (l) { return l.name || ""; });
+  return { board: (j.name || "Trello").trim(), lists: listOrder, tasks: out, skipped: skipped, dup: dup, perList: perList };
 }
 function impDraw() {
   var box = document.getElementById("impBox");
@@ -1606,7 +1754,10 @@ document.getElementById("imp").addEventListener("click", function (e) {
   var name = (document.getElementById("impProj").value || IMP.board).trim();
   var withDone = document.getElementById("impDone") && document.getElementById("impDone").checked;
   var pid = findOrMakeProject(name);
-  var items = IMP.tasks.filter(function (t) { return withDone || !t.done; }).map(function (t, i) { t.proj = pid; t.created = Date.now() + i; return { id: newId() + i, t: t }; });
+  var chosen = IMP.tasks.filter(function (t) { return withDone || !t.done; });
+  var usedLists = IMP.lists.filter(function (n) { return chosen.some(function (t) { return t._list === n; }); });
+  var secMap = ensureSections(pid, usedLists);
+  var items = chosen.map(function (t, i) { t.proj = pid; t.sec = secMap[t._list] || ""; delete t._list; t.created = Date.now() + i; t.order = Date.now() + i; return { id: newId() + i, t: t }; });
   store.putMany(items);
   document.getElementById("imp").hidden = true; IMP = null;
   toast("יובאו " + items.length + " משימות לפרויקט " + name, "הצגה", function () { go("project", pid); });
@@ -1623,11 +1774,12 @@ var lastDay = T();
 setInterval(function () {
   if (drag || !store) return;
   if (T() !== lastDay) { lastDay = T(); S.calStart = null; watchCal(); }
+  if (gWanted && S.showEv && (Date.now() - calAt > 5 * 60000 || !tokOk())) { calKey = ""; watchCal(); }
   if (S.view === "cal" || S.view === "today") render();
 }, 60000);
-document.addEventListener("visibilitychange", function () { if (!document.hidden && store) render(); });
+document.addEventListener("visibilitychange", function () { if (!document.hidden && store) { if (gWanted && Date.now() - calAt > 5 * 60000) { calKey = ""; watchCal(); } render(); } });
 window.addEventListener("resize", function () { if (isPhone() && S.calDays === 7) { S.calDays = 3; S.calStart = T(); } if (store) render(); });
-S.calStatus = { state: "off" };
+S.calStatus = { state: gWanted ? "" : "need" };
 render();
 connect();
 if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});
