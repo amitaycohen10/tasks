@@ -638,6 +638,18 @@ body { background: radial-gradient(1200px 500px at 80% -10%, color-mix(in srgb, 
 body.ldragging .dz { min-height: 76px; background: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
 body.ldragging .dz.zover, .dz.zover { background: var(--accent); color: var(--accent-ink); border-style: solid; transform: scale(1.04); }
 .inbgrp h3 { color: #8a5cc7; } .inbgrp .card { border-color: color-mix(in srgb, #8a5cc7 35%, var(--line)); }
+.habrow { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--c) 9%, var(--surface))); border-inline-start: 5px solid var(--c); border-bottom: 1px dashed color-mix(in srgb, var(--c) 40%, var(--line)); }
+.habrow .tmain { flex: 1; min-width: 0; text-align: start; background: none; border: 0; padding: 0; display: grid; gap: 3px; color: var(--ink); }
+.habrow .ttitle { font-weight: 700; }
+.habrow .hcb { border-radius: 9px; border-color: var(--c); color: transparent; display: grid; place-items: center; font-size: 13px; }
+.habrow .hcb.on { background: var(--c); color: #fff; }
+.habrow.done .ttitle { text-decoration: line-through; color: var(--muted); }
+.habrow.fut { opacity: .7; } .habrow.fut .hcb { color: inherit; border-style: dashed; }
+.habtag { background: var(--c); color: #fff; border-radius: 999px; padding: 1px 8px; font-size: 11.5px; font-weight: 700; }
+.hfire { color: #e8590c; font-weight: 700; }
+.hplay { border: 0; background: var(--c); color: #fff; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.hplay svg.i { width: 18px; height: 18px; }
+.habcard { margin-bottom: 8px; overflow: hidden; }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -845,7 +857,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "23";
+var APP_VERSION = "24";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -3015,8 +3027,9 @@ function viewToday() {
   var dayTasks = L.filter(function (t) { return !t.done && t.date === D; }).sort(byOrder);
   var ttl = isT ? "המשימות שלי להיום" : "המשימות " + (off === 1 ? "למחר" : off === -1 ? "של אתמול" : "ליום " + DAYS[pd(D).getDay()]);
   var acts = '<span style="margin-inline-start:auto;display:flex;gap:6px;align-items:center">' + (dayTasks.filter(function (t) { return t.time; }).length > 1 ? '<button class="act" data-act="sortByTime" data-date="' + D + '">לפי שעות</button>' : "") + '<span class="seg mini"><button data-act="groupBy" data-v="order" aria-pressed="' + (S.groupBy !== "topic") + '">לפי סדר</button><button data-act="groupBy" data-v="topic" aria-pressed="' + (S.groupBy === "topic") + '">לפי נושא</button></span></span>';
-  if (S.groupBy === "topic" && dayTasks.length) h += '<div class="sec-h" style="margin-top:18px">' + shic("check", "var(--accent)") + "<span>" + ttl + "</span>" + acts + "</div>" + groupedSections("dg", "", dayTasks, { date: D, time: "keep", sort: 1 });
-  else h += section("dtasks", ttl, dayTasks, { icon: ["check", "var(--accent)"], cls: "numbered", row: { date: false }, zone: { date: D, time: "keep", sort: 1 }, always: true, act: acts, emptyHtml: '<div class="empty" style="padding:18px">' + emptyArt(isT && L.some(doneToday) ? "done" : "") + "<b>" + (isT && L.some(doneToday) ? "סיימת את כל מה שתכננת להיום 🎉" : "עוד אין משימות " + (isT ? "להיום" : "ליום הזה")) + "</b><span>הוסף משימה בשורה למעלה, או גרור לכאן מ\"משימות להמשך\". את הסדר קובעים בגרירה: 1, 2, 3…</span></div>" });
+  var hRows = habitRowsHtml(D);
+  if (S.groupBy === "topic" && dayTasks.length) h += '<div class="sec-h" style="margin-top:18px">' + shic("check", "var(--accent)") + "<span>" + ttl + "</span>" + acts + "</div>" + (hRows ? '<div class="card habcard">' + hRows + "</div>" : "") + groupedSections("dg", "", dayTasks, { date: D, time: "keep", sort: 1 });
+  else h += section("dtasks", ttl, dayTasks, { pre: hRows, icon: ["check", "var(--accent)"], cls: "numbered", row: { date: false }, zone: { date: D, time: "keep", sort: 1 }, always: true, act: acts, emptyHtml: '<div class="empty" style="padding:18px">' + emptyArt(isT && L.some(doneToday) ? "done" : "") + "<b>" + (isT && L.some(doneToday) ? "סיימת את כל מה שתכננת להיום 🎉" : "עוד אין משימות " + (isT ? "להיום" : "ליום הזה")) + "</b><span>הוסף משימה בשורה למעלה, או גרור לכאן מ\"משימות להמשך\". את הסדר קובעים בגרירה: 1, 2, 3…</span></div>" });
   if (isT) {
     var inboxN = L.filter(function (t) { return !t.done && t.inbox; }).length;
     if (inboxN) h += '<button class="inboxpill" data-act="go" data-view="inbox">' + ic("inbox") + "<span>בסל מחכות <b>" + inboxN + "</b> משימות למיון</span>" + ic("chev") + "</button>";
@@ -3554,9 +3567,22 @@ function habitTodayHtml() {
   var hs = settingsArr("habits"); if (!hs.length) return "";
   var daily = hs.filter(function (x) { return hType(x) === "daily"; }), stack = hs.filter(function (x) { return hType(x) === "stack"; });
   var h = '<section class="sec"><div class="sec-h">' + shic("fire", "#e8590c") + '<span>ההרגלים שלי היום</span><span class="n">' + hs.filter(function (x) { return hDone(x); }).length + "/" + hs.length + '</span><button class="act" data-act="go" data-view="habits">כל ההרגלים</button></div>';
-  if (daily.length) h += '<div class="dhgrid today">' + daily.map(function (hb) { return dailyCard(hb, true); }).join("") + "</div>";
+  if (!stack.length) return "";
+  h = h.replace(hs.filter(function (x) { return hDone(x); }).length + "/" + hs.length, stack.filter(function (x) { return hDone(x); }).length + "/" + stack.length).replace("ההרגלים שלי היום", "הצמדות הרגלים");
   if (stack.length) h += '<div class="habchips" style="margin-top:8px">' + stack.map(function (hb) { var on = !!hDone(hb), sk = habitStreak(hb); return '<button class="habchip' + (on ? " on" : "") + '" style="--c:' + esc(hb.color) + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + T() + '" aria-pressed="' + on + '"><span class="hc">' + ic("check") + "</span>" + esc(hb.name) + (habitAfterLabel(hb) ? '<span class="af">אחרי ' + esc(habitAfterLabel(hb)) + "</span>" : "") + (sk ? '<span class="fs">' + ic("fire") + sk + "</span>" : "") + "</button>"; }).join("") + "</div>";
   return h + "</section>";
+}
+function habitRowsHtml(D) {
+  var daily = settingsArr("habits").filter(function (x) { return hType(x) === "daily"; }); if (!daily.length) return "";
+  var fut = D > T();
+  return daily.map(function (hb) {
+    var v = hDone(hb, D), sk = habitStreak(hb);
+    var meta = '<span class="habtag">🎯 הרגל יומי</span>' + (hb.mins ? "<span>" + ic("clock") + hb.mins + " דק׳</span>" : "") + (sk ? '<span class="hfire">' + ic("fire") + sk + " ברצף</span>" : "") + (v === "min" ? "<span>🌱 גרסה מינימלית</span>" : "");
+    return '<div class="habrow' + (v ? " done" : "") + (fut ? " fut" : "") + '" style="--c:' + esc(hb.color) + '">' +
+      (fut ? '<span class="cb hcb" aria-hidden="true">🎯</span>' : '<button class="cb hcb' + (v ? " on" : "") + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + D + '" aria-label="' + (v ? "ביטול סימון" : "סימון ההרגל כבוצע") + '">' + ic("check") + "</button>") +
+      '<button class="tmain" data-act="go" data-view="habits"><span class="ttitle">' + esc(hb.name) + '</span><span class="tmeta">' + meta + "</span></button>" +
+      (!v && !fut && D === T() && hb.mins ? '<button class="hplay" data-act="hStart" data-h="' + esc(hb.id) + '" aria-label="להתחיל עם טיימר">' + ic("play") + "</button>" : "") + "</div>";
+  }).join("");
 }
 function habitNudgeHtml() {
   if (new Date().getHours() < 17) return "";
