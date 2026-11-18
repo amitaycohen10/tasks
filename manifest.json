@@ -33,8 +33,21 @@
     {
       "name": "משימה מהירה לסל",
       "short_name": "משימה מהירה",
-      "description": "להוסיף משימה לסל בכתיבה או בהקלטה",
+      "description": "לכתוב משימה ישר לסל",
       "url": "./?capture=1",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "הקלטת משימה לסל",
+      "short_name": "הקלטה מהירה",
+      "description": "להקליט משימה ישר לסל",
+      "url": "./?capture=voice",
       "icons": [
         {
           "src": "icon-192.png",

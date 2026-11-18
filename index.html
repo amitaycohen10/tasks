@@ -360,7 +360,9 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
 .trellofix .btn { margin-inline-start: auto; }
 @keyframes inFromL { from { transform: translateX(-36px); opacity: .2; } to { transform: none; opacity: 1; } }
 @keyframes inFromR { from { transform: translateX(36px); opacity: .2; } to { transform: none; opacity: 1; } }
-.content.slideL { animation: inFromL .2s ease; }
+.content.slideL, .clsbox.slideL { animation: inFromL .2s ease; }
+.clsbox.slideR { animation: inFromR .2s ease; }
+.cls-swhint { text-align: center; font-size: 12px; color: var(--muted); margin-top: -4px; }
 .content.slideR { animation: inFromR .2s ease; }
 .tg { color: var(--accent); font-weight: 600; }
 .dueb.late { color: var(--late); font-weight: 700; } .dueb.soon { color: var(--p2); font-weight: 700; }
@@ -574,6 +576,58 @@ body { background: radial-gradient(1200px 500px at 80% -10%, color-mix(in srgb, 
 .habchip .af { font-size: 11px; color: var(--muted); font-weight: 500; }
 .chainbox { margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13.5px; }
 .chainbox .lk { color: var(--muted); }
+.upnav { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; } .upnav b { font-family: var(--display); font-size: 17px; } .uphint { color: var(--muted); font-size: 12px; margin-inline-start: auto; }
+.mxbar { display: flex; justify-content: center; margin-top: 10px; }
+.mxsrc { margin-top: 12px; justify-content: center; }
+.mxwrap { margin-top: 12px; display: grid; gap: 14px; max-width: 620px; margin-inline: auto; }
+.mxnav { display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 15px; color: var(--muted); } .mxnav b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.mxstack { position: relative; min-height: 220px; }
+.mxghost { position: absolute; inset: 0; border-radius: 22px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.mxghost.g2 { transform: translateY(8px) scale(.97); opacity: .7; } .mxghost.g3 { transform: translateY(16px) scale(.94); opacity: .45; }
+.mxcard { position: relative; z-index: 2; min-height: 220px; border-radius: 22px; background: var(--surface); border: 2px solid var(--line); box-shadow: 0 10px 30px rgba(20,40,34,.12); padding: 18px; display: grid; gap: 10px; align-content: start; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; }
+.mxcard.lift { cursor: grabbing; box-shadow: var(--shadow-lg); z-index: 30; }
+.mxcard.q1 { border-color: var(--p3); } .mxcard.q2 { border-color: var(--accent); } .mxcard.q3 { border-color: var(--p2); } .mxcard.q4 { border-color: var(--muted); }
+.mxcard.swnext, .mxcard.swprev { opacity: .75; }
+.mxtop { display: flex; gap: 6px; flex-wrap: wrap; }
+.mxbadge { font-size: 12.5px; font-weight: 700; border-radius: 99px; padding: 2px 10px; background: color-mix(in srgb, var(--c) 14%, var(--surface)); color: var(--c); }
+.mxtitle { font-family: var(--display); font-size: 24px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.mxmeta { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--muted); font-size: 13.5px; } .mxmeta span { display: inline-flex; gap: 5px; align-items: center; } .mxmeta svg.i { width: 14px; height: 14px; }
+.mxnotes { color: var(--muted); font-size: 13.5px; white-space: pre-line; max-height: 4.5em; overflow: hidden; }
+.mxhint { font-size: 12.5px; color: var(--muted); text-align: center; border-top: 1px dashed var(--line); padding-top: 8px; }
+.mxbtns { display: flex; justify-content: center; gap: 6px; }
+.mxgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mxq { border: 2px dashed color-mix(in srgb, var(--c) 50%, var(--line)); background: color-mix(in srgb, var(--c) 8%, var(--surface)); border-radius: 18px; padding: 16px 10px; display: grid; gap: 2px; justify-items: center; text-align: center; transition: transform .12s, background .12s; min-height: 92px; align-content: center; }
+.mxq b { color: var(--c); font-family: var(--display); font-size: 16px; } .mxq span { font-size: 12px; color: var(--muted); }
+.mxq i { font-style: normal; font-weight: 700; font-size: 13px; background: color-mix(in srgb, var(--c) 16%, var(--surface)); color: var(--c); border-radius: 99px; padding: 0 10px; margin-top: 4px; }
+.mxq.hover { transform: scale(1.06); background: color-mix(in srgb, var(--c) 22%, var(--surface)); border-style: solid; }
+.habtabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.habadd { border: 2px dashed var(--line); background: var(--surface); border-radius: 16px; padding: 14px; display: grid; gap: 3px; text-align: start; color: var(--ink); }
+.habadd:hover { border-color: var(--accent); } .habadd span { font-size: 24px; } .habadd b { font-family: var(--display); font-size: 16px; } .habadd small { color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+.habform { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: grid; gap: 6px; box-shadow: var(--shadow); }
+.habform > b { font-family: var(--display); font-size: 17px; } .habform label { font-size: 13px; font-weight: 700; color: var(--muted); display: grid; gap: 4px; } .habform label small { font-weight: 400; }
+.habform input, .habform select { border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; background: var(--surface-2); font-size: 16px; width: 100%; }
+.habform .row2 { display: flex; gap: 8px; margin-top: 6px; } .habform.edit { margin-top: 0; box-shadow: none; background: var(--surface-2); }
+.stackrow { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: center; font-weight: 700; } .stackrow input { font-size: 16px; }
+.dhgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; } .dhwrap { display: grid; gap: 6px; }
+.dh { background: var(--surface); border: 1px solid var(--line); border-top: 5px solid var(--c); border-radius: 18px; padding: 14px; display: grid; gap: 10px; box-shadow: var(--shadow); }
+.dh.done { background: color-mix(in srgb, var(--c) 7%, var(--surface)); }
+.dh-top { display: flex; align-items: center; gap: 10px; } .dh-t { flex: 1; display: grid; } .dh-t b { font-family: var(--display); font-size: 18px; } .dh-t span { color: var(--muted); font-size: 13px; }
+.dh .streak { font-size: 16px; } .dh .streak svg.i { width: 20px; height: 20px; }
+.dh-why { font-size: 13.5px; color: var(--ink); background: color-mix(in srgb, #e0a800 10%, var(--surface)); border-radius: 10px; padding: 8px 10px; }
+.dh-btns { display: flex; gap: 6px; flex-wrap: wrap; } .dh-btns .btn.primary { background: var(--c); border-color: var(--c); }
+.dh-ok { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; color: color-mix(in srgb, var(--c) 80%, var(--ink)); font-weight: 700; font-size: 14.5px; }
+.linkbtn { border: 0; background: none; color: var(--muted); font-size: 13px; text-decoration: underline; padding: 0 4px; } .linkbtn.danger { color: var(--p3); }
+.dh-week { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; font-size: 13px; color: var(--muted); } .dh-week b { color: var(--ink); } .dh-week .bar i { background: var(--c); }
+.chain { display: grid; gap: 4px; } .cgh, .cgg { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; } .cgh span { text-align: center; font-size: 11px; color: var(--muted); }
+.cg { aspect-ratio: 1; border-radius: 7px; background: var(--line); } .cg.on { background: var(--c); } .cg.min { background: color-mix(in srgb, var(--c) 45%, var(--surface)); } .cg.today { outline: 2px solid var(--ink); outline-offset: 1px; } .cg.fut { opacity: .35; }
+.dh-tools { display: flex; gap: 8px; justify-content: flex-end; }
+.dhgrid.today .dh { padding: 12px; gap: 8px; }
+.chains { display: grid; } .chainrow { display: flex; align-items: center; gap: 8px; padding: 11px 14px; border-top: 1px solid var(--line); flex-wrap: wrap; } .chainrow:first-child { border-top: 0; }
+.chainrow .anc { color: var(--muted); font-size: 14px; } .chainrow .arr { color: var(--c); font-weight: 700; } .chainrow b { flex: 1; min-width: 100px; }
+.chainrow .cb.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.chainrow .del { border: 0; background: none; color: var(--muted); padding: 4px; display: grid; }
+.banner.fire { border-inline-start-color: #e8590c; background: linear-gradient(135deg, color-mix(in srgb, #e8590c 10%, var(--surface)), var(--surface)); }
+@media (max-width: 560px) { .habtabs { grid-template-columns: 1fr; } }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -781,7 +835,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "15";
+var APP_VERSION = "18";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -1181,6 +1235,8 @@ var VIEWS = [
 ];
 function go(view, projId) {
   if (view === "today" && S.view !== "today") S.dayOff = 0;
+  if (view === "up" && S.view !== "up") S.upOff = 0;
+  if (view === "matrix" && S.view !== "matrix") { S.mxI = 0; if (!list().some(function (t) { return !t.done && t.inbox; })) S.mxSrc = list().some(function (t) { return !t.done && !t.cls && !t.mxq; }) ? "new" : "all"; }
   S.view = view; S.projId = projId || null;
   if (view === "cal") S.calScrollSet = false;
   S.cmpCtx = null;
@@ -1342,18 +1398,20 @@ function groupedSections(prefix, title, items, zone) {
   }).join("");
 }
 function viewUp() {
-  var L = list().filter(function (t) { return !t.done; }), h = "";
-  var late = L.filter(isLate).sort(byDate);
+  var L = list().filter(function (t) { return !t.done; }), h = "", uo = S.upOff || 0;
+  var late = uo ? [] : L.filter(isLate).sort(byDate);
+  var s0 = pd(TM(uo));
+  h += '<div class="upnav"><button class="iconbtn" data-act="upPrev" aria-label="יום קודם"' + (uo ? "" : " disabled") + ">" + ic("back") + '</button><b>' + (uo === 0 ? "מהיום והלאה" : "החל מ" + (uo === 1 ? "מחר" : "יום " + DAYS[s0.getDay()] + " " + s0.getDate() + "." + (s0.getMonth() + 1))) + '</b><button class="iconbtn" data-act="upNext" aria-label="יום הבא">' + ic("chev") + "</button>" + (uo ? '<button class="btn" data-act="upToday">היום</button>' : "") + (isPhone() ? '<span class="uphint">החלק כדי לזוז בין הימים</span>' : "") + "</div>";
   if (late.length) h += section("ulate", "באיחור", late, { late: true, act: '<button class="act" data-act="lateToday">הכול להיום</button>' });
-  for (var i = 0; i < 14; i++) {
+  for (var i = uo; i < uo + 14; i++) {
     var ds = TM(i), d = pd(ds);
     var items = L.filter(function (t) { return t.date === ds; }).sort(dayOrder);
     var evh = "";
-    if (!items.length && i > 1) continue;
+    if (!items.length && i > uo + 1) continue;
     var title = (i === 0 ? "היום · " : i === 1 ? "מחר · " : "") + "יום " + DAYS[d.getDay()] + " " + d.getDate() + "." + (d.getMonth() + 1);
     h += section("d" + ds, title, items, { always: true, pre: evh || null, zone: { date: ds, time: "keep", sort: 1 }, row: { date: false }, act: '<button class="act" data-act="addOn" data-date="' + ds + '" aria-label="הוספה ליום הזה">' + ic("plus") + "</button>", emptyHtml: '<div class="empty" style="padding:12px">פנוי</div>' });
   }
-  var later = L.filter(function (t) { return t.date && dayDiff(t.date) >= 14; }).sort(byDate);
+  var later = L.filter(function (t) { return t.date && dayDiff(t.date) >= uo + 14; }).sort(byDate);
   h += section("later", "מאוחר יותר", later, {});
   h += laterButton(L.filter(function (t) { return !t.date; }).length);
   return h;
@@ -1516,6 +1574,7 @@ function viewCal() {
 
 /* ---------------- render ---------------- */
 function render() {
+  if (typingInPage() && !render.force) { render.pending = true; return; }
   if ((drag && drag.active) || (ldrag && ldrag.active)) return; // don't disturb an ongoing drag
   renderSide(); renderTop();
   var c = document.getElementById("content");
@@ -1540,7 +1599,7 @@ function render() {
   c.className = "content" + (S.view === "cal" ? " flush" : "");
   hideComposer = ["more", "habits", "week", "templates", "tags", "progress"].indexOf(S.view) >= 0;
   document.getElementById("composer").style.display = (S.view === "projects" && !isPhone()) || hideComposer ? "none" : "";
-  document.getElementById("fab").style.display = hideComposer ? "none" : "";
+  document.getElementById("fab").style.display = hideComposer || S.view === "matrix" ? "none" : "";
   c.scrollTop = keep;
   var nb = document.getElementById("cbody");
   if (nb) {
@@ -1548,6 +1607,7 @@ function render() {
     else if (calScroll != null) nb.scrollTop = calScroll;
   }
   renderChips();
+  if (S.view === "matrix") mxInit();
   if (S.detailId && !S.tasks[S.detailId]) closeDetail();
 }
 
@@ -1760,16 +1820,16 @@ sEl.addEventListener("click", function (e) {
 /* ---------------- focus timer ---------------- */
 var F = { id: null, len: 25, left: 0, run: false, iv: null };
 var fEl = document.getElementById("focus");
-function startFocus(id) { F.id = id; F.len = F.len || 25; F.left = F.len * 60; F.run = true; fEl.hidden = false; tickFocus(); clearInterval(F.iv); F.iv = setInterval(tickFocus, 1000); drawFocus(); }
+function startFocus(id) { F.habit = null; F.id = id; F.len = F.len || 25; F.left = F.len * 60; F.run = true; fEl.hidden = false; tickFocus(); clearInterval(F.iv); F.iv = setInterval(tickFocus, 1000); drawFocus(); }
 function drawFocus() {
-  var t = S.tasks[F.id];
-  document.getElementById("fTitle").textContent = t ? t.title : "";
+  var t = S.tasks[F.id], hb = F.habit ? settingsArr("habits").filter(function (x) { return x.id === F.habit; })[0] : null;
+  document.getElementById("fTitle").textContent = hb ? "🎯 " + hb.name : t ? t.title : "";
   document.getElementById("fLens").innerHTML = [15, 25, 50].map(function (n) { return '<button class="chip" data-f="len" data-n="' + n + '" aria-pressed="' + (F.len === n) + '">' + n + " דק׳</button>"; }).join("");
-  document.getElementById("fBtns").innerHTML = (F.left > 0 ? '<button class="btn primary" data-f="pp">' + ic(F.run ? "pause" : "play") + (F.run ? "השהיה" : "המשך") + '</button><button class="btn" data-f="plus">+5 דק׳</button>' : '<button class="btn primary" data-f="doneTask">' + ic("check") + "סיימתי את המשימה</button>") + '<button class="btn" data-f="stop">סגירה</button>';
+  document.getElementById("fBtns").innerHTML = (F.left > 0 ? '<button class="btn primary" data-f="pp">' + ic(F.run ? "pause" : "play") + (F.run ? "השהיה" : "המשך") + '</button><button class="btn" data-f="plus">+5 דק׳</button>' + (F.habit ? '<button class="btn" data-f="doneTask">' + ic("check") + "סיימתי כבר</button>" : "") : '<button class="btn primary" data-f="doneTask">' + ic("check") + (F.habit ? "מעולה! ההרגל סומן ✓" : "סיימתי את המשימה") + "</button>") + '<button class="btn" data-f="stop">סגירה</button>';
   document.getElementById("fLabel").textContent = F.left > 0 ? "פוקוס" : "הזמן נגמר";
 }
 function tickFocus() {
-  if (F.run && F.left > 0) { F.left--; if (F.left === 0) { F.run = false; try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {} drawFocus(); } }
+  if (F.run && F.left > 0) { F.left--; if (F.left === 0) { F.run = false; try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {} if (F.habit) { var hbz = settingsArr("habits").filter(function (x) { return x.id === F.habit; })[0]; if (hbz && !hDone(hbz)) setHabit(F.habit, T(), F.len <= 2 ? "min" : 1); } drawFocus(); } }
   var m = Math.floor(F.left / 60), s = F.left % 60;
   document.getElementById("fTime").textContent = pad(m) + ":" + pad(s);
   document.getElementById("fArc").setAttribute("stroke-dashoffset", (339.3 * (1 - F.left / (F.len * 60))).toFixed(1));
@@ -1781,13 +1841,14 @@ fEl.addEventListener("click", function (e) {
   else if (a === "pp") F.run = !F.run;
   else if (a === "plus") { F.left += 300; F.len = Math.max(F.len, Math.ceil(F.left / 60)); }
   else if (a === "stop") { clearInterval(F.iv); fEl.hidden = true; return; }
-  else if (a === "doneTask") { clearInterval(F.iv); fEl.hidden = true; var t = S.tasks[F.id]; if (t && !t.done) complete(F.id); if (S.detailId) buildDetail(); return; }
+  else if (a === "doneTask") { clearInterval(F.iv); fEl.hidden = true; if (F.habit) { var hbx = settingsArr("habits").filter(function (x) { return x.id === F.habit; })[0]; if (hbx && !hDone(hbx)) setHabit(F.habit, T(), F.len <= 2 ? "min" : 1); F.habit = null; return; } var t = S.tasks[F.id]; if (t && !t.done) complete(F.id); if (S.detailId) buildDetail(); return; }
   tickFocus(); drawFocus();
 });
 
 /* ---------------- global clicks ---------------- */
 var suppressClick = false;
 document.addEventListener("click", function (e) {
+  render.force = true; setTimeout(function () { render.force = false; }, 0);
   if (suppressClick) { suppressClick = false; e.preventDefault(); e.stopPropagation(); return; }
   if (e.target.closest("#detail, #search, #focus, #toast")) return;
   var b = e.target.closest("[data-act]");
@@ -1837,6 +1898,15 @@ document.addEventListener("click", function (e) {
   else if (a === "sortByTime") { var dsT = b.getAttribute("data-date"), base = Date.now(); list().filter(function (t) { return !t.done && t.date === dsT; }).sort(dayOrder).forEach(function (t, i) { save(t.id, { order: base + i }); }); toast("סודר לפי שעות"); }
   else if (a === "clsStart") { var src = b.getAttribute("data-src"), ids = clsIds(src); if (!ids.length) { toast("אין משימות למיון כאן"); return; } openClassify(ids, src === "inbox" ? "מיון הסל" : src === "uncls" ? "מיון משימות" : "מיון נושא"); }
   else if (a === "capture") openCapture("");
+  else if (a === "mxMode") { S.mxMode = b.getAttribute("data-v"); lsSet("myday-mxmode", S.mxMode); render(); }
+  else if (a === "mxSrc") { S.mxSrc = b.getAttribute("data-v"); S.mxI = 0; render(); }
+  else if (a === "mxPrev") { S.mxI = Math.max(0, (S.mxI || 0) - 1); render(); }
+  else if (a === "mxNext") { S.mxI = (S.mxI || 0) + 1; render(); }
+  else if (a === "mxOpen") openDetail(b.getAttribute("data-id"));
+  else if (a === "mxCls") openClassify([b.getAttribute("data-id")], "מיון");
+  else if (a === "upPrev") { S.upOff = Math.max(0, (S.upOff || 0) - 1); render(); }
+  else if (a === "upNext") { S.upOff = (S.upOff || 0) + 1; render(); }
+  else if (a === "upToday") { S.upOff = 0; render(); }
   else if (a === "shutdown") openShutdown();
   else if (a === "reflect") openReflect(b.getAttribute("data-id"));
   else if (a === "stuckSkip") { lsSet("myday-stuck-day", T()); render(); }
@@ -1850,6 +1920,14 @@ document.addEventListener("click", function (e) {
     else if (dir === "r") bd.scrollBy({ left: cw, behavior: "smooth" });
     else bd.querySelectorAll(".colcards").forEach(function (cc) { cc.scrollBy({ top: dir === "d" ? 320 : -320, behavior: "smooth" }); });
   }
+  else if (a === "habNew") { S.habNew = b.getAttribute("data-v"); render(); setTimeout(function () { var i = document.getElementById(S.habNew === "daily" ? "hdName" : "hsAfter"); if (i) i.focus(); }, 50); }
+  else if (a === "hStart") startHabitFocus(b.getAttribute("data-h"));
+  else if (a === "hDone") setHabit(b.getAttribute("data-h"), T(), 1);
+  else if (a === "hMin") setHabit(b.getAttribute("data-h"), T(), "min");
+  else if (a === "hUndo") setHabit(b.getAttribute("data-h"), T(), null);
+  else if (a === "hMinStart") { var hb2 = b.getAttribute("data-h"); startHabitFocus(hb2); F.len = 2; F.left = 120; tickFocus(); drawFocus(); }
+  else if (a === "hNudgeOff") { lsSet("myday-hnudge", T()); render(); }
+  else if (a === "hEdit") { S.habEdit = b.getAttribute("data-h") || null; render(); }
   else if (a === "habTog") toggleHabit(b.getAttribute("data-h"), b.getAttribute("data-d"));
   else if (a === "habDel") {
     if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = "למחוק?"; setTimeout(function () { if (b.isConnected) { b.classList.remove("sure"); b.innerHTML = ic("trash"); } }, 3000); return; }
@@ -1888,7 +1966,9 @@ document.addEventListener("click", function (e) {
     } else { b.setAttribute("data-sure", "1"); b.innerHTML = ic("trash") + "ללחוץ שוב כדי למחוק"; setTimeout(function () { if (b.isConnected) { b.removeAttribute("data-sure"); b.innerHTML = ic("trash") + "מחיקת הפרויקט"; } }, 3500); }
   }
 });
+document.addEventListener("focusout", function (e) { if (render.pending && e.target.closest && e.target.closest("#content")) setTimeout(function () { if (!typingInPage() && render.pending) { render.pending = false; render(); } }, 50); });
 document.addEventListener("submit", function (e) {
+  render.force = true; setTimeout(function () { render.force = false; }, 0);
   if (e.target.classList.contains("coladd")) {
     e.preventDefault();
     var inp = e.target.querySelector("input"), sec = e.target.getAttribute("data-sec");
@@ -1901,6 +1981,19 @@ document.addEventListener("submit", function (e) {
     store.putSettings({ friend: { name: fnm, phone: fph } }); toast("החבר נשמר 🤝");
     if (!document.getElementById("sd").hidden && SHARE_ID) openShare(SHARE_ID);
     return;
+  }
+  if (e.target.id === "newDaily") {
+    e.preventDefault(); var nm = document.getElementById("hdName").value.trim(); if (!nm) { document.getElementById("hdName").focus(); return; }
+    var hs2 = settingsArr("habits");
+    putSet("habits", hs2.concat([{ id: "h" + newId(), type: "daily", name: nm, color: COLORS[(hs2.length + 2) % COLORS.length], days: {}, mins: +document.getElementById("hdMins").value, when: document.getElementById("hdWhen").value, goal: +document.getElementById("hdGoal").value, why: document.getElementById("hdWhy").value.trim() }]));
+    S.habNew = ""; toast("🎯 ההרגל נוצר. בהצלחה!"); render(); return;
+  }
+  if (e.target.id === "newStack") {
+    e.preventDefault(); var af = document.getElementById("hsAfter").value.trim(), nm2 = document.getElementById("hsName").value.trim();
+    if (!af || !nm2) { toast("צריך למלא את שני החלקים: אחרי ש… ואני…"); return; }
+    var hs3 = settingsArr("habits"), anc = hs3.filter(function (x) { return x.name === af; })[0];
+    putSet("habits", hs3.concat([{ id: "h" + newId(), type: "stack", name: nm2, color: COLORS[(hs3.length + 4) % COLORS.length], days: {}, after: anc ? anc.id : af }]));
+    S.habNew = ""; toast("🔗 ההצמדה נוצרה"); render(); return;
   }
   if (e.target.id === "newHabit") {
     e.preventDefault(); var hn = document.getElementById("hbName").value.trim(); if (!hn) return;
@@ -1932,6 +2025,13 @@ document.addEventListener("submit", function (e) {
   store.putSettings({ projects: ps });
 });
 document.addEventListener("change", function (e) {
+  if (e.target.id === "mxTopic") { if (e.target.value) { S.mxSrc = e.target.value; S.mxI = 0; render(); } return; }
+  if (e.target.hasAttribute && e.target.hasAttribute("data-hf")) {
+    var fm = e.target.closest("[data-hform]"), hid2 = fm.getAttribute("data-hform"), key = e.target.getAttribute("data-hf"), val2 = e.target.value;
+    if (key === "mins" || key === "goal") val2 = +val2;
+    if (key === "name" && !String(val2).trim()) return;
+    putSet("habits", settingsArr("habits").map(function (x) { var o = {}; o[key] = val2; return x.id === hid2 ? Object.assign({}, x, o) : x; })); return;
+  }
   if (e.target.hasAttribute && e.target.hasAttribute("data-hafter")) {
     var hid = e.target.getAttribute("data-hafter"), val = e.target.value.trim(), hs1 = settingsArr("habits"), ah = hs1.filter(function (x) { return x.name === val && x.id !== hid; })[0];
     putSet("habits", hs1.map(function (x) { return x.id === hid ? Object.assign({}, x, { after: ah ? ah.id : val }) : x; })); return;
@@ -1969,6 +2069,7 @@ document.addEventListener("keydown", function (e) {
     return;
   }
   if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (S.view === "matrix" && (S.mxMode || "cards") === "cards" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) { e.preventDefault(); var nn = mxPool().length; S.mxI = Math.max(0, Math.min(nn - 1, (S.mxI || 0) + (e.key === "ArrowLeft" ? 1 : -1))); render(); return; }
   if (S.view === "project" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) { var bb = document.querySelector('[data-act="bScroll"][data-d="' + (e.key === "ArrowLeft" ? "l" : "r") + '"]'); if (bb) { e.preventDefault(); bb.click(); } return; }
   if (e.key === "n" || e.key === "N" || e.key === "מ") { e.preventDefault(); openComposer(); }
   else if (e.key === "/" || e.key === ".") { e.preventDefault(); openSearch(); }
@@ -2088,26 +2189,29 @@ document.addEventListener("contextmenu", function (e) { if (e.target.closest(".b
 var SW_ORDER = ["today", "cal", "inbox", "up", "projects", "more"], sw = null;
 var contentEl = document.getElementById("content");
 contentEl.addEventListener("touchstart", function (e) {
-  if (e.touches.length !== 1 || e.target.closest(".board, input, textarea, select, .hdots, .daystrip")) { sw = null; return; }
+  if (e.touches.length !== 1 || e.target.closest(".board, input, textarea, select, .hdots, .daystrip, .mxcard, .mxwrap")) { sw = null; return; }
   sw = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
 }, { passive: true });
 contentEl.addEventListener("touchend", function (e) {
   if (!sw || (ldrag && ldrag.active) || (drag && drag.active)) { sw = null; return; }
   var tc = e.changedTouches[0], dx = tc.clientX - sw.x, dy = tc.clientY - sw.y, dt = Date.now() - sw.t; sw = null;
   if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.8 || dt > 700) return;
-  if (S.view === "today" || S.view === "cal") {
-    if (S.view === "today") S.dayOff = Math.max(-7, (S.dayOff || 0) + (dx < 0 ? 1 : -1));
-    else { S.calStart = ymd(addD(pd(S.calStart || T()), dx < 0 ? 1 : -1)); }
-    render(); if (S.view === "cal") watchCal();
+  var dir = dx < 0 ? 1 : -1;
+  if (S.view === "today") S.dayOff = Math.max(-7, (S.dayOff || 0) + dir);
+  else if (S.view === "cal") S.calStart = ymd(addD(pd(S.calStart || T()), dir));
+  else if (S.view === "up") S.upOff = Math.max(0, (S.upOff || 0) + dir);
+  else {
+    var cur = S.view === "project" ? SW_ORDER.indexOf("projects") : SW_ORDER.indexOf(S.view) >= 0 ? SW_ORDER.indexOf(S.view) : SW_ORDER.length - 1;
+    var n = cur + (dx > 0 ? 1 : -1);
+    if (n < 0 || n >= SW_ORDER.length) return;
+    go(SW_ORDER[n]);
     contentEl.classList.remove("slideL", "slideR"); void contentEl.offsetWidth;
-    contentEl.classList.add(dx < 0 ? "slideR" : "slideL");
+    contentEl.classList.add(dx > 0 ? "slideL" : "slideR");
     return;
   }
-  var cur = S.view === "project" ? 3 : SW_ORDER.indexOf(S.view) >= 0 ? SW_ORDER.indexOf(S.view) : 4, n = cur + (dx > 0 ? 1 : -1);
-  if (n < 0 || n >= SW_ORDER.length) return;
-  go(SW_ORDER[n]);
+  render(); if (S.view === "cal") watchCal();
   contentEl.classList.remove("slideL", "slideR"); void contentEl.offsetWidth;
-  contentEl.classList.add(dx > 0 ? "slideL" : "slideR");
+  contentEl.classList.add(dir > 0 ? "slideR" : "slideL");
 }, { passive: true });
 contentEl.addEventListener("animationend", function () { contentEl.classList.remove("slideL", "slideR"); });
 
@@ -2533,7 +2637,7 @@ function habitDots(h, n) {
   }
   return out;
 }
-function viewHabits() {
+function viewHabitsOld() {
   var hs = settingsArr("habits");
   var h = '<div class="explain" style="margin-top:4px"><b>🔗 שרשור הרגלים</b><p>הדרך הכי קלה לבנות הרגל חדש: להצמיד אותו למשהו שאתה כבר עושה כל יום. למשל: "אחרי צחצוח שיניים ← 5 דקות קריאה". כשתסמן הרגל, האפליקציה תזכיר לך מה בא אחריו.</p></div>' +
     '<form class="newproj" id="newHabit"><label for="hbName" class="sr">הרגל חדש</label><input id="hbName" placeholder="הרגל חדש, למשל: 5 דקות קריאה"><label for="hbAfter" class="sr">אחרי מה</label><input id="hbAfter" list="anchorList" placeholder="אחרי… (למשל: צחצוח שיניים בבוקר)"><datalist id="anchorList">' + HAB_ANCHORS.concat(settingsArr("habits").map(function (x) { return x.name; })).map(function (s) { return '<option value="' + esc(s) + '">'; }).join("") + '</datalist><button class="btn primary" type="submit">' + ic("plus") + "הוספה</button></form>";
@@ -2556,6 +2660,91 @@ var QUADS = [
 ];
 function quadOf(t) { var u = t.pri === 3, i = !!t.imp; return u && i ? 1 : i ? 2 : u ? 3 : 4; }
 function viewMatrix() {
+  var mode = S.mxMode || "cards";
+  var bar = '<div class="mxbar"><div class="seg"><button data-act="mxMode" data-v="cards" aria-pressed="' + (mode === "cards") + '">🃏 כרטיסיות</button><button data-act="mxMode" data-v="lists" aria-pressed="' + (mode === "lists") + '">☰ רשימות</button></div></div>';
+  return bar + (mode === "cards" ? viewMatrixCards() : viewMatrixLists());
+}
+function mxPool() {
+  var L = list().filter(function (t) { return !t.done; }), src = S.mxSrc || "inbox";
+  if (src === "inbox") return L.filter(function (t) { return t.inbox; }).sort(function (a, b) { return (a.created || 0) - (b.created || 0); });
+  if (src === "new") return L.filter(function (t) { return !t.cls && !t.mxq; }).sort(byOrder);
+  if (src.indexOf("topic:") === 0) { var k = src.slice(6).split("|"); return L.filter(function (t) { return t.proj === k[0] && (k[1] === "*" || t.sec === k[1]); }).sort(byOrder); }
+  return L.sort(byOrder);
+}
+function viewMatrixCards() {
+  var L = list().filter(function (t) { return !t.done; });
+  var nIn = L.filter(function (t) { return t.inbox; }).length, nNew = L.filter(function (t) { return !t.cls && !t.mxq; }).length, src = S.mxSrc || "inbox";
+  var opts = '<option value="">לפי נושא…</option>';
+  (S.settings.projects || []).forEach(function (p) {
+    opts += '<option value="topic:' + esc(p.id) + '|*"' + (src === "topic:" + p.id + "|*" ? " selected" : "") + ">" + esc(p.name) + " · הכול</option>";
+    projSecs(p).forEach(function (s) { opts += '<option value="topic:' + esc(p.id) + "|" + esc(s.id) + '"' + (src === "topic:" + p.id + "|" + s.id ? " selected" : "") + ">" + esc(p.name) + " · " + esc(s.name) + "</option>"; });
+  });
+  var h = '<div class="chips mxsrc">' + chip(src === "inbox", 'data-act="mxSrc" data-v="inbox"', "📥 הסל · " + nIn) + chip(src === "new", 'data-act="mxSrc" data-v="new"', "🆕 שעוד לא מוינו · " + nNew) + chip(src === "all", 'data-act="mxSrc" data-v="all"', "כל המשימות · " + L.length) + '<label class="sr" for="mxTopic">נושא</label><select id="mxTopic" class="chipdate">' + opts + "</select></div>";
+  var pool = mxPool(), n = pool.length;
+  var counts = [0, 0, 0, 0, 0]; L.forEach(function (t) { counts[quadOf(t)]++; });
+  if (!n) return h + '<div class="empty" style="margin-top:12px">' + emptyArt("done") + "<b>אין כאן משימות</b><span>בחר מקור אחר למעלה.</span></div>" + mxGridHtml(counts);
+  var i = S.mxI = Math.max(0, Math.min(S.mxI || 0, n - 1)), t = pool[i], p = t.proj ? proj(t.proj) : null, q = quadOf(t), sec = p && t.sec ? projSecs(p).filter(function (s) { return s.id === t.sec; })[0] : null;
+  var done = t.cls || t.mxq || t.imp || t.pri === 3;
+  h += '<div class="mxwrap"><div class="mxnav"><button class="iconbtn" data-act="mxPrev" aria-label="המשימה הקודמת"' + (i ? "" : " disabled") + ">" + ic("back") + '</button><span><b>' + (i + 1) + "</b> מתוך " + n + '</span><button class="iconbtn" data-act="mxNext" aria-label="המשימה הבאה"' + (i < n - 1 ? "" : " disabled") + ">" + ic("chev") + "</button></div>" +
+    '<div class="mxstack">' + (i < n - 1 ? '<div class="mxghost g2"></div>' : "") + (i < n - 2 ? '<div class="mxghost g3"></div>' : "") +
+    '<div class="mxcard' + (done ? " q" + q : "") + '" id="mxCard" data-id="' + esc(t.id) + '"><div class="mxtop">' + (done ? '<span class="mxbadge" style="--c:' + QUADS[q - 1].color + '">' + QUADS[q - 1].name + "</span>" : '<span class="mxbadge" style="--c:var(--muted)">עוד לא מוין</span>') + (t.inbox ? '<span class="mxbadge" style="--c:#8a5cc7">📥 בסל</span>' : "") + "</div>" +
+    '<div class="mxtitle">' + esc(t.title) + "</div>" +
+    '<div class="mxmeta">' + (p ? '<span><i class="dot" style="--c:' + esc(p.color) + '"></i>' + esc(p.name) + (sec ? " · " + esc(sec.name) : "") + "</span>" : "") + (t.date ? "<span>" + ic("cal") + relDate(t.date) + "</span>" : "") + (t.due ? "<span>" + ic("due") + "יעד " + relDate(t.due) + "</span>" : "") + (t.tags || []).map(function (g) { return '<span class="tg">@' + esc(g) + "</span>"; }).join("") + "</div>" +
+    (t.notes ? '<div class="mxnotes">' + esc(t.notes).slice(0, 160) + "</div>" : "") +
+    '<div class="mxhint">' + (isPhone() ? "👆 גרור את הכרטיס לריבוע · ↔ החלק למשימה הבאה" : "גרור את הכרטיס לריבוע · חיצי המקלדת ← → למשימה הבאה") + "</div>" +
+    '<div class="mxbtns"><button class="btn plain" data-act="mxOpen" data-id="' + esc(t.id) + '">פרטים</button><button class="btn plain" data-act="mxCls" data-id="' + esc(t.id) + '">' + ic("target") + "מיון מלא</button></div></div></div>" +
+    mxGridHtml(counts) + "</div>";
+  return h;
+}
+function mxGridHtml(counts) {
+  return '<div class="mxgrid">' + QUADS.map(function (Q) { return '<div class="mxq" data-q="' + Q.q + '" style="--c:' + Q.color + '"><b>' + Q.name + "</b><span>" + Q.sub + '</span><i>' + counts[Q.q] + "</i></div>"; }).join("") + "</div>";
+}
+function mxAssign(id, q) {
+  var t = S.tasks[id]; if (!t) return;
+  var before = Object.assign({}, t), inPoolBefore = mxPool().some(function (x) { return x.id === id; });
+  var patch = { imp: q <= 2, pri: q === 1 || q === 3 ? 3 : (t.pri === 3 ? 2 : (t.pri || 0)), mxq: true };
+  if (q === 4 && t.pri === 3) patch.pri = 0;
+  save(id, patch);
+  var still = mxPool().some(function (x) { return x.id === id; });
+  if (still) S.mxI = (S.mxI || 0) + 1;
+  try { navigator.vibrate && navigator.vibrate(15); } catch (e) {}
+  toast("✓ " + QUADS[q - 1].name + ": " + before.title, "ביטול", function () { store.put(id, before); if (!still && inPoolBefore) {} else S.mxI = Math.max(0, (S.mxI || 1) - 1); render(); });
+  render();
+}
+function mxInit() {
+  var el = document.getElementById("mxCard"); if (!el) return;
+  var st = null;
+  el.addEventListener("pointerdown", function (e) { if (e.target.closest("button")) return; st = { x: e.clientX, y: e.clientY, on: false, t: Date.now() }; try { el.setPointerCapture(e.pointerId); } catch (x) {} });
+  el.addEventListener("pointermove", function (e) {
+    if (!st) return;
+    var dx = e.clientX - st.x, dy = e.clientY - st.y;
+    if (!st.on && Math.sqrt(dx * dx + dy * dy) > 6) { st.on = true; el.classList.add("lift"); }
+    if (!st.on) return;
+    el.style.transform = "translate(" + dx + "px," + dy + "px) rotate(" + (dx / 25) + "deg)";
+    el.style.pointerEvents = "none";
+    var u = document.elementFromPoint(e.clientX, e.clientY), qt = u && u.closest(".mxq");
+    el.style.pointerEvents = "";
+    document.querySelectorAll(".mxq.hover").forEach(function (x) { x.classList.remove("hover"); });
+    if (qt) qt.classList.add("hover");
+    el.classList.toggle("swnext", !qt && dx < -60 && Math.abs(dx) > Math.abs(dy));
+    el.classList.toggle("swprev", !qt && dx > 60 && Math.abs(dx) > Math.abs(dy));
+  });
+  function end(e) {
+    if (!st) return; var s = st; st = null;
+    var qt = document.querySelector(".mxq.hover");
+    document.querySelectorAll(".mxq.hover").forEach(function (x) { x.classList.remove("hover"); });
+    var dx = (e.clientX || s.x) - s.x, dy = (e.clientY || s.y) - s.y;
+    if (s.on && qt) { mxAssign(el.getAttribute("data-id"), +qt.getAttribute("data-q")); return; }
+    if (s.on && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+      var n = mxPool().length, ni = (S.mxI || 0) + (dx < 0 ? 1 : -1);
+      if (ni >= 0 && ni < n) { el.style.transition = "transform .18s ease, opacity .18s"; el.style.transform = "translateX(" + (dx < 0 ? -420 : 420) + "px) rotate(" + (dx < 0 ? -12 : 12) + "deg)"; el.style.opacity = "0"; setTimeout(function () { S.mxI = ni; render(); }, 170); return; }
+    }
+    el.classList.remove("lift", "swnext", "swprev"); el.style.transition = "transform .2s ease"; el.style.transform = "";
+    setTimeout(function () { el.style.transition = ""; }, 220);
+  }
+  el.addEventListener("pointerup", end); el.addEventListener("pointercancel", function () { st = null; el.classList.remove("lift"); el.style.transform = ""; });
+}
+function viewMatrixLists() {
   var L = list().filter(function (t) { return !t.done; });
   var uncN = list().filter(function (t) { return !t.done && (t.inbox || !t.cls); }).length;
   var h = (uncN ? '<button class="capbtn" data-act="clsStart" data-src="' + (list().some(function (t) { return !t.done && t.inbox; }) ? "inbox" : "uncls") + '">' + ic("target") + "<span><b>למיין משימות</b><span>" + uncN + " משימות עוד לא מוינו. בכל כרטיס בוחרים ריבוע, נושא, מתי ועם מה</span></span>" + ic("chev") + "</button>" : "") + '<p class="mhint">דחוף = עדיפות "דחופה". חשוב = מסומן בכוכב ⭐ בפרטי המשימה. גרור משימה לריבוע אחר, והעדיפות והכוכב יתעדכנו לבד.</p><div class="matrix">';
@@ -2798,8 +2987,7 @@ function viewToday() {
     h += gameBarHtml();
     var dueSoon = L.filter(function (t) { return !t.done && t.due && dayDiff(t.due) <= 3 && t.date !== T() && !isLate(t); }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
     if (dueSoon.length) h += section("duesoon", "יעדים מתקרבים", dueSoon, { icon: ["due", "#e08a1e"], fold: true });
-    var hs = settingsArr("habits");
-    if (hs.length) h += '<section class="sec"><div class="sec-h">' + shic("fire", "#e8590c") + '<span>ההרגלים שלי היום</span></div><div class="habchips">' + hs.map(function (hb) { var on = !!(hb.days || {})[T()], sk = habitStreak(hb); return '<button class="habchip' + (on ? " on" : "") + '" style="--c:' + esc(hb.color) + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + T() + '" aria-pressed="' + on + '"><span class="hc">' + ic("check") + "</span>" + esc(hb.name) + (habitAfterLabel(hb) ? '<span class="af">אחרי ' + esc(habitAfterLabel(hb)) + "</span>" : "") + (sk ? '<span class="fs">' + ic("fire") + sk + "</span>" : "") + "</button>"; }).join("") + "</div></section>";
+    h += habitNudgeHtml() + habitTodayHtml();
   }
   h += scheduleHtml(D, isT);
   if (isT) h += section("done", "בוצע היום", L.filter(doneToday).sort(function (a, b) { return (b.doneAt || b.lastDone || 0) - (a.doneAt || a.lastDone || 0); }), { fold: true, icon: ["check", "#2f9e44"] });
@@ -2858,7 +3046,7 @@ function drawCls() {
   var p = d.proj ? proj(d.proj) : null;
   var allT = Object.keys(allTags()), tagList = TAGSUG.concat(allT.filter(function (x) { return TAGSUG.indexOf(x) < 0; })).concat(d.tags.filter(function (x) { return TAGSUG.indexOf(x) < 0 && allT.indexOf(x) < 0; }));
   var h = '<div class="cls-top"><span>' + ic("target") + esc(CL.label) + '</span><span class="pn">' + (CL.i + 1) + " / " + CL.ids.length + '</span><button class="iconbtn" data-cl="close" aria-label="סגירה">' + ic("x") + "</button></div>" +
-    '<div class="bar" style="--c:var(--accent)"><i style="width:' + Math.round(CL.i / CL.ids.length * 100) + '%"></i></div>';
+    '<div class="bar" style="--c:var(--accent)"><i style="width:' + Math.round(CL.i / CL.ids.length * 100) + '%"></i></div>' + (isPhone() ? '<div class="cls-swhint">↔ החלק ימינה או שמאלה כדי לעבור בין המשימות</div>' : "");
   h += '<div class="cls-card q' + d.q + '">' + (d.edit ? '<label class="sr" for="clTitle">שם המשימה</label><input id="clTitle" class="cls-title-in" value="' + esc(d.title) + '">' : '<div class="cls-drag" id="clsDrag">' + '<span class="grabdots">⋮⋮</span><span class="cls-title">' + esc(d.title) + '</span><button type="button" class="editbtn" data-cl="edit" aria-label="עריכת השם">✎</button></div>') +
     (t.notes ? '<div class="plan-notes">' + esc(t.notes).slice(0, 260) + "</div>" : "") + (isPhone() ? "" : '<div class="cls-hint">גרור את הכרטיס לריבוע המתאים, או לחץ על ריבוע</div>') + "</div>";
   h += '<div class="cls-sec"><h4>1 · כמה זה דחוף וחשוב?</h4><div class="cls-matrix">' + QUADS.map(function (Q) { return '<button type="button" class="qbtn' + (d.q === Q.q ? " on" : "") + '" style="--c:' + Q.color + '" data-cl="q" data-v="' + Q.q + '"><b>' + Q.name + "</b><span>" + Q.sub + "</span></button>"; }).join("") + "</div></div>";
@@ -2874,9 +3062,21 @@ function drawCls() {
     '<div class="chips" style="margin-top:8px">' + chip(!d.status, 'data-cl="status" data-v=""', "▶️ לעשות") + chip(d.status === "waiting", 'data-cl="status" data-v="waiting"', "⏳ מחכה למישהו") + chip(d.status === "someday", 'data-cl="status" data-v="someday"', "💭 אולי פעם") + "</div>" +
     '<h4 style="margin-top:14px">6 · מתי בדיוק? <small>(אם… אז… · לא חובה)</small></h4><div class="chips">' + TRIG_SUG.slice(0, 5).map(function (s) { return chip(d.trigger === s, 'data-cl="trig" data-v="' + esc(s) + '"', "🔗 " + esc(s)); }).join("") + '</div><input id="clTrig" class="sub-add" style="margin-top:8px" placeholder="או כתוב בעצמך: כש… / אחרי…" value="' + esc(d.trigger || "") + '">' +
     (d.est === 5 ? '<div class="twomin">⚡ לוקח רק כמה דקות? הכי טוב לעשות את זה עכשיו ולגמור עם זה. <button type="button" class="btn primary" data-cl="doneNow">' + ic("check") + "עשיתי</button></div>" : "") + "</div>";
-  h += '<div class="cls-actions"><button type="button" class="btn plain danger" data-cl="del">' + ic("trash") + '</button><button type="button" class="btn" data-cl="skip">דילוג</button><button type="button" class="btn primary big" data-cl="send">' + ic("check") + "שליחה למקום</button></div>";
+  h += '<div class="cls-actions"><button type="button" class="btn plain danger" data-cl="del">' + ic("trash") + '</button>' + (CL.i > 0 ? '<button type="button" class="btn" data-cl="prev">' + ic("back") + "הקודמת</button>" : "") + '<button type="button" class="btn" data-cl="skip">דילוג' + ic("chev") + '</button><button type="button" class="btn primary big" data-cl="send">' + ic("check") + "שליחה למקום</button></div>";
   box.innerHTML = h;
   box.scrollTop = 0;
+}
+function clsPrev() {
+  var j = CL.i - 1;
+  while (j >= 0 && (!S.tasks[CL.ids[j]] || S.tasks[CL.ids[j]].done)) j--;
+  if (j < 0) return;
+  CL.i = j; clsLoad();
+}
+function clsSwipe(dir) {
+  var box = document.getElementById("clsBox");
+  if (dir > 0) { if (CL.i >= CL.ids.length) return; CL.i++; clsLoad(); } else { if (CL.i === 0) return; clsPrev(); }
+  drawCls();
+  box.classList.remove("slideL", "slideR"); void box.offsetWidth; box.classList.add(dir > 0 ? "slideR" : "slideL");
 }
 function clsApply() {
   var id = CL.ids[CL.i], t = S.tasks[id], d = CL.d; if (!t) return;
@@ -3051,6 +3251,7 @@ document.getElementById("clsBox").addEventListener("click", function (e) {
   else if (a === "status") d.status = v;
   else if (a === "doneNow") { clsApply(); complete(CL.ids[CL.i]); CL.i++; clsLoad(); }
   else if (a === "skip") { CL.i++; clsLoad(); }
+  else if (a === "prev") { clsPrev(); }
   else if (a === "del") { var did = CL.ids[CL.i]; CL.i++; removeTask(did); clsLoad(); }
   else if (a === "send") { clsApply(); var dd = CL.d; CL.i++; clsLoad(); var pn = dd.proj && proj(dd.proj); toast("נשלח ✓ " + [dd.q ? QUADS[dd.q - 1].name : "", pn ? pn.name : "", dd.dmode !== "keep" && dd.date ? relDate(dd.date) : dd.dmode !== "keep" ? "להמשך" : ""].filter(Boolean).join(" · ")); }
   drawCls(); clsDragInit();
@@ -3063,6 +3264,22 @@ document.getElementById("clsBox").addEventListener("submit", function (e) {
   if (e.target.id === "clNewTag") { var v = document.getElementById("clNewTagIn").value.replace(/^@/, "").trim(); if (v && CL.d.tags.indexOf(v) < 0) CL.d.tags.push(v); }
   if (e.target.id === "clNewSec") { var nm = document.getElementById("clNewSecIn").value.trim(); if (nm && CL.d.proj) { var mp = ensureSections(CL.d.proj, [nm]); CL.d.sec = mp[nm]; } }
   drawCls(); clsDragInit();
+});
+var csw = null;
+document.getElementById("clsBox").addEventListener("touchstart", function (e) {
+  if (e.touches.length !== 1 || e.target.closest("input, textarea, select, .cls-drag")) { csw = null; return; }
+  csw = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
+}, { passive: true });
+document.getElementById("clsBox").addEventListener("touchend", function (e) {
+  if (!csw || !CL) return;
+  var tc = e.changedTouches[0], dx = tc.clientX - csw.x, dy = tc.clientY - csw.y, dt = Date.now() - csw.t; csw = null;
+  if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.8 || dt > 700) return;
+  suppressClick = true; setTimeout(function () { suppressClick = false; }, 60);
+  clsSwipe(dx < 0 ? 1 : -1);
+}, { passive: true });
+document.addEventListener("keydown", function (e) {
+  if (document.getElementById("cls").hidden || !CL || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+  if (e.key === "ArrowLeft") { e.preventDefault(); clsSwipe(1); } else if (e.key === "ArrowRight") { e.preventDefault(); clsSwipe(-1); }
 });
 document.getElementById("cls").addEventListener("click", function (e) { if (e.target.id === "cls") { this.hidden = true; render(); } });
 var _drawCls = drawCls; drawCls = function () { _drawCls(); clsDragInit(); };
@@ -3091,7 +3308,8 @@ document.getElementById("reflBox").addEventListener("click", function (e) {
   if (q.get("capture") || q.get("text") || q.get("title")) {
     var pre = [q.get("title"), q.get("text"), q.get("url")].filter(Boolean).join(" ");
     try { history.replaceState(null, "", location.pathname); } catch (e) {}
-    setTimeout(function () { openCapture(pre); }, 50);
+    var voice = q.get("capture") === "voice";
+    setTimeout(function () { openCapture(pre); if (voice && SR) setTimeout(function () { try { capMic(); } catch (e) {} }, 400); }, 50);
   }
 })();
 
@@ -3210,13 +3428,92 @@ document.getElementById("sdBox").addEventListener("submit", function (e) {
 });
 document.getElementById("sd").addEventListener("click", function (e) { if (e.target.id === "sd") { this.hidden = true; render(); } });
 
+/* ================= v18: habits — daily practice + chains ================= */
+var WHEN_OPTS = [["", "מתי שנוח"], ["morning", "בבוקר"], ["noon", "בצהריים"], ["evening", "בערב"], ["night", "לפני השינה"]];
+function hType(hb) { return hb.type || (hb.after ? "stack" : "daily"); }
+function hDone(hb, ds) { return (hb.days || {})[ds || T()]; }
+function setHabit(id, ds, val) {
+  var was = null;
+  var hs = settingsArr("habits").map(function (h) {
+    if (h.id !== id) return h;
+    var days = Object.assign({}, h.days || {}); was = days[ds];
+    if (val) days[ds] = val; else delete days[ds];
+    return Object.assign({}, h, { days: days });
+  });
+  putSet("habits", hs);
+  if (val && !was) habitCheered(id, ds);
+}
+function weekDone(hb) { var s = sunday(new Date()), n = 0; for (var i = 0; i < 7; i++) if (hDone(hb, ymd(addD(s, i)))) n++; return n; }
+function chainGrid(hb) {
+  var out = "", start = addD(sunday(new Date()), -21);
+  for (var i = 0; i < 28; i++) {
+    var d = addD(start, i), ds = ymd(d), v = hDone(hb, ds), fut = ds > T();
+    out += '<span class="cg' + (v === "min" ? " min" : v ? " on" : "") + (ds === T() ? " today" : "") + (fut ? " fut" : "") + '" title="' + d.getDate() + "." + (d.getMonth() + 1) + '"></span>';
+  }
+  return '<div class="chain"><div class="cgh">' + DTL.map(function (x) { return "<span>" + x + "</span>"; }).join("") + '</div><div class="cgg">' + out + "</div></div>";
+}
+function dailyCard(hb, compact) {
+  var td = T(), v = hDone(hb, td), sk = habitStreak(hb), wd = weekDone(hb), goal = hb.goal || 7, mins = hb.mins || 0;
+  var whenL = (WHEN_OPTS.filter(function (w) { return w[0] === (hb.when || ""); })[0] || ["", ""])[1];
+  var h = '<div class="dh' + (v ? " done" : "") + '" style="--c:' + esc(hb.color) + '">' +
+    '<div class="dh-top"><div class="dh-t"><b>' + esc(hb.name) + "</b><span>" + [mins ? mins + " דקות" : "", whenL !== "מתי שנוח" ? whenL : ""].filter(Boolean).join(" · ") + '</span></div><span class="streak' + (sk ? " on" : "") + '">' + ic("fire") + sk + "</span></div>" +
+    (hb.why && !compact ? '<div class="dh-why">💡 ' + esc(hb.why) + "</div>" : "") +
+    (v ? '<div class="dh-ok">' + (v === "min" ? "✓ עשית גרסה מינימלית היום, והרצף נשמר 💪" : "✓ עשית היום! " + (sk > 1 ? sk + " ימים ברצף 🔥" : "התחלה מצוינת")) + '<button class="linkbtn" data-act="hUndo" data-h="' + esc(hb.id) + '">ביטול</button></div>' :
+      '<div class="dh-btns">' + (mins ? '<button class="btn primary" data-act="hStart" data-h="' + esc(hb.id) + '">' + ic("play") + "להתחיל · " + mins + " דק׳</button>" : "") + '<button class="btn' + (mins ? "" : " primary") + '" data-act="hDone" data-h="' + esc(hb.id) + '">' + ic("check") + 'עשיתי</button><button class="btn plain" data-act="hMin" data-h="' + esc(hb.id) + '" title="ביום קשה, גם 2 דקות שומרות על הרצף">🌱 גרסה מינימלית</button></div>') +
+    '<div class="dh-week"><span>השבוע: <b>' + wd + "/" + goal + '</b> ימים</span><span class="bar"><i style="width:' + Math.min(100, Math.round(wd / goal * 100)) + '%"></i></span></div>' +
+    (compact ? "" : chainGrid(hb)) + "</div>";
+  return h;
+}
+function viewHabits() {
+  var hs = settingsArr("habits"), daily = hs.filter(function (x) { return hType(x) === "daily"; }), stack = hs.filter(function (x) { return hType(x) === "stack"; });
+  var mode = S.habNew || "";
+  var h = '<div class="habtabs"><button class="habadd" data-act="habNew" data-v="daily"><span>🎯</span><b>הרגל יומי</b><small>משהו שאני רוצה לעשות כל יום: אנגלית, תורה, ספורט</small></button><button class="habadd" data-act="habNew" data-v="stack"><span>🔗</span><b>הצמדת הרגלים</b><small>"אחרי ש… אני…": לחבר הרגל חדש להרגל קיים</small></button></div>';
+  if (mode === "daily") h += '<form class="habform" id="newDaily"><b>🎯 הרגל יומי חדש</b><label for="hdName">מה ההרגל?</label><input id="hdName" placeholder="למשל: ללמוד אנגלית" autocomplete="off"><div class="d-2"><div><label for="hdMins">כמה דקות ביום?</label><select id="hdMins">' + [0, 5, 10, 15, 20, 30, 45, 60].map(function (m) { return '<option value="' + m + '"' + (m === 15 ? " selected" : "") + ">" + (m ? m + " דקות" : "בלי זמן מוגדר") + "</option>"; }).join("") + '</select></div><div><label for="hdWhen">מתי ביום?</label><select id="hdWhen">' + WHEN_OPTS.map(function (w) { return '<option value="' + w[0] + '">' + w[1] + "</option>"; }).join("") + '</select></div></div><label for="hdGoal">יעד שבועי (כמה ימים בשבוע)</label><select id="hdGoal">' + [3, 4, 5, 6, 7].map(function (n) { return '<option value="' + n + '"' + (n === 7 ? " selected" : "") + ">" + n + " ימים</option>"; }).join("") + '</select><label for="hdWhy">למה זה חשוב לי? <small>(יוצג לי כשאתלבט)</small></label><input id="hdWhy" placeholder="למשל: כדי להרגיש בטוח לדבר באנגלית בעבודה" autocomplete="off"><div class="row2"><button class="btn primary" type="submit">' + ic("plus") + 'יצירת ההרגל</button><button class="btn plain" type="button" data-act="habNew" data-v="">ביטול</button></div></form>';
+  if (mode === "stack") h += '<form class="habform" id="newStack"><b>🔗 הצמדת הרגלים</b><p class="mhint" style="margin:0">הדרך הכי קלה להתחיל הרגל: להצמיד אותו למשהו שכבר קורה כל יום.</p><div class="stackrow"><span>אחרי ש</span><input id="hsAfter" list="anchorList" placeholder="אני מצחצח שיניים בבוקר" autocomplete="off"><span>אני</span><input id="hsName" placeholder="קורא 5 דקות" autocomplete="off"></div><datalist id="anchorList">' + HAB_ANCHORS.concat(hs.map(function (x) { return x.name; })).map(function (s) { return '<option value="' + esc(s) + '">'; }).join("") + '</datalist><div class="row2"><button class="btn primary" type="submit">' + ic("plus") + 'יצירת ההצמדה</button><button class="btn plain" type="button" data-act="habNew" data-v="">ביטול</button></div></form>';
+  h += '<section class="sec"><div class="sec-h">' + shic("target", "#e8590c") + '<span>הרגלים יומיים</span><span class="n">' + (daily.length || "") + "</span></div>";
+  if (!daily.length) h += '<div class="empty">' + emptyArt() + "<b>עוד אין הרגל יומי</b><span>לחץ על \"🎯 הרגל יומי\" למעלה. לכל הרגל יש כפתור להתחלה עם טיימר, גרסה מינימלית לימים קשים, ושרשרת ימים שלא כדאי לשבור.</span></div>";
+  else h += '<div class="dhgrid">' + daily.map(function (hb) { return '<div class="dhwrap">' + dailyCard(hb) + '<div class="dh-tools"><button class="linkbtn" data-act="hEdit" data-h="' + esc(hb.id) + '">עריכה</button><button class="linkbtn danger" data-act="habDel" data-h="' + esc(hb.id) + '">מחיקה</button></div>' + (S.habEdit === hb.id ? habEditForm(hb) : "") + "</div>"; }).join("") + "</div>";
+  h += "</section>";
+  h += '<section class="sec"><div class="sec-h">' + shic("rep", "#3a73c9") + '<span>הצמדות</span><span class="n">' + (stack.length || "") + "</span></div>";
+  if (!stack.length) h += '<div class="empty" style="padding:16px">עוד אין הצמדות. לחץ על "🔗 הצמדת הרגלים" למעלה.</div>';
+  else h += '<div class="card chains">' + stack.map(function (hb) {
+    var v = hDone(hb), sk = habitStreak(hb);
+    return '<div class="chainrow' + (v ? " done" : "") + '" style="--c:' + esc(hb.color) + '"><span class="anc">אחרי ש' + esc(habitAfterLabel(hb) || "…") + '</span><span class="arr">←</span><b>' + esc(hb.name) + '</b><span class="streak' + (sk ? " on" : "") + '">' + ic("fire") + sk + '</span><button class="cb' + (v ? " on" : "") + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + T() + '" aria-label="סימון">' + ic("check") + '</button><button class="del" data-act="habDel" data-h="' + esc(hb.id) + '" aria-label="מחיקה">' + ic("trash") + "</button></div>";
+  }).join("") + "</div>";
+  h += "</section>";
+  h += '<div class="explain"><b>💡 מה עוזר להתמיד</b><p><b>שרשרת:</b> כל יום שעשית הוא עוד חוליה. אחרי כמה ימים כבר לא תרצה לשבור אותה. <b>גרסה מינימלית:</b> ביום קשה, גם 2 דקות נחשבות והרצף נשמר. העיקר לא לוותר לגמרי. <b>טיימר:</b> הכפתור "להתחיל" פותח טיימר, ובסוף ההרגל מסומן לבד. <b>תזכורת בערב:</b> אם עוד לא עשית, מסך "היום" יזכיר לך.</p></div>';
+  return h;
+}
+function habEditForm(hb) {
+  return '<div class="habform edit" data-hform="' + esc(hb.id) + '"><label>שם<input data-hf="name" value="' + esc(hb.name) + '" autocomplete="off"></label><div class="d-2"><label>דקות ביום<select data-hf="mins">' + [0, 5, 10, 15, 20, 30, 45, 60].map(function (m) { return '<option value="' + m + '"' + ((hb.mins || 0) === m ? " selected" : "") + ">" + (m ? m + " דקות" : "בלי זמן") + "</option>"; }).join("") + '</select></label><label>מתי<select data-hf="when">' + WHEN_OPTS.map(function (w) { return '<option value="' + w[0] + '"' + ((hb.when || "") === w[0] ? " selected" : "") + ">" + w[1] + "</option>"; }).join("") + '</select></label></div><label>יעד שבועי<select data-hf="goal">' + [3, 4, 5, 6, 7].map(function (n) { return '<option value="' + n + '"' + ((hb.goal || 7) === n ? " selected" : "") + ">" + n + " ימים</option>"; }).join("") + '</select></label><label>למה זה חשוב לי<input data-hf="why" value="' + esc(hb.why || "") + '" autocomplete="off"></label><button class="btn" data-act="hEdit" data-h="">סיום עריכה</button></div>';
+}
+function startHabitFocus(hid) {
+  var hb = settingsArr("habits").filter(function (x) { return x.id === hid; })[0]; if (!hb) return;
+  F.habit = hid; F.id = null; F.len = hb.mins || 15; F.left = F.len * 60; F.run = true; fEl.hidden = false; tickFocus(); clearInterval(F.iv); F.iv = setInterval(tickFocus, 1000); drawFocus();
+}
+function habitTodayHtml() {
+  var hs = settingsArr("habits"); if (!hs.length) return "";
+  var daily = hs.filter(function (x) { return hType(x) === "daily"; }), stack = hs.filter(function (x) { return hType(x) === "stack"; });
+  var h = '<section class="sec"><div class="sec-h">' + shic("fire", "#e8590c") + '<span>ההרגלים שלי היום</span><span class="n">' + hs.filter(function (x) { return hDone(x); }).length + "/" + hs.length + '</span><button class="act" data-act="go" data-view="habits">כל ההרגלים</button></div>';
+  if (daily.length) h += '<div class="dhgrid today">' + daily.map(function (hb) { return dailyCard(hb, true); }).join("") + "</div>";
+  if (stack.length) h += '<div class="habchips" style="margin-top:8px">' + stack.map(function (hb) { var on = !!hDone(hb), sk = habitStreak(hb); return '<button class="habchip' + (on ? " on" : "") + '" style="--c:' + esc(hb.color) + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + T() + '" aria-pressed="' + on + '"><span class="hc">' + ic("check") + "</span>" + esc(hb.name) + (habitAfterLabel(hb) ? '<span class="af">אחרי ' + esc(habitAfterLabel(hb)) + "</span>" : "") + (sk ? '<span class="fs">' + ic("fire") + sk + "</span>" : "") + "</button>"; }).join("") + "</div>";
+  return h + "</section>";
+}
+function habitNudgeHtml() {
+  if (new Date().getHours() < 17) return "";
+  var miss = settingsArr("habits").filter(function (x) { return hType(x) === "daily" && !hDone(x); });
+  if (!miss.length || lsGet("myday-hnudge", "") === T()) return "";
+  var hb = miss[0], sk = habitStreak(hb);
+  return '<div class="banner fire"><div class="tx"><b>🔥 עוד לא ' + esc(hb.name) + " היום</b><span>" + (sk ? "יש לך " + sk + " ימים ברצף. " : "") + "אפילו 2 דקות נחשבות ושומרות על הרצף." + (hb.why ? " 💡 " + esc(hb.why) : "") + '</span></div><button class="btn primary" data-act="hMinStart" data-h="' + esc(hb.id) + '">▶ 2 דקות עכשיו</button><button class="btn plain" data-act="hNudgeOff">לא היום</button></div>';
+}
+
 /* ---------------- boot ---------------- */
 S.calDays = lsGet("myday-caldays", null) || (isPhone() ? 3 : 7);
 if (isPhone() && S.calDays === 7) S.calDays = 3;
 S.showEv = lsGet("myday-showev", true) !== false;
 S.calColor = lsGet("myday-calcolor", "proj");
 S.groupBy = lsGet("myday-groupby", "order");
-S.openTopics = {}; S.dayOff = 0;
+S.openTopics = {}; S.dayOff = 0; S.upOff = 0; S.mxMode = lsGet("myday-mxmode", "cards"); S.mxSrc = "inbox"; S.mxI = 0;
 var v0 = lsGet("myday-view", "today");
 if (["today", "cal", "up", "projects", "more", "matrix", "habits", "week", "templates", "tags", "later", "progress", "inbox"].indexOf(v0) >= 0) S.view = v0;
 var lastDay = T();
@@ -3224,10 +3521,12 @@ setInterval(function () {
   if (drag || !store) return;
   if (T() !== lastDay) { lastDay = T(); S.calStart = null; watchCal(); }
   if (gWanted && S.showEv && (Date.now() - calAt > 5 * 60000 || !tokOk())) { calKey = ""; watchCal(); }
-  if (S.view === "cal" || S.view === "today") render();
+  if ((S.view === "cal" || S.view === "today") && !typingInPage()) render();
 }, 60000);
 document.addEventListener("visibilitychange", function () { if (!document.hidden && store) { if (gWanted && Date.now() - calAt > 5 * 60000) { calKey = ""; watchCal(); } render(); } });
-window.addEventListener("resize", function () { if (isPhone() && S.calDays === 7) { S.calDays = 3; S.calStart = T(); } if (store) render(); });
+var lastW = innerWidth;
+function typingInPage() { var a = document.activeElement; return a && /INPUT|TEXTAREA|SELECT/.test(a.tagName) && a.closest("#content"); }
+window.addEventListener("resize", function () { if (Math.abs(innerWidth - lastW) < 40) return; lastW = innerWidth; if (isPhone() && S.calDays === 7) { S.calDays = 3; S.calStart = T(); } if (store && !typingInPage()) render(); });
 S.calStatus = { state: gWanted ? "" : "need" };
 render();
 connect();
