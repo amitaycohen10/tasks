@@ -803,20 +803,39 @@ function gInit() {
         S.calStatus = { state: "noscope" }; render(); return;
       }
       if (r && r.access_token) {
-        gTok = { t: r.access_token, exp: Date.now() + ((+r.expires_in || 3600) - 60) * 1000 };
-        lsSet("myday-gtok", gTok); gWanted = true; lsSet("myday-gcal", true);
-        calKey = ""; S.calStatus = { state: "" }; render(); watchCal();
+        gotToken(r.access_token, +r.expires_in || 3600);
       } else { S.calStatus = { state: "gerr", why: (r && (r.error_description || r.error)) || "" }; render(); }
     },
     error_callback: function (e) { var ty = (e && e.type) || ""; S.calStatus = { state: ty === "popup_failed_to_open" ? "popup" : ty === "popup_closed" ? "closed" : (gWanted ? "expired" : "need"), why: ty }; render(); }
   });
   return true;
 }
+function gotToken(tok, secs) {
+  gTok = { t: tok, exp: Date.now() + ((secs || 3600) - 120) * 1000 };
+  lsSet("myday-gtok", gTok); gWanted = true; lsSet("myday-gcal", true);
+  calKey = ""; S.calStatus = { state: "" }; render(); watchCal();
+}
 function approveCal() {
-  if (!gInit()) { S.calStatus = { state: "gload" }; render(); return; }
-  var opt = { prompt: gWanted ? "" : "consent" };
-  if (S.user && S.user.email) opt.login_hint = S.user.email;
-  gClient.requestAccessToken(opt);
+  if (!auth || !auth.currentUser) { S.calStatus = { state: "gerr", why: "not signed in" }; render(); return; }
+  var pr = new firebase.auth.GoogleAuthProvider();
+  pr.addScope(GCAL_SCOPE);
+  if (S.user && S.user.email) pr.setCustomParameters({ login_hint: S.user.email });
+  S.calStatus = { state: "" }; render();
+  auth.currentUser.reauthenticateWithPopup(pr).then(function (res) {
+    var tok = res && res.credential && res.credential.accessToken;
+    if (!tok) { S.calStatus = { state: "gerr", why: "no token" }; render(); return; }
+    gotToken(tok, 3600);
+  }).catch(function (e) {
+    var c = (e && e.code) || "";
+    if (c === "auth/popup-blocked" || c === "auth/operation-not-supported-in-this-environment") {
+      // fallback: Google Identity Services popup
+      if (gInit()) { var opt = { prompt: gWanted ? "" : "consent" }; if (S.user && S.user.email) opt.login_hint = S.user.email; gClient.requestAccessToken(opt); return; }
+      S.calStatus = { state: "popup", why: c };
+    } else if (c === "auth/popup-closed-by-user" || c === "auth/cancelled-popup-request") S.calStatus = { state: "closed", why: c };
+    else if (c === "auth/user-mismatch") S.calStatus = { state: "gerr", why: "בחרת חשבון Google אחר מזה שאיתו נכנסת לאפליקציה" };
+    else S.calStatus = { state: "gerr", why: c || (e && e.message) || "" };
+    render();
+  });
 }
 function watchCal(force) {
   if (!S.showEv || !S.user) return;
@@ -847,7 +866,8 @@ function fetchCal(w) {
     ingest(all); calAt = Date.now(); S.calStatus = { state: "ok", at: calAt }; render();
   }).catch(function (e) {
     calKey = "";
-    if (e && (e.status === 401 || e.status === 403)) { gTok = null; lsSet("myday-gtok", null); S.calStatus = { state: "expired" }; }
+    if (e && e.status === 401) { gTok = null; lsSet("myday-gtok", null); S.calStatus = { state: "expired" }; }
+    else if (e && e.status === 403) { S.calStatus = { state: "noscope", why: "403" }; }
     else S.calStatus = { state: "gerr" };
     render();
   });
