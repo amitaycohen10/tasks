@@ -628,6 +628,10 @@ body { background: radial-gradient(1200px 500px at 80% -10%, color-mix(in srgb, 
 .chainrow .del { border: 0; background: none; color: var(--muted); padding: 4px; display: grid; }
 .banner.fire { border-inline-start-color: #e8590c; background: linear-gradient(135deg, color-mix(in srgb, #e8590c 10%, var(--surface)), var(--surface)); }
 @media (max-width: 560px) { .habtabs { grid-template-columns: 1fr; } }
+.cap-prev { display: grid; gap: 4px; font-size: 14px; } .cap-prev:empty { display: none; }
+.cp-go { background: color-mix(in srgb, var(--accent) 12%, var(--surface)); color: var(--ink); border-radius: 10px; padding: 7px 10px; }
+.cp-in { background: color-mix(in srgb, #8a5cc7 10%, var(--surface)); border-radius: 10px; padding: 7px 10px; color: var(--muted); }
+.cap-tip { font-size: 12.5px; color: var(--muted); }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -835,7 +839,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "18";
+var APP_VERSION = "19";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -983,6 +987,8 @@ function removeTask(id) {
 }
 
 /* ---------------- quick-add parser ---------------- */
+var HN = { "אחת": 1, "אחד": 1, "שתיים": 2, "שתים": 2, "שלוש": 3, "ארבע": 4, "חמש": 5, "שש": 6, "שבע": 7, "שמונה": 8, "תשע": 9, "עשר": 10, "אחת עשרה": 11, "אחת-עשרה": 11, "שתים עשרה": 12, "שתיים עשרה": 12, "שתים-עשרה": 12 };
+var TIME_RE = new RegExp("\\s(בשעה\\s+|ב-?\\s?)?(\\d{1,2}|אחת[ -]עשרה|שתי?ים[ -]עשרה|אחת|אחד|שתיים|שתים|שלוש|ארבע|חמש|שש|שבע|שמונה|תשע|עשר)(?::(\\d{2}))?(?:\\s+(וחצי|ורבע|פחות\\s+רבע))?(?:\\s+(בבוקר|בצהריים|בצהרים|אחרי?\\s+הצהריים|אחה[\"״]צ|בערב|בלילה))?(?=\\s)(?!\\s+(?:דקות|דק['׳]?|שעות|ימים|שבועות)(?=\\s))");
 var WD = { "ראשון": 0, "שני": 1, "שלישי": 2, "רביעי": 3, "חמישי": 4, "שישי": 5, "שבת": 6 };
 function nextDow(dow) { var t = new Date(), diff = (dow - t.getDay() + 7) % 7; return ymd(addD(t, diff === 0 ? 7 : diff)); }
 function parseQuick(raw) {
@@ -1001,8 +1007,20 @@ function parseQuick(raw) {
     take(/\sכל\s+יום(?=\s)/, function () { r.rep = "daily"; }) ||
     take(/\sכל\s+שבוע(?=\s)/, function () { r.rep = "weekly"; }) ||
     take(/\sכל\s+חודש(?=\s)/, function () { r.rep = "monthly"; });
-  take(/\s(?:בשעה\s+|ב-?)?(\d{1,2}):(\d{2})(?=\s)/, function (m) { if (+m[1] < 24 && +m[2] < 60) r.time = pad(+m[1]) + ":" + m[2]; }) ||
-    take(/\s(?:בשעה\s+|ב-)(\d{1,2})(?=\s)/, function (m) { var h = +m[1]; if (h < 24) { if (h >= 1 && h <= 7) h += 12; r.time = pad(h) + ":00"; } });
+  (function () {
+    var m = s.match(TIME_RE); if (!m) return;
+    var pre = m[1], hh = HN[m[2]] || +m[2], mm = m[3] ? +m[3] : 0, frac = m[4] || "", mod = m[5] || "";
+    if (!pre && !m[3] && !mod) return;
+    if (!(hh >= 0 && hh < 24 && mm < 60)) return;
+    if (/וחצי/.test(frac)) mm = 30; else if (/ורבע/.test(frac)) mm = 15; else if (/פחות/.test(frac)) { hh = (hh + 23) % 24; mm = 45; }
+    if (mod) {
+      if (/בוקר/.test(mod)) { if (hh === 12) hh = 0; }
+      else if (/צהר/.test(mod) && !/אח/.test(mod)) { if (hh <= 5) hh += 12; }
+      else if (/לילה/.test(mod)) { if (hh >= 6 && hh < 12) hh += 12; else if (hh === 12) hh = 0; }
+      else if (hh < 12) hh += 12;
+    } else if (!m[3] && hh >= 1 && hh <= 7) hh += 12;
+    r.time = pad(hh) + ":" + pad(mm); s = s.replace(m[0], " ");
+  })();
   take(/\s(\d+)\s*(?:דקות|דק'|דק׳|דק)(?=\s)/, function (m) { r.dur = +m[1]; }) ||
     take(/\sשעה\s+וחצי(?=\s)/, function () { r.dur = 90; }) ||
     take(/\sחצי\s+שעה(?=\s)/, function () { r.dur = 30; }) ||
@@ -1652,8 +1670,9 @@ document.getElementById("composer").addEventListener("submit", function (e) {
     title: r.title, notes: "", date: r.date || def.date || "", time: r.time || def.time || "",
     dur: r.dur || 0, pri: r.pri, proj: r.proj ? findOrMakeProject(r.proj) : def.proj || "",
     rep: r.rep, subs: [], done: false, doneAt: 0, created: Date.now(), order: Date.now(),
-    due: r.due || "", tags: r.tags.concat(def.tags.filter(function (g) { return r.tags.indexOf(g) < 0; })), imp: false, inbox: !def.proj
+    due: r.due || "", tags: r.tags.concat(def.tags.filter(function (g) { return r.tags.indexOf(g) < 0; })), imp: false, inbox: false
   };
+  t.inbox = !t.date && !t.time && !t.proj;
   if (t.time && !t.date) t.date = T();
   if (t.time && !t.dur) t.dur = 30;
   if (t.rep && !t.date) t.date = T();
@@ -3123,18 +3142,33 @@ function openCapture(prefill) {
 function drawCapture(val) {
   document.getElementById("capBox").innerHTML = '<div class="cap-top"><span>' + ic("inbox") + 'הוספה מהירה לסל</span><button class="iconbtn" data-cp="close" aria-label="סגירה">' + ic("x") + "</button></div>" +
     '<label class="sr" for="capText">מה צריך לזכור?</label><textarea id="capText" rows="3" placeholder="מה צריך לזכור? (כל שורה = משימה נפרדת)">' + esc(val) + "</textarea>" +
+    '<div id="capPrev" class="cap-prev"></div><div class="cap-tip">💡 אמרת זמן, כמו "מחר ב-8 בבוקר"? המשימה תיכנס ישר ליומן, בלי לעבור בסל.</div>' +
     '<div class="cap-row">' + (SR ? '<button class="mic big" id="capMic" data-cp="mic" aria-label="הקלטה">' + ic("mic") + "</button>" : "") + '<button class="btn primary big" data-cp="save">' + ic("check") + "שמירה לסל</button></div>" +
     (CAP.saved.length ? '<div class="cap-saved"><b>נשמרו עכשיו:</b>' + CAP.saved.slice(-5).map(function (s) { return "<span>✓ " + esc(s) + "</span>"; }).join("") + "</div>" : "") +
     '<button class="btn plain" data-cp="close">לאפליקציה</button>';
 }
+function capParse(line) {
+  var r = parseQuick(line);
+  if (r.time && !r.date) r.date = r.time <= new Date().toTimeString().slice(0, 5) ? TM(1) : T();
+  if (r.rep && !r.date) r.date = T();
+  if (r.time && !r.dur) r.dur = 30;
+  return r;
+}
+function capWhere(r) { return (r.date === T() ? "היום" : r.date === TM(1) ? "מחר" : relDate(r.date)) + (r.time ? " ב-" + r.time : ""); }
+function capPreview() {
+  var ta = document.getElementById("capText"), el = document.getElementById("capPrev"); if (!ta || !el) return;
+  var lines = ta.value.split(/\n+/).map(function (x) { return x.trim(); }).filter(Boolean);
+  el.innerHTML = lines.map(function (l) { var r = capParse(l); return r.date ? '<div class="cp-go">📅 <b>' + esc(r.title || l) + "</b> ייכנס ישר ל<b>" + capWhere(r) + "</b> (לא לסל)</div>" : r.proj ? '<div class="cp-go">#️⃣ <b>' + esc(r.title || l) + "</b> ייכנס ישר לנושא <b>" + esc(r.proj) + "</b></div>" : '<div class="cp-in">📥 ' + esc(l) + " ← לסל</div>"; }).join("");
+}
+document.addEventListener("input", function (e) { if (e.target.id === "capText") capPreview(); });
 function captureSave() {
   var ta = document.getElementById("capText"), v = (ta.value || "").trim();
   if (!v) return;
   if (!store) { toast("רגע, מתחבר לחשבון…"); return; }
   v.split(/\n+/).map(function (x) { return x.trim(); }).filter(Boolean).forEach(function (line, i) {
-    var r = parseQuick(line);
-    store.put(newId() + i, { title: r.title || line, notes: "", date: r.date || "", time: r.time || "", dur: r.dur || 0, pri: r.pri || 0, proj: r.proj ? findOrMakeProject(r.proj) : "", rep: r.rep || "", subs: [], done: false, doneAt: 0, created: Date.now() + i, order: Date.now() + i, due: r.due || "", tags: r.tags || [], imp: false, inbox: true });
-    CAP.saved.push(r.title || line);
+    var r = capParse(line), pj = r.proj ? findOrMakeProject(r.proj) : "";
+    store.put(newId() + i, { title: r.title || line, notes: "", date: r.date || "", time: r.time || "", dur: r.dur || 0, pri: r.pri || 0, proj: pj, rep: r.rep || "", subs: [], done: false, doneAt: 0, created: Date.now() + i, order: Date.now() + i, due: r.due || "", tags: r.tags || [], imp: false, inbox: !r.date && !pj });
+    CAP.saved.push((r.title || line) + (r.date ? " ← " + capWhere(r) : pj ? " ← #" + r.proj : ""));
   });
   celebrate(false); drawCapture("");
   setTimeout(function () { var t = document.getElementById("capText"); if (t) t.focus(); }, 30);
@@ -3144,7 +3178,7 @@ function capMic() {
   if (rec) { rec.stop(); return; }
   var ta = document.getElementById("capText"), base = ta.value ? ta.value + " " : "";
   rec = new SR(); rec.lang = "he-IL"; rec.interimResults = true;
-  rec.onresult = function (e) { var s = ""; for (var i = 0; i < e.results.length; i++) s += e.results[i][0].transcript; ta.value = base + s; };
+  rec.onresult = function (e) { var s = ""; for (var i = 0; i < e.results.length; i++) s += e.results[i][0].transcript; ta.value = base + s; capPreview(); };
   rec.onerror = function (e) { if (e.error === "not-allowed") toast("צריך לאשר גישה למיקרופון"); };
   rec.onend = function () { rec = null; var b = document.getElementById("capMic"); if (b) b.classList.remove("on"); };
   try { rec.start(); document.getElementById("capMic").classList.add("on"); } catch (x) { rec = null; }
