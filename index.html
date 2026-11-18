@@ -153,7 +153,30 @@ button.chip:hover { border-color: var(--accent); }
 .grip { position: absolute; inset-inline-start: -2px; top: 50%; transform: translateY(-50%); width: 12px; height: 22px; color: var(--muted); opacity: 0; display: none; cursor: grab; }
 @media (hover: hover) and (pointer: fine) { .grip { display: block; } .trow:hover .grip { opacity: .55; } }
 .trow { -webkit-touch-callout: none; }
-.trow.lifting { opacity: .35; }
+.trow.lifting { opacity: .45; transform: scale(.98); }
+.laterbtn { margin-top: 18px; width: 100%; display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); padding: 14px 16px; text-align: start; color: var(--ink); }
+.laterbtn:hover { border-color: var(--accent); }
+.laterbtn b { font-family: var(--display); font-weight: 600; font-size: 16px; } .laterbtn span { color: var(--muted); font-size: 13.5px; }
+.laterbtn .cnt { margin-inline-start: auto; background: var(--accent-soft); color: var(--accent); font-weight: 700; border-radius: 99px; padding: 2px 12px; font-variant-numeric: tabular-nums; }
+.laterbtn svg.i { color: var(--accent); width: 22px; height: 22px; }
+.lgrp { margin-top: 18px; } .lgrp > h3 { font-family: var(--display); font-weight: 600; font-size: 17px; margin: 0 4px 8px; display: flex; align-items: center; gap: 8px; }
+.lgrp > h3 .n { color: var(--muted); font-size: 13.5px; font-weight: 500; }
+.ltopic { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); margin-bottom: 8px; overflow: hidden; box-shadow: var(--shadow); }
+.ltopic > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 12px 14px; font-weight: 700; }
+.ltopic > summary::-webkit-details-marker { display: none; }
+.ltopic > summary svg.i { transition: transform .15s; transform: none; color: var(--muted); }
+.ltopic[open] > summary svg.i { transform: rotate(-90deg); }
+.ltopic > summary .n { margin-inline-start: auto; color: var(--muted); font-weight: 600; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.ltopic > .card { border: 0; border-top: 1px solid var(--line); border-radius: 0; box-shadow: none; min-height: 44px; }
+.ltopic.zover-t { outline: 2px dashed var(--accent); outline-offset: 2px; }
+.board.nosnap { scroll-snap-type: none; }
+.boardnav { display: flex; gap: 6px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+.boardnav .lbl { color: var(--muted); font-size: 13px; margin-inline-end: 4px; }
+.dock details { margin-top: 8px; } .dock summary { cursor: pointer; font-weight: 700; font-size: 14px; padding: 6px 2px; display: flex; gap: 6px; align-items: center; }
+.dock summary .n { color: var(--muted); font-weight: 500; margin-inline-start: auto; }
+.dock .dgh { font-family: var(--display); font-size: 14px; margin: 14px 2px 2px; display: flex; gap: 6px; align-items: center; }
+@media (min-width: 900px) { .colcards { max-height: calc(100vh - 330px); overflow-y: auto; } }
+@media (max-width: 899px) { .deskonly { display: none !important; } }
 .dropline { height: 3px; background: var(--accent); border-radius: 3px; margin: -1px 10px; position: relative; z-index: 2; }
 [data-zone].zover { outline: 2px dashed var(--accent); outline-offset: 2px; }
 body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: none; -webkit-user-select: none; }
@@ -408,6 +431,38 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
 .plan-title { font-family: var(--display); font-size: 22px; font-weight: 600; overflow-wrap: anywhere; } .plan-notes { color: var(--muted); font-size: 14px; white-space: pre-line; }
 .plan-q { margin: 0; font-weight: 700; } .plan-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .plan-btns .btn { justify-content: center; padding: 11px; }
 .plan-end { display: grid; justify-items: center; text-align: center; gap: 8px; padding: 10px; } .plan-end h2 { font-family: var(--display); margin: 0; } .plan-end p { margin: 0; color: var(--muted); } .plan-end svg { width: 70px; height: 70px; }
+.confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 95; }
+.gamebar { margin-top: 12px; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 10px 14px; box-shadow: var(--shadow); text-align: start; color: var(--ink); }
+.gamebar:hover { border-color: var(--accent); }
+.gb-goal { display: flex; align-items: center; gap: 10px; }
+.gb-ring { width: 46px; height: 46px; border-radius: 50%; background: conic-gradient(var(--accent) calc(var(--p) * 1%), var(--line) 0); display: grid; place-items: center; position: relative; flex: none; }
+.gb-ring::before { content: ""; position: absolute; inset: 5px; border-radius: 50%; background: var(--surface); }
+.gb-ring b { position: relative; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.gb-goal > span:last-child, .gb-it { display: grid; line-height: 1.25; }
+.gb-it b, .gb-goal > span:last-child > b { font-weight: 700; font-size: 14.5px; }
+.gb-it span, .gb-goal > span:last-child > span { font-size: 12.5px; color: var(--muted); }
+.gb-cmp { flex-basis: 100%; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 8px; }
+.frog { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; background: linear-gradient(135deg, color-mix(in srgb, #5cb85c 16%, var(--surface)), var(--surface)); border: 1px solid color-mix(in srgb, #5cb85c 40%, var(--line)); border-radius: var(--r); padding: 12px 14px; }
+.frog .fe { font-size: 30px; line-height: 1; }
+.frog .tx { flex: 1; min-width: 170px; display: grid; gap: 2px; }
+.frog .tx b { font-family: var(--display); font-size: 17px; font-weight: 600; overflow-wrap: anywhere; }
+.frog .tx span { color: var(--muted); font-size: 13px; }
+.frog .tx .lbl { font-size: 12px; font-weight: 700; color: #3d8b3d; }
+.frog.empty { background: var(--surface); border-style: dashed; border-color: var(--line); }
+.frogl { max-height: 55vh; overflow-y: auto; }
+.frogopt { display: grid; gap: 2px; width: 100%; text-align: start; border: 0; border-top: 1px solid var(--line); background: none; padding: 11px 14px; font-weight: 600; position: relative; color: var(--ink); }
+.frogopt:first-child { border-top: 0; } .frogopt:hover { background: var(--accent-soft); }
+.frogopt span { font-size: 12.5px; color: var(--muted); font-weight: 500; display: flex; gap: 5px; align-items: center; }
+.frogopt.p3 { border-inline-start: 4px solid var(--p3); } .frogopt.p2 { border-inline-start: 4px solid var(--p2); }
+.lvcard { margin-top: 14px; display: flex; gap: 16px; align-items: center; background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 65%, #0b3a2e)); color: var(--accent-ink); border-radius: var(--r); padding: 16px 18px; box-shadow: var(--shadow); }
+.lvbig { font-family: var(--display); font-size: 34px; font-weight: 700; white-space: nowrap; }
+.lvcard .tx { flex: 1; display: grid; gap: 6px; } .lvcard .tx b { font-family: var(--display); font-size: 18px; } .lvcard .tx span { opacity: .9; font-size: 13.5px; }
+.lvcard .bar { background: color-mix(in srgb, var(--accent-ink) 25%, transparent); } .lvcard .bar i { background: var(--accent-ink); }
+.goalset { padding: 14px; display: grid; gap: 10px; justify-items: start; } .goalset .ck { display: flex; gap: 8px; align-items: center; }
+.badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.badge { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px; display: grid; gap: 3px; justify-items: center; text-align: center; opacity: .55; filter: grayscale(1); }
+.badge.got { opacity: 1; filter: none; box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+.badge .be { font-size: 30px; } .badge b { font-size: 14px; } .badge span { font-size: 12px; color: var(--muted); } .badge .bdate { color: var(--accent); font-weight: 700; }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -610,7 +665,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "11";
+var APP_VERSION = "13";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -733,19 +788,20 @@ function findOrMakeProject(name) {
 
 function complete(id) {
   var t = S.tasks[id]; if (!t || !store) return;
-  var before = Object.assign({}, t);
+  var before = Object.assign({}, t), rw;
   if (!t.done && t.rep) {
     var nd = nextRep(t.date, t.rep);
     var subs = (t.subs || []).map(function (s) { return { t: s.t, d: false }; });
     save(id, { date: nd, lastDone: Date.now(), subs: subs });
-    toast("יפה! המשימה חוזרת " + relDate(nd), "ביטול", function () { store.put(id, before); });
+    rw = reward(id, before);
+    toast(rw.msg + " · חוזרת " + relDate(nd), "ביטול", function () { store.put(id, before); unreward(before, rw.pts); });
   } else if (!t.done) {
-    save(id, { done: true, doneAt: Date.now() });
-    var st = todayStats();
-    if (st.total > 0 && st.open === 0 && t.date && t.date <= T()) toast("סיימת את כל המשימות של היום. כל הכבוד!", "ביטול", function () { store.put(id, before); });
-    else toast("סומן כבוצע", "ביטול", function () { store.put(id, before); });
+    save(id, { done: true, doneAt: Date.now(), xpGot: pointsFor(t, id) });
+    rw = reward(id, before);
+    toast(rw.msg, "ביטול", function () { store.put(id, before); unreward(before, rw.pts); });
   } else {
     save(id, { done: false, doneAt: 0 });
+    unreward(t, t.xpGot || 10, t.doneAt ? ymd(new Date(t.doneAt)) : T());
   }
 }
 function removeTask(id) {
@@ -838,7 +894,7 @@ function section(key, title, items, o) {
     (items.length || o.pre ? '<div class="card"' + zoneAttr(o.zone) + ">" + (o.pre || "") + items.map(function (t) { return taskRow(t, o.row); }).join("") + "</div>" : (o.emptyHtml ? o.emptyHtml.replace("<div ", "<div" + zoneAttr(o.zone) + " ") : "")) +
     "</section>";
 }
-function zoneAttr(z) { return z ? ' data-zone="1" data-zdate="' + esc(z.date) + '" data-ztime="' + (z.time || "keep") + '" data-zsort="' + (z.sort ? 1 : 0) + '"' + (z.sec != null ? ' data-zsec="' + esc(z.sec) + '"' : "") : ""; }
+function zoneAttr(z) { return z ? ' data-zone="1" data-zdate="' + esc(z.date) + '" data-ztime="' + (z.time || "keep") + '" data-zsort="' + (z.sort ? 1 : 0) + '"' + (z.sec != null ? ' data-zsec="' + esc(z.sec) + '"' : "") + (z.proj != null ? ' data-zproj="' + esc(z.proj) + '"' : "") : ""; }
 function ordKey(t) { return t.order != null ? t.order : (t.created || 0); }
 function byOrder(a, b) { return ordKey(a) - ordKey(b); }
 function dayOrder(a, b) { if (a.time && b.time) return a.time < b.time ? -1 : a.time > b.time ? 1 : 0; if (a.time) return -1; if (b.time) return 1; return byOrder(a, b); }
@@ -1003,7 +1059,7 @@ function go(view, projId) {
   S.view = view; S.projId = projId || null;
   if (view === "cal") S.calScrollSet = false;
   S.cmpCtx = null;
-  S.cmpDate = (view === "project" || view === "projects") ? "none" : "today";
+  S.cmpDate = (view === "project" || view === "projects" || view === "later") ? "none" : "today";
   document.getElementById("content").scrollTop = 0;
   lsSet("myday-view", view === "project" ? "projects" : view === "tag" ? "tags" : view);
   render();
@@ -1018,6 +1074,7 @@ function renderSide() {
     var cur = S.view === v.id || (v.id === "projects" && S.view === "project" && false);
     h += '<button class="nav" data-act="go" data-view="' + v.id + '" aria-current="' + cur + '">' + ic(v.icon) + v.name + '<span class="cnt">' + cnt + "</span></button>";
   });
+  h += '<button class="nav" data-act="go" data-view="later" aria-current="' + (S.view === "later") + '">' + ic("subs") + 'להמשך<span class="cnt">' + (L.filter(function (t) { return !t.done && !t.date; }).length || "") + "</span></button>";
   h += '<button class="nav" data-act="search">' + ic("search") + "חיפוש" + '<span class="cnt"><span class="kbd">/</span></span></button>';
   h += "<h3><span>כלים</span></h3>";
   TOOLS.forEach(function (tl) { h += '<button class="nav" data-act="go" data-view="' + tl.v + '" aria-current="' + (S.view === tl.v || (tl.v === "tags" && S.view === "tag")) + '">' + ic(tl.i) + tl.n + "</button>"; });
@@ -1037,7 +1094,7 @@ function renderSide() {
     var cur = S.view === v.id || (v.id === "projects" && S.view === "project");
     tb += '<button class="tab" data-act="go" data-view="' + v.id + '" aria-current="' + cur + '">' + ic(v.icon) + v.name + (v.id === "today" && st.open ? '<span class="bdg">' + st.open + "</span>" : "") + "</button>";
   });
-  var moreCur = ["more", "matrix", "habits", "week", "templates", "tags", "tag"].indexOf(S.view) >= 0;
+  var moreCur = ["more", "matrix", "habits", "week", "templates", "tags", "tag", "progress", "later"].indexOf(S.view) >= 0;
   tb += '<button class="tab" data-act="go" data-view="more" aria-current="' + moreCur + '">' + ic("grid") + "עוד</button>";
   document.getElementById("tabs").innerHTML = tb;
 }
@@ -1061,6 +1118,8 @@ function renderTop() {
   } else if (S.view === "templates") { h = '<div class="tt"><h1>תבניות</h1><span class="sub">רשימות שלבים מוכנות למשימות שחוזרות</span></div>' + searchBtn;
   } else if (S.view === "tags") { h = '<div class="tt"><h1>תגיות</h1><span class="sub">תוויות שחוצות פרויקטים</span></div>' + searchBtn;
   } else if (S.view === "tag") { h = '<button class="iconbtn" data-act="go" data-view="tags" aria-label="חזרה לתגיות">' + ic("back") + '</button><div class="tt"><h1>@' + esc(S.tagName || "") + "</h1></div>" + searchBtn;
+  } else if (S.view === "progress") { h = '<div class="tt"><h1>התקדמות ותגים</h1><span class="sub">נקודות, רמות, רצף ימים ותגים</span></div>' + searchBtn;
+  } else if (S.view === "later") { h = '<button class="iconbtn" data-act="go" data-view="today" aria-label="חזרה להיום">' + ic("back") + '</button><div class="tt"><h1>משימות להמשך</h1><span class="sub">כל מה שעוד אין לו תאריך, לפי נושאים</span></div>' + searchBtn;
   } else if (S.view === "more") { h = '<div class="tt"><h1>עוד</h1><span class="sub">כלים, גיבוי וחשבון</span></div>' + searchBtn;
   } else if (S.view === "project") {
     var p = proj(S.projId);
@@ -1077,7 +1136,7 @@ function viewToday() {
   var timed = tday.filter(function (t) { return t.time; }), untimed = tday.filter(function (t) { return !t.time; }).sort(byOrder);
   var inbox = L.filter(function (t) { return !t.done && !t.date; }).sort(byOrder);
   var dn = L.filter(doneToday).sort(function (a, b) { return (b.doneAt || b.lastDone || 0) - (a.doneAt || a.lastDone || 0); });
-  var h = "";
+  var h = gameBarHtml() + frogHtml();
   var nx = null;
   var cands = timed.concat(evFor(td).filter(function (e) { return !e.allDay; })).sort(function (a, b) { return mins(a.time) - mins(b.time); });
   for (var i = 0; i < cands.length; i++) { var s = mins(cands[i].time), e = s + (cands[i].dur || 30); if (e > nm) { nx = Object.assign({}, cands[i]); nx._now = s <= nm; nx._in = s - nm; break; } }
@@ -1106,12 +1165,45 @@ function viewToday() {
   } else {
     h += '<section class="sec"><div class="sec-h"><span>להיום</span></div><div class="empty"' + zoneAttr({ date: td, time: "clear", sort: 1 }) + ">" + emptyArt(dn.length ? "done" : "") + (dn.length ? "<b>סיימת את כל מה שתכננת להיום</b><span>אפשר לנוח, או למשוך משימה מהרשימה שלמטה.</span>" : "<b>אין עדיין משימות להיום</b><span>כתוב משימה בשורה למעלה. אפשר להוסיף שעה, למשל \"שיחה עם יוסי 15:00\".</span>") + "</div></section>";
   }
-  if (S.groupBy === "topic" && inbox.length) h += groupedSections("ib", "בלי תאריך", inbox, { date: "", time: "clear", sort: 1 });
-  else h += section("inbox", "בלי תאריך", inbox, { fold: true, zone: { date: "", time: "clear", sort: 1 }, act: inbox.length ? '<span class="n" style="margin-inline-start:auto">' + (isPhone() ? "לחיצה ארוכה וגרירה" : "גרור") + " משימה ל\"להיום\" או לחץ עליה כדי לתת תאריך</span>" : "" });
+  var tm = TM(1), tmr = L.filter(function (t) { return !t.done && t.date === tm; }).sort(dayOrder);
+  var sat = ymd(addD(sunday(new Date()), 6));
+  var wk = L.filter(function (t) { return !t.done && t.date > tm && t.date <= sat; }).sort(byDate);
+  if (S.groupBy === "topic" && tmr.length) h += groupedSections("tm", "מחר", tmr, { date: tm, time: "keep", sort: 1 });
+  else h += section("tmr", "מחר", tmr, { row: { date: false }, zone: { date: tm, time: "keep", sort: 1 }, fold: true, always: true, emptyHtml: '<div class="empty" style="padding:12px">גרור לכאן משימה כדי לעשות אותה מחר</div>' });
+  if (wk.length) h += section("wk", "בהמשך השבוע", wk, { fold: true });
+  h += laterButton(inbox.length);
+  if (false) h += section("inbox", "בלי תאריך", inbox, { fold: true, zone: { date: "", time: "clear", sort: 1 }, act: inbox.length ? '<span class="n" style="margin-inline-start:auto">' + (isPhone() ? "לחיצה ארוכה וגרירה" : "גרור") + " משימה ל\"להיום\" או לחץ עליה כדי לתת תאריך</span>" : "" });
   h += section("done", "בוצע היום", dn, { fold: true });
   return h;
 }
 
+function laterButton(n) {
+  return '<button class="laterbtn" data-act="go" data-view="later">' + ic("list") + '<span style="display:grid;gap:2px"><b>משימות להמשך</b><span>כל המשימות שעוד אין להן תאריך, מסודרות לפי נושאים</span></span><span class="cnt">' + n + "</span></button>";
+}
+function viewLater() {
+  var L = list().filter(function (t) { return !t.done && !t.date; });
+  var h = '<p class="mhint">כאן המשימות בלי תאריך, לפי פרויקט ונושא. לחץ על נושא כדי לפתוח אותו. כדי לתכנן משימה, לחץ עליה ובחר תאריך, או גרור אותה לנושא אחר.</p>';
+  if (!L.length) return h + '<div class="empty">' + emptyArt("done") + "<b>אין משימות בלי תאריך</b></div>";
+  var ps = (S.settings.projects || []).slice(); ps.push(null);
+  ps.forEach(function (p) {
+    var pid = p ? p.id : "";
+    var items = L.filter(function (t) { return (t.proj && proj(t.proj) ? t.proj : "") === pid; });
+    if (!items.length) return;
+    var secs = p ? projSecs(p) : [], ids = {}; secs.forEach(function (s) { ids[s.id] = 1; });
+    var groups = secs.map(function (s) { return { id: s.id, name: s.name, items: items.filter(function (t) { return t.sec === s.id; }) }; });
+    var orphan = items.filter(function (t) { return !t.sec || !ids[t.sec]; });
+    if (orphan.length) groups.push({ id: "", name: secs.length ? "ללא נושא" : "משימות", items: orphan });
+    h += '<div class="lgrp"><h3><i class="dot" style="--c:' + esc(p ? p.color : "var(--muted)") + '"></i>' + esc(p ? p.name : "ללא פרויקט") + '<span class="n">' + items.length + "</span></h3>";
+    groups.forEach(function (g) {
+      if (!g.items.length) return;
+      var key = pid + "|" + g.id, open = !!S.openTopics[key];
+      h += '<details class="ltopic" data-key="' + esc(key) + '"' + (open ? " open" : "") + "><summary>" + ic("chev") + esc(g.name) + '<span class="n">' + g.items.length + "</span></summary>" +
+        '<div class="card"' + zoneAttr({ date: "", time: "clear", sort: 1, sec: g.id, proj: pid }) + ">" + (open ? g.items.sort(byOrder).map(function (t) { return taskRow(t, { proj: false }); }).join("") : "") + "</div></details>";
+    });
+    h += "</div>";
+  });
+  return h;
+}
 function groupedSections(prefix, title, items, zone) {
   var groups = {}, order = [];
   items.forEach(function (t) { var k = t.proj && proj(t.proj) ? t.proj : ""; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(t); });
@@ -1136,8 +1228,7 @@ function viewUp() {
   }
   var later = L.filter(function (t) { return t.date && dayDiff(t.date) >= 14; }).sort(byDate);
   h += section("later", "מאוחר יותר", later, {});
-  var none = L.filter(function (t) { return !t.date; }).sort(byOrder);
-  h += section("unone", "בלי תאריך", none, { zone: { date: "", time: "clear", sort: 1 } });
+  h += laterButton(L.filter(function (t) { return !t.date; }).length);
   return h;
 }
 
@@ -1176,6 +1267,7 @@ function viewProject() {
   if (orphan.some(function (t) { return trelloListOf(t); })) h += '<div class="trellofix">' + ic("list") + 'למשימות שיובאו מ-Trello יש רשימות. לסדר אותן בעמודות לפי הרשימות?<button class="btn primary" data-act="trelloSecs">לסדר לפי Trello</button></div>';
   var cols = secs.map(function (s) { return { id: s.id, name: s.name, items: open.filter(function (t) { return t.sec === s.id; }) }; });
   if (orphan.length || !secs.length) cols.unshift({ id: "", name: secs.length ? "ללא רשימה" : "משימות", items: orphan });
+  h += '<div class="boardnav"><span class="lbl">מעבר בין הנושאים:</span><button class="iconbtn" data-act="bScroll" data-d="r" aria-label="נושא קודם">' + ic("back") + '</button><button class="iconbtn" data-act="bScroll" data-d="l" aria-label="נושא הבא">' + ic("chev") + '</button><span class="deskonly lbl" style="margin-inline-start:10px">גלילה בתוך הנושאים:</span><button class="iconbtn deskonly" data-act="bScroll" data-d="u" aria-label="למעלה"><svg class="i" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button><button class="iconbtn deskonly" data-act="bScroll" data-d="d" aria-label="למטה"><svg class="i" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>';
   h += '<div class="board" id="board">';
   cols.forEach(function (c) {
     c.items.sort(byOrder);
@@ -1245,6 +1337,23 @@ function blkHtml(it, hp) {
   var color = taskColor(t);
   return '<div class="blk' + (t.done ? " done" : "") + '" data-id="' + esc(t.id) + '" data-act="open" style="--c:' + esc(color) + ";top:" + top + "px;height:" + h + "px;inset-inline-start:calc(" + (it.lane * w) + "% + 2px);width:calc(" + w + '% - 4px)"><div class="bt">' + esc(t.title) + '</div><div class="bm">' + hhmm(it.s) + "–" + hhmm(it.e) + '</div><div class="rs" data-rs="1"></div></div>';
 }
+function dockGroups(items) {
+  var out = "", ps = (S.settings.projects || []).slice(); ps.push(null);
+  ps.forEach(function (p) {
+    var pid = p ? p.id : "", its = items.filter(function (t) { return (t.proj && proj(t.proj) ? t.proj : "") === pid; });
+    if (!its.length) return;
+    var secs = p ? projSecs(p) : [], ids = {}; secs.forEach(function (s) { ids[s.id] = 1; });
+    var groups = secs.map(function (s) { return { id: s.id, name: s.name, items: its.filter(function (t) { return t.sec === s.id; }) }; });
+    var orphan = its.filter(function (t) { return !t.sec || !ids[t.sec]; }); if (orphan.length) groups.push({ id: "", name: secs.length ? "ללא נושא" : "משימות", items: orphan });
+    groups.forEach(function (g) {
+      if (!g.items.length) return;
+      var key = "dock|" + pid + "|" + g.id, open = !!S.openTopics[key];
+      out += '<details class="ltopic" data-key="' + esc(key) + '"' + (open ? " open" : "") + '><summary><i class="dot" style="--c:' + esc(p ? p.color : "var(--muted)") + '"></i>' + (p && secs.length ? esc(p.name) + " · " : p ? esc(p.name) + " · " : "") + esc(g.name) + '<span class="n">' + g.items.length + "</span></summary>" +
+        (open ? '<div class="card">' + g.items.sort(byOrder).map(function (t) { return taskRow(t, { drag: true, time: false, proj: false }); }).join("") + "</div>" : '<div class="card"></div>') + "</details>";
+    });
+  });
+  return out;
+}
 function viewCal() {
   var days = calRange(), td = T(), L = list(), hp = hourPx();
   var a = pd(days[0]), b = pd(days[days.length - 1]);
@@ -1269,9 +1378,12 @@ function viewCal() {
   });
   h += "</div></div></div></div>";
   // dock with tasks to schedule (desktop)
-  var pool = L.filter(function (t) { return !t.done && !t.time && (!t.date || t.date <= td); }).sort(function (x, y) { return (y.pri || 0) - (x.pri || 0) || byDate(x, y); });
+  var poolToday = L.filter(function (t) { return !t.done && !t.time && t.date && t.date <= td; }).sort(function (x, y) { return (y.pri || 0) - (x.pri || 0) || byDate(x, y); });
+  var poolLater = L.filter(function (t) { return !t.done && !t.date; });
   h += '<div class="dock"><h4>לשבץ ביומן</h4><p>גרור משימה לשעה ביומן. לחיצה על משבצת ריקה יוצרת משימה בשעה הזו.</p>' +
-    (pool.length ? '<div class="card">' + pool.map(function (t) { return taskRow(t, { drag: true, time: false }); }).join("") + "</div>" : '<div class="empty" style="padding:16px">' + emptyArt("done") + "<span>כל המשימות של היום כבר משובצות.</span></div>") + "</div></div>";
+    '<div class="dgh">' + ic("sun") + "להיום</div>" +
+    (poolToday.length ? '<div class="card">' + poolToday.map(function (t) { return taskRow(t, { drag: true, time: false }); }).join("") + "</div>" : '<div class="empty" style="padding:12px">כל המשימות של היום משובצות</div>') +
+    (poolLater.length ? '<div class="dgh">' + ic("subs") + "להמשך, לפי נושאים</div>" + dockGroups(poolLater) : "") + "</div></div>";
   return h;
 }
 
@@ -1295,8 +1407,10 @@ function render() {
   else if (S.view === "tags") c.innerHTML = viewTags();
   else if (S.view === "tag") c.innerHTML = viewTag();
   else if (S.view === "more") c.innerHTML = viewMore();
+  else if (S.view === "later") c.innerHTML = viewLater();
+  else if (S.view === "progress") c.innerHTML = viewProgress();
   c.className = "content" + (S.view === "cal" ? " flush" : "");
-  hideComposer = ["more", "habits", "week", "templates", "tags"].indexOf(S.view) >= 0;
+  hideComposer = ["more", "habits", "week", "templates", "tags", "progress"].indexOf(S.view) >= 0;
   document.getElementById("composer").style.display = (S.view === "projects" && !isPhone()) || hideComposer ? "none" : "";
   document.getElementById("fab").style.display = hideComposer ? "none" : "";
   c.scrollTop = keep;
@@ -1582,6 +1696,16 @@ document.addEventListener("click", function (e) {
     tasksT.forEach(function (t) { if (!t.sec) save(t.id, { sec: mp[trelloListOf(t)] }); });
     toast("המשימות סודרו ב-" + names.length + " רשימות");
   }
+  else if (a === "frogPick") openFrogPick();
+  else if (a === "frogDone") { var gf = G(); if (gf.frog && S.tasks[gf.frog.id]) complete(gf.frog.id); }
+  else if (a === "setGoal") { var gg = ensureGame(); gg.goal = +b.getAttribute("data-n"); putGame(gg); }
+  else if (a === "bScroll") {
+    var bd = document.getElementById("board"); if (!bd) return;
+    var dir = b.getAttribute("data-d"), cw = (bd.querySelector(".colb") || { offsetWidth: 300 }).offsetWidth + 12;
+    if (dir === "l") bd.scrollBy({ left: -cw, behavior: "smooth" });
+    else if (dir === "r") bd.scrollBy({ left: cw, behavior: "smooth" });
+    else bd.querySelectorAll(".colcards").forEach(function (cc) { cc.scrollBy({ top: dir === "d" ? 320 : -320, behavior: "smooth" }); });
+  }
   else if (a === "habTog") toggleHabit(b.getAttribute("data-h"), b.getAttribute("data-d"));
   else if (a === "habDel") {
     if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = "למחוק?"; setTimeout(function () { if (b.isConnected) { b.classList.remove("sure"); b.innerHTML = ic("trash"); } }, 3000); return; }
@@ -1656,6 +1780,7 @@ document.addEventListener("submit", function (e) {
   store.putSettings({ projects: ps });
 });
 document.addEventListener("change", function (e) {
+  if (e.target.id === "soundTog") { var gs = ensureGame(); gs.sound = e.target.checked; putGame(gs); if (gs.sound) ding(false); return; }
   if (e.target.hasAttribute && e.target.hasAttribute("data-secname")) {
     var sid = e.target.getAttribute("data-secname"), nv = e.target.value.trim(); if (!nv) return;
     setProj(S.projId, function (q) { q.sections = q.sections.map(function (s) { return s.id === sid ? { id: s.id, name: nv } : s; }); return q; });
@@ -1684,6 +1809,7 @@ document.addEventListener("keydown", function (e) {
     return;
   }
   if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (S.view === "project" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) { var bb = document.querySelector('[data-act="bScroll"][data-d="' + (e.key === "ArrowLeft" ? "l" : "r") + '"]'); if (bb) { e.preventDefault(); bb.click(); } return; }
   if (e.key === "n" || e.key === "N" || e.key === "מ") { e.preventDefault(); openComposer(); }
   else if (e.key === "/" || e.key === ".") { e.preventDefault(); openSearch(); }
   else if (/^[1-4]$/.test(e.key)) go(VIEWS[+e.key - 1].id);
@@ -1821,7 +1947,16 @@ contentEl.addEventListener("animationend", function () { contentEl.classList.rem
 var ldrag = null;
 function zoneUnder(x, y) {
   var el = document.elementFromPoint(x, y);
-  return el ? el.closest("[data-zone]") : null;
+  if (!el) return null;
+  var z = el.closest("[data-zone]"); if (z) return z;
+  var col = el.closest(".colb"); if (col) return col.querySelector(".colcards");
+  if (el.closest(".board")) {
+    var best = null, bd = 1e9;
+    document.querySelectorAll(".colb").forEach(function (c) { var r = c.getBoundingClientRect(), d = x < r.left ? r.left - x : x > r.right ? x - r.right : 0; if (d < bd) { bd = d; best = c; } });
+    if (best && bd < 40) return best.querySelector(".colcards");
+  }
+  var tp = el.closest(".ltopic"); if (tp) { if (!tp.open) tp.open = true; return tp.querySelector("[data-zone]"); }
+  return null;
 }
 document.addEventListener("pointerdown", function (e) {
   if (S.view === "cal") return;
@@ -1830,7 +1965,7 @@ document.addEventListener("pointerdown", function (e) {
   if (e.pointerType === "mouse" && e.button !== 0) return;
   var t = S.tasks[row.getAttribute("data-id")]; if (!t || t.done) return;
   ldrag = { id: row.getAttribute("data-id"), row: row, x0: e.clientX, y0: e.clientY, active: false, touch: e.pointerType !== "mouse" };
-  if (ldrag.touch) ldrag.timer = setTimeout(function () { lActivate(e.clientX, e.clientY); }, 380);
+  if (ldrag.touch) ldrag.timer = setTimeout(function () { lActivate(e.clientX, e.clientY); }, 500);
 });
 function lActivate(x, y) {
   if (!ldrag) return;
@@ -1840,14 +1975,22 @@ function lActivate(x, y) {
   document.body.classList.add("ldragging");
   var g = document.createElement("div"); g.className = "ghost"; g.textContent = (S.tasks[ldrag.id] || {}).title || ""; document.body.appendChild(g); ldrag.ghost = g;
   ldrag.line = document.createElement("div"); ldrag.line.className = "dropline";
+  var bdn = document.getElementById("board"); if (bdn) bdn.classList.add("nosnap");
+  ldrag.iv = setInterval(lEdge, 30);
   lMove(x, y);
 }
-function lMove(x, y) {
-  ldrag.ghost.style.left = x + "px"; ldrag.ghost.style.top = y + "px";
+function lEdge() {
+  if (!ldrag || !ldrag.active) return;
+  var x = ldrag.lx, y = ldrag.ly, moved = false;
   var c = document.getElementById("content"), cr = c.getBoundingClientRect();
-  if (y < cr.top + 40) c.scrollTop -= 14; else if (y > cr.bottom - 60) c.scrollTop += 14;
+  if (y < cr.top + 50) { c.scrollTop -= 12; moved = true; } else if (y > cr.bottom - 70) { c.scrollTop += 12; moved = true; }
   var bd = document.getElementById("board");
-  if (bd) { var br = bd.getBoundingClientRect(); if (y > br.top && y < br.bottom) { if (x < br.left + 40) bd.scrollLeft -= 16; else if (x > br.right - 40) bd.scrollLeft += 16; } }
+  if (bd) { var br = bd.getBoundingClientRect(); if (y > br.top - 40 && y < br.bottom + 40) { if (x < br.left + 36) { bd.scrollLeft -= 14; moved = true; } else if (x > br.right - 36) { bd.scrollLeft += 14; moved = true; } } }
+  if (moved) lMove(x, y);
+}
+function lMove(x, y) {
+  ldrag.lx = x; ldrag.ly = y;
+  ldrag.ghost.style.left = x + "px"; ldrag.ghost.style.top = y + "px";
   document.querySelectorAll(".zover").forEach(function (z) { z.classList.remove("zover"); });
   if (ldrag.line.parentNode) ldrag.line.remove();
   var z = zoneUnder(x, y);
@@ -1876,6 +2019,8 @@ function lEnd(apply) {
   clearTimeout(ldrag.timer);
   var d = ldrag; ldrag = null;
   if (!d.active) return;
+  clearInterval(d.iv);
+  var bdn = document.getElementById("board"); if (bdn) bdn.classList.remove("nosnap");
   suppressClick = true; setTimeout(function () { suppressClick = false; }, 50);
   document.body.classList.remove("ldragging");
   if (d.ghost) d.ghost.remove();
@@ -1888,6 +2033,7 @@ function lEnd(apply) {
   if (zd !== "keep") patch.date = zd;
   if (zt === "clear" || patch.date === "") patch.time = "";
   var zs = z.getAttribute("data-zsec"); if (zs !== null) patch.sec = zs;
+  var zp = z.getAttribute("data-zproj"); if (zp !== null) patch.proj = zp;
   var zq = z.getAttribute("data-zq");
   if (zq) { zq = +zq; patch.imp = zq <= 2; patch.pri = zq === 1 || zq === 3 ? 3 : (t.pri === 3 ? 2 : (t.pri || 0)); if (zq === 4 && t.pri === 3) patch.pri = 0; }
   if (z.getAttribute("data-zsort") === "1") {
@@ -1987,6 +2133,161 @@ document.getElementById("imp").addEventListener("click", function (e) {
   toast("יובאו " + items.length + " משימות לפרויקט " + name, "הצגה", function () { go("project", pid); });
 });
 
+/* ================= motivation: points, levels, streaks, frog, badges ================= */
+var LEVELS = ["מתחיל", "מתארגן", "בתנופה", "מתכנן", "ממוקד", "מבצע", "מוביל", "אלוף המשימות", "מאסטר", "אגדה"];
+var BADGES = [
+  { id: "first", n: "צעד ראשון", d: "סיימת משימה ראשונה", e: "👣" },
+  { id: "t10", n: "10 משימות", d: "סיימת 10 משימות", e: "✅" },
+  { id: "t50", n: "50 משימות", d: "סיימת 50 משימות", e: "🏅" },
+  { id: "t100", n: "100 משימות", d: "סיימת 100 משימות", e: "🏆" },
+  { id: "t250", n: "250 משימות", d: "סיימת 250 משימות", e: "👑" },
+  { id: "goal", n: "ביעד", d: "עמדת ביעד היומי בפעם הראשונה", e: "🎯" },
+  { id: "s3", n: "3 ימים ברצף", d: "עמדת ביעד 3 ימים ברצף", e: "🔥" },
+  { id: "s7", n: "שבוע ברצף", d: "עמדת ביעד 7 ימים ברצף", e: "⚡" },
+  { id: "s30", n: "חודש ברצף", d: "עמדת ביעד 30 ימים ברצף", e: "🌟" },
+  { id: "frog1", n: "אכלת צפרדע", d: "סיימת את הצפרדע של היום", e: "🐸" },
+  { id: "frog10", n: "צייד צפרדעים", d: "סיימת 10 צפרדעים", e: "🏹" },
+  { id: "early", n: "ציפור מוקדמת", d: "סיימת משימה לפני 8 בבוקר", e: "🌅" },
+  { id: "stubborn", n: "לא מוותר", d: "סיימת משימה שנדחתה 3 פעמים או יותר", e: "💪" },
+  { id: "topic", n: "ניקית נושא", d: "סגרת את המשימה האחרונה בנושא", e: "🧹" },
+  { id: "allday", n: "יום מושלם", d: "סיימת את כל המשימות של היום", e: "🌈" }
+];
+function G() { var g = (S.settings && S.settings.game) || {}; return { goal: g.goal || 3, xp: g.xp || 0, log: Object.assign({}, g.log || {}), badges: Object.assign({}, g.badges || {}), frog: g.frog || null, frogs: g.frogs || 0, sound: g.sound !== false, init: !!g.init }; }
+function putGame(g) { store.putSettings({ game: g }); }
+function ensureGame() {
+  var g = G(); if (g.init || !store) return g;
+  list().forEach(function (t) { if (t.done && t.doneAt) { var d = ymd(new Date(t.doneAt)); g.log[d] = (g.log[d] || 0) + 1; g.xp += 10; } });
+  g.init = true; putGame(g); return g;
+}
+function levelOf(xp) { var L = Math.floor(Math.sqrt(xp / 30)); var cur = 30 * L * L, next = 30 * (L + 1) * (L + 1); return { n: L + 1, name: LEVELS[Math.min(L, LEVELS.length - 1)], cur: cur, next: next, pct: Math.round((xp - cur) / (next - cur) * 100) }; }
+function totalDone(g) { var s = 0; Object.keys(g.log).forEach(function (k) { s += g.log[k]; }); return s; }
+function goalStreak(g) {
+  var d = new Date(), n = 0;
+  if ((g.log[ymd(d)] || 0) < g.goal) d = addD(d, -1);
+  while ((g.log[ymd(d)] || 0) >= g.goal) { n++; d = addD(d, -1); }
+  return n;
+}
+function weekCount(g, off) {
+  var s = addD(sunday(new Date()), off * 7), days = off === 0 ? new Date().getDay() + 1 : 7, n = 0;
+  for (var i = 0; i < days; i++) n += g.log[ymd(addD(s, i))] || 0;
+  return n;
+}
+function weekSamePeriod(g) { var s = addD(sunday(new Date()), -7), n = 0; for (var i = 0; i <= new Date().getDay(); i++) n += g.log[ymd(addD(s, i))] || 0; return n; }
+function pointsFor(t, id) { var p = 10 + (t.pri || 0) * 5 + (t.imp ? 5 : 0) + ((t.postponed || 0) >= 3 ? 10 : 0); var g = G(); if (g.frog && g.frog.date === T() && g.frog.id === (id || t.id)) p += 20; return p; }
+function reward(id, t) {
+  var g = ensureGame(), td = T(), pts = pointsFor(t, id), newB = [];
+  var wasGoal = (g.log[td] || 0) >= g.goal;
+  g.xp += pts; g.log[td] = (g.log[td] || 0) + 1;
+  var isFrog = g.frog && g.frog.date === td && g.frog.id === id;
+  if (isFrog) { g.frogs++; g.frog = Object.assign({}, g.frog, { done: true }); }
+  function give(b) { if (!g.badges[b]) { g.badges[b] = td; newB.push(b); } }
+  var tot = totalDone(g);
+  give("first"); if (tot >= 10) give("t10"); if (tot >= 50) give("t50"); if (tot >= 100) give("t100"); if (tot >= 250) give("t250");
+  var nowGoal = (g.log[td] || 0) >= g.goal; if (nowGoal) give("goal");
+  var st = goalStreak(g); if (st >= 3) give("s3"); if (st >= 7) give("s7"); if (st >= 30) give("s30");
+  if (isFrog) give("frog1"); if (g.frogs >= 10) give("frog10");
+  if (new Date().getHours() < 8) give("early");
+  if ((t.postponed || 0) >= 3) give("stubborn");
+  if (t.proj && t.sec && !list().some(function (x) { return x.id !== id && !x.done && x.proj === t.proj && x.sec === t.sec; }) && list().filter(function (x) { return x.proj === t.proj && x.sec === t.sec; }).length >= 3) give("topic");
+  var ts = todayStats(); if (ts.total >= 2 && ts.open === 0) give("allday");
+  putGame(g);
+  var big = (!wasGoal && nowGoal) || newB.length || isFrog || (ts.total >= 2 && ts.open === 0);
+  celebrate(big);
+  var msg = "+" + pts + " נקודות";
+  if (isFrog) msg = "🐸 אכלת את הצפרדע! +" + pts + " נקודות";
+  else if (!wasGoal && nowGoal) msg = "🎯 עמדת ביעד היומי! " + (st > 1 ? st + " ימים ברצף 🔥" : "+" + pts);
+  else if (ts.total >= 2 && ts.open === 0) msg = "🌈 סיימת את כל המשימות של היום! +" + pts;
+  if (newB.length) setTimeout(function () { var b = BADGES.filter(function (x) { return x.id === newB[0]; })[0]; toast(b.e + " תג חדש: " + b.n, "לתגים", function () { go("progress"); }); }, 2600);
+  return { pts: pts, msg: msg, frog: isFrog };
+}
+function unreward(t, pts, day) {
+  var g = G(); day = day || T();
+  g.xp = Math.max(0, g.xp - (pts || 10)); if (g.log[day]) g.log[day]--;
+  if (g.frog && g.frog.id === t.id && g.frog.done) { g.frog = Object.assign({}, g.frog, { done: false }); g.frogs = Math.max(0, g.frogs - 1); }
+  putGame(g);
+}
+
+/* ---------- confetti + sound ---------- */
+var cfCanvas = null, cfParts = [], cfRun = false, audioCtx = null;
+function celebrate(big) {
+  var g = G();
+  if (g.sound) ding(big);
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!cfCanvas) { cfCanvas = document.createElement("canvas"); cfCanvas.className = "confetti"; document.body.appendChild(cfCanvas); }
+  cfCanvas.width = innerWidth * devicePixelRatio; cfCanvas.height = innerHeight * devicePixelRatio;
+  var cols = ["#2b6e5b", "#e08a1e", "#3a73c9", "#d1453b", "#8a5cc7", "#f2c94c", "#1f9bb0"];
+  var n = big ? 160 : 36, ox = big ? innerWidth / 2 : (lastTap.x || innerWidth / 2), oy = big ? innerHeight * 0.35 : (lastTap.y || innerHeight / 2);
+  for (var i = 0; i < n; i++) {
+    var a = Math.random() * Math.PI * 2, v = (big ? 6 : 3.5) + Math.random() * (big ? 7 : 4);
+    cfParts.push({ x: ox, y: oy, vx: Math.cos(a) * v, vy: Math.sin(a) * v - (big ? 5 : 3), r: 3 + Math.random() * 4, c: cols[i % cols.length], life: big ? 110 : 55, rot: Math.random() * 6 });
+  }
+  if (!cfRun) { cfRun = true; requestAnimationFrame(cfStep); }
+}
+function cfStep() {
+  var ctx = cfCanvas.getContext("2d"), dpr = devicePixelRatio;
+  ctx.clearRect(0, 0, cfCanvas.width, cfCanvas.height);
+  cfParts = cfParts.filter(function (p) { return p.life > 0; });
+  cfParts.forEach(function (p) {
+    p.x += p.vx; p.y += p.vy; p.vy += 0.25; p.vx *= 0.985; p.life--; p.rot += 0.2;
+    ctx.save(); ctx.globalAlpha = Math.min(1, p.life / 30); ctx.fillStyle = p.c; ctx.translate(p.x * dpr, p.y * dpr); ctx.rotate(p.rot);
+    ctx.fillRect(-p.r * dpr, -p.r * dpr / 2, p.r * 2 * dpr, p.r * dpr); ctx.restore();
+  });
+  if (cfParts.length) requestAnimationFrame(cfStep); else { cfRun = false; ctx.clearRect(0, 0, cfCanvas.width, cfCanvas.height); }
+}
+function ding(big) {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    var notes = big ? [659, 784, 1047] : [880, 1175], t0 = audioCtx.currentTime;
+    notes.forEach(function (f, i) {
+      var o = audioCtx.createOscillator(), gn = audioCtx.createGain();
+      o.type = "sine"; o.frequency.value = f; o.connect(gn); gn.connect(audioCtx.destination);
+      var s = t0 + i * 0.09; gn.gain.setValueAtTime(0.0001, s); gn.gain.exponentialRampToValueAtTime(0.18, s + 0.015); gn.gain.exponentialRampToValueAtTime(0.0001, s + 0.35);
+      o.start(s); o.stop(s + 0.4);
+    });
+  } catch (e) {}
+}
+var lastTap = {};
+document.addEventListener("pointerdown", function (e) { lastTap = { x: e.clientX, y: e.clientY }; }, true);
+
+/* ---------- today: game bar + frog ---------- */
+function gameBarHtml() {
+  var g = G(), td = T(), done = g.log[td] || 0, st = goalStreak(g), lv = levelOf(g.xp);
+  var thisW = weekCount(g, 0), lastW = weekSamePeriod(g), diff = thisW - lastW;
+  var cmp = thisW === 0 && lastW === 0 ? "" : diff > 0 ? "השבוע " + thisW + " משימות, " + diff + " יותר מבשבוע שעבר 💪" : diff === 0 ? "השבוע " + thisW + " משימות, כמו בשבוע שעבר" : "השבוע " + thisW + " משימות. בשבוע שעבר עד היום: " + lastW + ". אפשר להשלים! 🚀";
+  var pct = Math.min(100, Math.round(done / g.goal * 100));
+  return '<button class="gamebar" data-act="go" data-view="progress"><span class="gb-goal"><span class="gb-ring" style="--p:' + pct + '"><b>' + done + "/" + g.goal + '</b></span><span><b>יעד יומי</b><span>' + (done >= g.goal ? "הושג! 🎯" : "עוד " + (g.goal - done) + " משימות") + '</span></span></span>' +
+    '<span class="gb-it"><b>🔥 ' + st + "</b><span>ימים ברצף</span></span>" +
+    '<span class="gb-it"><b>⭐ רמה ' + lv.n + "</b><span>" + lv.name + "</span></span>" +
+    (cmp ? '<span class="gb-cmp">' + cmp + "</span>" : "") + "</button>";
+}
+function frogHtml() {
+  var g = G(), td = T(), f = g.frog && g.frog.date === td ? g.frog : null, t = f ? S.tasks[f.id] : null;
+  if (f && t && (f.done || t.done)) return '<div class="frog done"><span class="fe">🐸</span><div class="tx"><b>אכלת את הצפרדע של היום!</b><span>' + esc(t.title) + ' · כל השאר כבר קל יותר</span></div></div>';
+  if (f && t) return '<div class="frog"><span class="fe">🐸</span><div class="tx"><span class="lbl">הצפרדע של היום · המשימה הקשה ביותר, קודם כול</span><b>' + esc(t.title) + '</b></div><button class="btn primary" data-act="frogDone">' + ic("check") + 'סיימתי</button><button class="btn plain" data-act="frogPick">להחליף</button></div>';
+  return '<div class="frog empty"><span class="fe">🐸</span><div class="tx"><b>מה הצפרדע של היום?</b><span>בחר את המשימה הקשה או החשובה ביותר, ותעשה אותה ראשונה. +20 נקודות בונוס.</span></div><button class="btn" data-act="frogPick">לבחור</button></div>';
+}
+function openFrogPick() {
+  var td = T(), L = list().filter(function (t) { return !t.done && t.date && t.date <= td; }).sort(function (a, b) { return (b.pri || 0) - (a.pri || 0) || (b.imp ? 1 : 0) - (a.imp ? 1 : 0); });
+  var box = document.getElementById("planBox");
+  box.innerHTML = '<div class="plan-top"><span>🐸 בחירת הצפרדע של היום</span><button class="iconbtn" data-pl="close" aria-label="סגירה" style="margin-inline-start:auto">' + ic("x") + '</button></div><p class="plan-q">איזו משימה הכי קשה לך להתחיל, אבל הכי חשוב לסיים?</p>' +
+    (L.length ? '<div class="card frogl">' + L.map(function (t) { return '<button class="frogopt' + (t.pri ? " p" + t.pri : "") + '" data-frog="' + esc(t.id) + '">' + esc(t.title) + (t.proj && proj(t.proj) ? '<span><i class="dot" style="--c:' + esc(proj(t.proj).color) + '"></i>' + esc(proj(t.proj).name) + "</span>" : "") + "</button>"; }).join("") + "</div>" : '<div class="empty">אין משימות להיום. הוסף משימה להיום, ואז בחר אותה כצפרדע.</div>');
+  document.getElementById("plan").hidden = false; PL = null;
+}
+
+/* ---------- progress view ---------- */
+function viewProgress() {
+  var g = ensureGame(), lv = levelOf(g.xp), st = goalStreak(g), tot = totalDone(g);
+  var h = '<div class="lvcard"><div class="lvbig">⭐ ' + lv.n + '</div><div class="tx"><b>רמה ' + lv.n + ": " + lv.name + '</b><span class="bar" style="--c:var(--accent)"><i style="width:' + lv.pct + '%"></i></span><span>' + g.xp + " נקודות · עוד " + (lv.next - g.xp) + ' לרמה הבאה</span></div></div>';
+  h += '<div class="tiles"><div class="tile"><b>🔥 ' + st + '</b><span>ימים ברצף ביעד</span></div><div class="tile"><b>' + tot + '</b><span>משימות בוצעו</span></div><div class="tile"><b>🐸 ' + g.frogs + "</b><span>צפרדעים</span></div></div>";
+  h += '<section class="sec"><div class="sec-h"><span>היעד היומי שלי</span></div><div class="card goalset"><span>כמה משימות ביום?</span><div class="seg">' + [1, 2, 3, 4, 5, 6, 8, 10].map(function (n) { return '<button data-act="setGoal" data-n="' + n + '" aria-pressed="' + (g.goal === n) + '">' + n + "</button>"; }).join("") + '</div><label class="ck"><input type="checkbox" id="soundTog"' + (g.sound ? " checked" : "") + "> צליל כשמסיימים משימה</label></div></section>";
+  var weeks = []; for (var i = 7; i >= 0; i--) weeks.push({ n: weekCount(g, -i), l: i === 0 ? "השבוע" : i === 1 ? "שעבר" : "" });
+  var mx = Math.max.apply(null, weeks.map(function (w) { return w.n; }).concat([1]));
+  h += '<section class="sec"><div class="sec-h"><span>משימות בשבוע, 8 שבועות אחרונים</span></div><div class="card bars" style="grid-template-columns:repeat(8,1fr)">' + weeks.map(function (w) { return '<div class="barcol"><span class="bn">' + (w.n || "") + '</span><i style="height:' + Math.round(w.n / mx * 100) + '%"></i><span class="bd">' + w.l + "</span></div>"; }).join("") + "</div></section>";
+  h += '<section class="sec"><div class="sec-h"><span>תגים</span><span class="n">' + Object.keys(g.badges).length + "/" + BADGES.length + '</span></div><div class="badges">' + BADGES.map(function (b) { var got = g.badges[b.id]; return '<div class="badge' + (got ? " got" : "") + '"><span class="be">' + (got ? b.e : "🔒") + "</span><b>" + b.n + "</b><span>" + b.d + "</span>" + (got ? '<span class="bdate">' + relDate(got) + "</span>" : "") + "</div>"; }).join("") + "</div></section>";
+  h += '<p class="mhint">איך מקבלים נקודות: 10 לכל משימה, +5 לכל דרגת עדיפות, +5 למשימה חשובה ⭐, +10 למשימה שנדחתה 3 פעמים, ו-20 בונוס לצפרדע 🐸.</p>';
+  return h;
+}
+
 /* ================= extra features ================= */
 function settingsArr(k) { return (S.settings && S.settings[k]) || []; }
 function putSet(k, v) { var o = {}; o[k] = v; store.putSettings(o); }
@@ -2003,7 +2304,7 @@ function planCandidates() {
   var td = T(), L = list().filter(function (t) { return !t.done; });
   var late = L.filter(isLate).sort(byDate);
   var dueSoon = L.filter(function (t) { return t.due && dayDiff(t.due) <= 3 && t.date !== td && !isLate(t); }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
-  var inbox = L.filter(function (t) { return !t.date && dueSoon.indexOf(t) < 0; }).sort(function (a, b) { return (b.pri || 0) - (a.pri || 0) || byOrder(a, b); });
+  var inbox = L.filter(function (t) { return !t.date && dueSoon.indexOf(t) < 0 && (t.pri || t.imp); }).sort(function (a, b) { return (b.pri || 0) - (a.pri || 0) || byOrder(a, b); }).slice(0, 10);
   var seen = {}, out = [];
   late.concat(dueSoon, inbox).forEach(function (t) { if (!seen[t.id]) { seen[t.id] = 1; out.push(t.id); } });
   return out;
@@ -2017,7 +2318,7 @@ function drawPlan() {
   while (PL.i < PL.ids.length && !S.tasks[PL.ids[PL.i]]) PL.i++;
   if (PL.i >= PL.ids.length) {
     var td = T(), nT = list().filter(function (t) { return !t.done && t.date === td; }).length, nE = evFor(td).length;
-    box.innerHTML = '<div class="plan-end">' + emptyArt("done") + "<h2>התוכנית להיום מוכנה</h2><p>" + nT + " משימות" + (nE ? " ו-" + nE + " פגישות" : "") + " להיום." + (PL.ids.length ? " עברת על " + PL.ids.length + " משימות." : "") + '</p><button class="btn primary" data-pl="close">לרשימת היום</button></div>';
+    box.innerHTML = '<div class="plan-end">' + emptyArt("done") + "<h2>התוכנית להיום מוכנה</h2><p>" + nT + " משימות" + (nE ? " ו-" + nE + " פגישות" : "") + " להיום." + (PL.ids.length ? " עברת על " + PL.ids.length + " משימות." : "") + '</p><div class="row2" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn" data-act="frogPick">🐸 לבחור צפרדע</button><button class="btn primary" data-pl="close">לרשימת היום</button></div></div>';
     lsSet("myday-planned", T());
     return;
   }
@@ -2150,11 +2451,13 @@ function viewTag() {
 
 /* ---------- more hub + backup ---------- */
 var TOOLS = [
+  { v: "progress", n: "התקדמות ותגים", d: "נקודות, רמות ותגים", i: "star" },
   { v: "matrix", n: "מטריצת עדיפויות", d: "דחוף מול חשוב", i: "target" },
   { v: "habits", n: "הרגלים", d: "סימון יומי ורצף ימים", i: "fire" },
   { v: "week", n: "סיכום שבועי", d: "מה הספקת, וסקירה שבועית", i: "chart" },
   { v: "templates", n: "תבניות", d: "רשימות שלבים מוכנות", i: "copy" },
-  { v: "tags", n: "תגיות", d: "‎@טלפון, ‎@מחשב ועוד", i: "tag" }
+  { v: "tags", n: "תגיות", d: "‎@טלפון, ‎@מחשב ועוד", i: "tag" },
+  { v: "later", n: "משימות להמשך", d: "כל מה שבלי תאריך, לפי נושאים", i: "subs" }
 ];
 function viewMore() {
   var h = '<div class="tools">' + TOOLS.map(function (t) { return '<button class="tool" data-act="go" data-view="' + t.v + '">' + ic(t.i) + "<b>" + t.n + "</b><span>" + t.d + "</span></button>"; }).join("") +
@@ -2200,7 +2503,7 @@ var rs = null;
 document.addEventListener("touchstart", function (e) {
   if (e.touches.length !== 1 || S.view === "cal") return;
   var row = e.target.closest("#content .trow[data-id]");
-  if (!row || e.target.closest(".cb")) return;
+  if (!row || e.target.closest(".cb") || e.target.closest(".board")) return;
   var t = S.tasks[row.getAttribute("data-id")]; if (!t || t.done) return;
   rs = { row: row, id: row.getAttribute("data-id"), x: e.touches[0].clientX, y: e.touches[0].clientY, on: false, dx: 0 };
 }, { passive: true });
@@ -2231,9 +2534,13 @@ document.addEventListener("touchend", function () {
 });
 
 document.getElementById("planBox").addEventListener("click", function (e) {
-  var b = e.target.closest("[data-pl]"); if (!b || !PL) return;
-  var a = b.getAttribute("data-pl"), id = PL.ids[PL.i];
+  var fb = e.target.closest("[data-frog]");
+  if (fb) { var gq = ensureGame(); gq.frog = { date: T(), id: fb.getAttribute("data-frog"), done: false }; putGame(gq); document.getElementById("plan").hidden = true; toast("🐸 נבחרה הצפרדע של היום. בהצלחה!"); return; }
+  var b = e.target.closest("[data-pl]"); if (!b) return;
+  var a = b.getAttribute("data-pl");
   if (a === "close") { document.getElementById("plan").hidden = true; render(); return; }
+  if (!PL) return;
+  var id = PL.ids[PL.i];
   if (a === "today") { save(id, { date: T() }); PL.today++; }
   else if (a === "tomorrow") save(id, { date: TM(1), time: "" });
   else if (a === "week") save(id, { date: ymd(addD(sunday(new Date()), 7)), time: "" });
@@ -2249,14 +2556,21 @@ document.getElementById("bkFile").addEventListener("change", function (e) {
 document.getElementById("micSlot").outerHTML = micBtn();
 if (document.getElementById("micBtn")) document.getElementById("micBtn").addEventListener("click", toggleMic);
 
+document.addEventListener("toggle", function (e) {
+  var d = e.target; if (!d.classList || !d.classList.contains("ltopic")) return;
+  var k = d.getAttribute("data-key"); S.openTopics[k] = d.open;
+  if (d.open && !d.querySelector(".trow")) render();
+}, true);
+
 /* ---------------- boot ---------------- */
 S.calDays = lsGet("myday-caldays", null) || (isPhone() ? 3 : 7);
 if (isPhone() && S.calDays === 7) S.calDays = 3;
 S.showEv = lsGet("myday-showev", true) !== false;
 S.calColor = lsGet("myday-calcolor", "proj");
 S.groupBy = lsGet("myday-groupby", "order");
+S.openTopics = {};
 var v0 = lsGet("myday-view", "today");
-if (["today", "cal", "up", "projects", "more", "matrix", "habits", "week", "templates", "tags"].indexOf(v0) >= 0) S.view = v0;
+if (["today", "cal", "up", "projects", "more", "matrix", "habits", "week", "templates", "tags", "later", "progress"].indexOf(v0) >= 0) S.view = v0;
 var lastDay = T();
 setInterval(function () {
   if (drag || !store) return;
