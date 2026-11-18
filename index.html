@@ -857,7 +857,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "24";
+var APP_VERSION = "25";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -879,14 +879,14 @@ function fbStore(uid) {
   }
   var u1 = col.onSnapshot(function (snap) {
     var t = {}; snap.forEach(function (d) { t[d.id] = d.data(); });
-    S.tasks = t; loaded = true; clearTimeout(timer); notice(""); render();
+    S.tasks = t; loaded = true; clearTimeout(timer); notice(""); render(); setTimeout(inboxSweep, 300);
   }, function (e) { clearTimeout(timer); fail(e); });
   var u2 = setRef.onSnapshot(function (d) {
     var data = d.exists ? d.data() : null;
     S.settings = Object.assign({ projects: [], habits: [], templates: [] }, data || {}); render();
   }, function () {});
   return {
-    put: function (id, t) { t = clean(t); S.tasks[id] = t; col.doc(id).set(t).catch(fail); render(); },
+    put: function (id, t) { if (t.inbox && t.date && !t.done) { t = Object.assign({}, t, { inbox: false, fromInbox: true, backFrom: "" }); } t = clean(t); S.tasks[id] = t; col.doc(id).set(t).catch(fail); render(); },
     del: function (id) { delete S.tasks[id]; col.doc(id).delete().catch(fail); render(); },
     putSettings: function (s) { s = clean(s); S.settings = Object.assign({}, S.settings, s); setRef.set(s, { merge: true }).catch(fail); render(); },
     putMany: function (items) {
@@ -961,6 +961,16 @@ function save(id, patch) {
   var old = S.tasks[id] || {};
   if (patch.date && old.date && patch.date > old.date && !old.done && !patch.lastDone && !patch.done) patch.postponed = (old.postponed || 0) + 1;
   var t = Object.assign({}, old, patch); store.put(id, t); return t;
+}
+var sweptOn = "";
+function inboxSweep() {
+  if (!store || sweptOn === T()) return; sweptOn = T(); var n = 0;
+  Object.keys(S.tasks).forEach(function (id) {
+    var t = S.tasks[id]; if (!t || t.done || t.rep) return;
+    if (t.inbox && t.date && t.date >= T()) { store.put(id, Object.assign({}, t)); return; }
+    if ((t.fromInbox || t.inbox) && t.date && t.date < T()) { n++; store.put(id, Object.assign({}, t, { inbox: true, fromInbox: false, backFrom: t.date, date: "", time: "" })); }
+  });
+  if (n) setTimeout(function () { toast("↩ " + n + (n === 1 ? " משימה מהסל שלא בוצעה חזרה לסל" : " משימות מהסל שלא בוצעו חזרו לסל")); }, 800);
 }
 function isLate(t) { return !t.done && t.date && t.date < T(); }
 function doneToday(t) { var td = T(); return (t.done && t.doneAt && ymd(new Date(t.doneAt)) === td) || (t.lastDone && ymd(new Date(t.lastDone)) === td && !t.done); }
@@ -1100,6 +1110,7 @@ function taskRow(t, o) {
   if (t.status === "waiting") meta.push("<span>⏳ מחכה</span>");
   if (t.status === "someday") meta.push("<span>💭 אולי פעם</span>");
   if (t.est) meta.push("<span>" + ic("clock") + (t.est < 60 ? t.est + " דק׳" : t.est / 60 + " ש׳") + "</span>");
+  if (t.inbox && t.backFrom) meta.push('<span style="color:#e8590c">↩ חזרה לסל (תוכננה ל' + relDate(t.backFrom) + ")</span>");
   if (t.inbox && S.view !== "inbox") meta.push('<span style="color:#8a5cc7;font-weight:700">' + ic("inbox") + "בסל</span>");
   if (t.notes) meta.push("<span>" + ic("note") + "</span>");
   if (p && o.proj !== false) meta.push('<span><i class="dot" style="--c:' + esc(p.color) + '"></i>' + esc(p.name) + "</span>");
@@ -1112,12 +1123,12 @@ function taskRow(t, o) {
 }
 function section(key, title, items, o) {
   o = o || {};
-  if (!items.length && !o.always && !o.pre) return "";
+  if (!items.length && !o.always && !o.pre && !o.post) return "";
   var closed = S.folded[key];
   return '<section class="sec' + (closed ? " closed" : "") + '"><div class="sec-h' + (o.late ? " late" : "") + '">' +
     (o.icon ? shic(o.icon[0], o.icon[1]) : "") + (o.fold ? '<button class="fold" data-act="fold" data-key="' + key + '">' + ic("chev") + "<span>" + title + "</span></button>" : "<span>" + title + "</span>") +
     '<span class="n">' + (items.length || "") + "</span>" + (o.act || "") + "</div>" +
-    (items.length || o.pre ? '<div class="card' + (o.cls ? " " + o.cls : "") + '"' + zoneAttr(o.zone) + ">" + (o.pre || "") + items.map(function (t) { return taskRow(t, o.row); }).join("") + "</div>" : (o.emptyHtml ? o.emptyHtml.replace("<div ", "<div" + zoneAttr(o.zone) + " ") : "")) +
+    (items.length || o.pre || o.post ? '<div class="card' + (o.cls ? " " + o.cls : "") + '"' + zoneAttr(o.zone) + ">" + (o.pre || "") + items.map(function (t) { return taskRow(t, o.row); }).join("") + (o.post || "") + "</div>" : (o.emptyHtml ? o.emptyHtml.replace("<div ", "<div" + zoneAttr(o.zone) + " ") : "")) +
     "</section>";
 }
 function zoneAttr(z) { return z ? ' data-zone="1" data-zdate="' + esc(z.date) + '" data-ztime="' + (z.time || "keep") + '" data-zsort="' + (z.sort ? 1 : 0) + '"' + (z.sec != null ? ' data-zsec="' + esc(z.sec) + '"' : "") + (z.proj != null ? ' data-zproj="' + esc(z.proj) + '"' : "") : ""; }
@@ -2357,7 +2368,6 @@ function lEnd(apply) {
   var z = d.zone, patch = {};
   var zd = z.getAttribute("data-zdate"), zt = z.getAttribute("data-ztime");
   if (zd !== "keep") patch.date = zd;
-  if (patch.date && t.inbox) patch.inbox = false;
   if (zt === "clear" || patch.date === "") patch.time = "";
   var zs = z.getAttribute("data-zsec"); if (zs !== null) patch.sec = zs;
   var zp = z.getAttribute("data-zproj"); if (zp !== null) patch.proj = zp;
@@ -3027,9 +3037,9 @@ function viewToday() {
   var dayTasks = L.filter(function (t) { return !t.done && t.date === D; }).sort(byOrder);
   var ttl = isT ? "המשימות שלי להיום" : "המשימות " + (off === 1 ? "למחר" : off === -1 ? "של אתמול" : "ליום " + DAYS[pd(D).getDay()]);
   var acts = '<span style="margin-inline-start:auto;display:flex;gap:6px;align-items:center">' + (dayTasks.filter(function (t) { return t.time; }).length > 1 ? '<button class="act" data-act="sortByTime" data-date="' + D + '">לפי שעות</button>' : "") + '<span class="seg mini"><button data-act="groupBy" data-v="order" aria-pressed="' + (S.groupBy !== "topic") + '">לפי סדר</button><button data-act="groupBy" data-v="topic" aria-pressed="' + (S.groupBy === "topic") + '">לפי נושא</button></span></span>';
-  var hRows = habitRowsHtml(D);
+  var hRows = habitRowsHtml(D, "early"), hLate = habitRowsHtml(D, "late");
   if (S.groupBy === "topic" && dayTasks.length) h += '<div class="sec-h" style="margin-top:18px">' + shic("check", "var(--accent)") + "<span>" + ttl + "</span>" + acts + "</div>" + (hRows ? '<div class="card habcard">' + hRows + "</div>" : "") + groupedSections("dg", "", dayTasks, { date: D, time: "keep", sort: 1 });
-  else h += section("dtasks", ttl, dayTasks, { pre: hRows, icon: ["check", "var(--accent)"], cls: "numbered", row: { date: false }, zone: { date: D, time: "keep", sort: 1 }, always: true, act: acts, emptyHtml: '<div class="empty" style="padding:18px">' + emptyArt(isT && L.some(doneToday) ? "done" : "") + "<b>" + (isT && L.some(doneToday) ? "סיימת את כל מה שתכננת להיום 🎉" : "עוד אין משימות " + (isT ? "להיום" : "ליום הזה")) + "</b><span>הוסף משימה בשורה למעלה, או גרור לכאן מ\"משימות להמשך\". את הסדר קובעים בגרירה: 1, 2, 3…</span></div>" });
+  else h += section("dtasks", ttl, dayTasks, { pre: hRows, post: hLate, icon: ["check", "var(--accent)"], cls: "numbered", row: { date: false }, zone: { date: D, time: "keep", sort: 1 }, always: true, act: acts, emptyHtml: '<div class="empty" style="padding:18px">' + emptyArt(isT && L.some(doneToday) ? "done" : "") + "<b>" + (isT && L.some(doneToday) ? "סיימת את כל מה שתכננת להיום 🎉" : "עוד אין משימות " + (isT ? "להיום" : "ליום הזה")) + "</b><span>הוסף משימה בשורה למעלה, או גרור לכאן מ\"משימות להמשך\". את הסדר קובעים בגרירה: 1, 2, 3…</span></div>" });
   if (isT) {
     var inboxN = L.filter(function (t) { return !t.done && t.inbox; }).length;
     if (inboxN) h += '<button class="inboxpill" data-act="go" data-view="inbox">' + ic("inbox") + "<span>בסל מחכות <b>" + inboxN + "</b> משימות למיון</span>" + ic("chev") + "</button>";
@@ -3572,12 +3582,21 @@ function habitTodayHtml() {
   if (stack.length) h += '<div class="habchips" style="margin-top:8px">' + stack.map(function (hb) { var on = !!hDone(hb), sk = habitStreak(hb); return '<button class="habchip' + (on ? " on" : "") + '" style="--c:' + esc(hb.color) + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + T() + '" aria-pressed="' + on + '"><span class="hc">' + ic("check") + "</span>" + esc(hb.name) + (habitAfterLabel(hb) ? '<span class="af">אחרי ' + esc(habitAfterLabel(hb)) + "</span>" : "") + (sk ? '<span class="fs">' + ic("fire") + sk + "</span>" : "") + "</button>"; }).join("") + "</div>";
   return h + "</section>";
 }
-function habitRowsHtml(D) {
-  var daily = settingsArr("habits").filter(function (x) { return hType(x) === "daily"; }); if (!daily.length) return "";
+var WHEN_RANK = { morning: 0, "": 1, noon: 2, evening: 3, night: 4 };
+function hWhen(hb) {
+  if (hb.when) return hb.when;
+  var s = [hb.name, hb.why, hb.after].join(" ");
+  if (/לפני\s+(ה)?שינה|לפני\s+השכיבה|לפני\s+שאני\s+(הולך\s+)?(לישון|נרדם)|בלילה/.test(s)) return "night";
+  if (/בערב/.test(s)) return "evening"; if (/בצהריים|בצהרים/.test(s)) return "noon"; if (/בבוקר|אחרי\s+הקפה/.test(s)) return "morning";
+  return "";
+}
+function habitRowsHtml(D, part) {
+  var daily = settingsArr("habits").filter(function (x) { return hType(x) === "daily" && (!part || (part === "late") === ((WHEN_RANK[hWhen(x)] || 0) >= 3)); }).sort(function (a, b) { return (WHEN_RANK[hWhen(a)] || 0) - (WHEN_RANK[hWhen(b)] || 0); }); if (!daily.length) return "";
   var fut = D > T();
   return daily.map(function (hb) {
     var v = hDone(hb, D), sk = habitStreak(hb);
-    var meta = '<span class="habtag">🎯 הרגל יומי</span>' + (hb.mins ? "<span>" + ic("clock") + hb.mins + " דק׳</span>" : "") + (sk ? '<span class="hfire">' + ic("fire") + sk + " ברצף</span>" : "") + (v === "min" ? "<span>🌱 גרסה מינימלית</span>" : "");
+    var hw = hWhen(hb), wl = (WHEN_OPTS.filter(function (w) { return w[0] === hw; })[0] || [])[1];
+    var meta = '<span class="habtag">🎯 הרגל יומי</span>' + (hw ? "<span>" + (hw === "night" ? "🌙 " : "") + wl + "</span>" : "") + (hb.mins ? "<span>" + ic("clock") + hb.mins + " דק׳</span>" : "") + (sk ? '<span class="hfire">' + ic("fire") + sk + " ברצף</span>" : "") + (v === "min" ? "<span>🌱 גרסה מינימלית</span>" : "");
     return '<div class="habrow' + (v ? " done" : "") + (fut ? " fut" : "") + '" style="--c:' + esc(hb.color) + '">' +
       (fut ? '<span class="cb hcb" aria-hidden="true">🎯</span>' : '<button class="cb hcb' + (v ? " on" : "") + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + D + '" aria-label="' + (v ? "ביטול סימון" : "סימון ההרגל כבוצע") + '">' + ic("check") + "</button>") +
       '<button class="tmain" data-act="go" data-view="habits"><span class="ttitle">' + esc(hb.name) + '</span><span class="tmeta">' + meta + "</span></button>" +
