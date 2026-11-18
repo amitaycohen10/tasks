@@ -463,6 +463,100 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
 .badge { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px; display: grid; gap: 3px; justify-items: center; text-align: center; opacity: .55; filter: grayscale(1); }
 .badge.got { opacity: 1; filter: none; box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
 .badge .be { font-size: 30px; } .badge b { font-size: 14px; } .badge span { font-size: 12px; color: var(--muted); } .badge .bdate { color: var(--accent); font-weight: 700; }
+body { background: radial-gradient(1200px 500px at 80% -10%, color-mix(in srgb, #1f9bb0 10%, transparent), transparent 60%), radial-gradient(900px 400px at 0% 0%, color-mix(in srgb, #e08a1e 8%, transparent), transparent 60%), var(--bg); }
+.card { border-radius: 16px; }
+.nav[data-view="today"] svg.i, .tab[data-view="today"] svg.i { color: #e8590c; }
+.nav[data-view="cal"] svg.i, .tab[data-view="cal"] svg.i { color: #3a73c9; }
+.nav[data-view="inbox"] svg.i, .tab[data-view="inbox"] svg.i { color: #8a5cc7; }
+.nav[data-view="up"] svg.i, .tab[data-view="up"] svg.i { color: #1f9bb0; }
+.nav[data-view="projects"] svg.i, .tab[data-view="projects"] svg.i { color: #c2477f; }
+.nav[data-view="later"] svg.i { color: #7a8a2e; } .nav[data-view="progress"] svg.i { color: #e0a800; } .nav[data-view="matrix"] svg.i { color: #d1453b; }
+.nav[data-view="habits"] svg.i { color: #e8590c; } .nav[data-view="week"] svg.i { color: #3a73c9; } .nav[data-view="templates"] svg.i { color: #1f9bb0; } .nav[data-view="tags"] svg.i { color: #2b6e5b; }
+.tab[aria-current="true"] { background: var(--accent-soft); }
+.shic { width: 28px; height: 28px; border-radius: 9px; display: inline-grid; place-items: center; background: color-mix(in srgb, var(--c) 16%, var(--surface)); color: var(--c); flex: none; }
+.shic svg.i { width: 16px; height: 16px; }
+.sec-h { font-size: 16px; }
+.hero { margin-top: 10px; border-radius: 20px; padding: 14px; color: #fff; background: linear-gradient(135deg, #2b6e5b 0%, #1f8a8a 55%, #3a73c9 120%); box-shadow: 0 8px 28px color-mix(in srgb, #2b6e5b 30%, transparent); }
+.hero-top { display: flex; align-items: center; gap: 10px; }
+.hero-t { flex: 1; display: grid; text-align: center; } .hero-t b { font-family: var(--display); font-size: 24px; } .hero-t span { opacity: .9; font-size: 13.5px; }
+.hnav { width: 40px; height: 40px; border-radius: 12px; border: 0; background: rgba(255,255,255,.18); color: #fff; display: grid; place-items: center; }
+.hnav:hover { background: rgba(255,255,255,.3); } .hnav:disabled { opacity: .35; }
+.daystrip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 12px; }
+.dchip { border: 0; border-radius: 12px; background: rgba(255,255,255,.14); color: #fff; padding: 6px 0 4px; display: grid; justify-items: center; gap: 1px; font-size: 12px; }
+.dchip b { font-family: var(--display); font-size: 17px; font-variant-numeric: tabular-nums; }
+.dchip i { height: 14px; font-style: normal; font-size: 10.5px; font-weight: 700; }
+.dchip .dn { background: rgba(255,255,255,.3); border-radius: 99px; padding: 0 6px; }
+.dchip.on { background: #fff; color: #1d5a4a; } .dchip.on .dn { background: var(--accent-soft); color: var(--accent); }
+.hero-hint { text-align: center; font-size: 12px; opacity: .8; margin-top: 8px; }
+@media (max-width: 899px) { .hero { padding: 10px; border-radius: 18px; } .hero-t b { font-size: 20px; } .hnav { width: 34px; height: 34px; } .daystrip { gap: 4px; margin-top: 8px; } .dchip { padding: 4px 0 2px; } .dchip b { font-size: 15px; } .hero-hint { margin-top: 6px; font-size: 11px; } }
+:root[data-theme="dark"] .hero { color: #eafff8; }
+.card.numbered { counter-reset: tn; } .card.numbered > .trow { counter-increment: tn; }
+.tnum { display: none; } .card.numbered > .trow .tnum { display: grid; }
+.tnum { flex: none; width: 22px; height: 22px; margin-top: 1px; border-radius: 7px; place-items: center; background: var(--accent-soft); color: var(--accent); font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.tnum::before { content: counter(tn); }
+.seg.mini button { padding: 4px 10px; font-size: 13px; }
+.sched { display: grid; }
+.srow { display: grid; grid-template-columns: 70px 4px 1fr; gap: 12px; align-items: center; padding: 10px 14px; border-top: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.srow:first-child { border-top: 0; } .srow:hover { background: var(--surface-2); } .srow.past { opacity: .5; }
+.srow .st { font-weight: 700; font-variant-numeric: tabular-nums; display: grid; font-size: 14.5px; } .srow .st small { color: var(--muted); font-weight: 500; font-size: 12px; }
+.srow .sb { align-self: stretch; border-radius: 4px; background: var(--c); } .srow .sx { overflow-wrap: anywhere; font-weight: 600; }
+.banner.stuck { border-inline-start-color: #8a5cc7; background: linear-gradient(135deg, color-mix(in srgb, #8a5cc7 9%, var(--surface)), var(--surface)); }
+.inboxpill { margin-top: 12px; width: 100%; display: flex; align-items: center; gap: 10px; border: 0; border-radius: 14px; padding: 10px 14px; background: color-mix(in srgb, #8a5cc7 12%, var(--surface)); color: #6a3fb0; font-weight: 600; text-align: start; }
+.inboxpill span { flex: 1; } .inboxpill b { font-size: 16px; }
+:root[data-theme="dark"] .inboxpill { color: #c9a8ff; }
+.inboxhero { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; border-radius: 20px; padding: 16px; color: #fff; background: linear-gradient(135deg, #8a5cc7, #c2477f); box-shadow: 0 8px 28px color-mix(in srgb, #8a5cc7 30%, transparent); }
+.inboxhero .ih-ic { width: 52px; height: 52px; border-radius: 16px; background: rgba(255,255,255,.2); display: grid; place-items: center; } .inboxhero .ih-ic svg.i { width: 28px; height: 28px; }
+.inboxhero .tx { flex: 1; min-width: 200px; display: grid; gap: 4px; } .inboxhero .tx b { font-family: var(--display); font-size: 20px; } .inboxhero .tx span { opacity: .92; font-size: 14px; line-height: 1.5; }
+.btn.big { padding: 11px 18px; font-size: 16px; border-radius: 12px; }
+.inboxhero .btn { background: #fff; color: #6a3fb0; border: 0; }
+.capbtn { margin-top: 12px; width: 100%; display: flex; align-items: center; gap: 12px; border: 2px dashed color-mix(in srgb, #8a5cc7 45%, var(--line)); background: var(--surface); border-radius: 16px; padding: 14px 16px; text-align: start; color: var(--ink); }
+.capbtn > span { flex: 1; display: grid; gap: 2px; } .capbtn b { font-family: var(--display); font-size: 16px; } .capbtn > span span { color: var(--muted); font-size: 13.5px; }
+.capbtn svg.i { color: #8a5cc7; width: 22px; height: 22px; }
+.srcs { display: grid; } .srcrow { display: flex; align-items: center; gap: 10px; border: 0; border-top: 1px solid var(--line); background: none; padding: 12px 14px; text-align: start; color: var(--ink); flex-wrap: wrap; }
+.srcrow:first-child { border-top: 0; } .srcrow:hover { background: var(--surface-2); } .srcrow b { display: flex; align-items: center; gap: 6px; } .srcrow span { color: var(--muted); font-size: 13px; margin-inline-start: auto; }
+.clsbox { width: min(620px, 100%); max-height: 92vh; overflow-y: auto; background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-lg); padding: 16px; display: grid; gap: 12px; align-content: start; }
+#cls, #refl, #cap { place-items: center; padding: 12px; }
+.cls-top { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 600; } .cls-top > span:first-child { display: inline-flex; gap: 6px; align-items: center; } .cls-top .pn { margin-inline-start: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cls-card { border-radius: 16px; padding: 14px; background: var(--surface-2); border: 2px solid var(--line); display: grid; gap: 8px; }
+.cls-card.q1 { border-color: var(--p3); } .cls-card.q2 { border-color: var(--accent); } .cls-card.q3 { border-color: var(--p2); } .cls-card.q4 { border-color: var(--muted); }
+.cls-drag { display: flex; align-items: center; gap: 10px; background: var(--surface); border-radius: 12px; padding: 12px; box-shadow: var(--shadow); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; position: relative; z-index: 5; transition: box-shadow .15s; }
+.cls-drag.lift { box-shadow: var(--shadow-lg); cursor: grabbing; transition: none; }
+.grabdots { color: var(--muted); font-weight: 700; } .cls-title { flex: 1; font-family: var(--display); font-size: 20px; font-weight: 600; overflow-wrap: anywhere; }
+.editbtn { border: 0; background: none; color: var(--muted); font-size: 18px; padding: 4px 8px; border-radius: 8px; } .editbtn:hover { background: var(--line); }
+.cls-title-in { font-family: var(--display); font-size: 19px; font-weight: 600; border: 1px solid var(--accent); border-radius: 10px; padding: 10px; background: var(--surface); width: 100%; }
+.cls-hint { font-size: 12.5px; color: var(--muted); }
+.cls-sec h4 { margin: 4px 2px 8px; font-family: var(--display); font-weight: 600; font-size: 15px; } .cls-sec h4 small { color: var(--muted); font-weight: 400; }
+.cls-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.qbtn { border: 2px solid color-mix(in srgb, var(--c) 35%, var(--line)); background: color-mix(in srgb, var(--c) 7%, var(--surface)); border-radius: 14px; padding: 14px 10px; display: grid; gap: 2px; text-align: center; color: var(--ink); transition: transform .12s; }
+.qbtn b { color: var(--c); font-family: var(--display); font-size: 15px; } .qbtn span { font-size: 12px; color: var(--muted); }
+.qbtn.on { background: var(--c); border-color: var(--c); } .qbtn.on b, .qbtn.on span { color: #fff; }
+.qbtn.hover { transform: scale(1.05); border-style: dashed; border-color: var(--c); }
+.chip .dot { width: 9px; height: 9px; }
+.chip.on { background: color-mix(in srgb, var(--c, var(--accent)) 16%, var(--surface)); color: var(--c, var(--accent)); border-color: color-mix(in srgb, var(--c, var(--accent)) 50%, transparent); font-weight: 700; }
+.chipdate { border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; background: var(--surface); font-size: 13.5px; color: var(--muted); }
+.inlinenew input { border: 1px dashed var(--line); border-radius: 999px; padding: 3px 11px; background: transparent; font-size: 13.5px; width: 110px; }
+.twomin { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: color-mix(in srgb, #e0a800 14%, var(--surface)); border-radius: 12px; padding: 10px 12px; font-weight: 600; font-size: 14px; }
+.cls-actions { display: flex; gap: 8px; align-items: center; position: sticky; bottom: -16px; background: var(--surface); padding: 10px 0 2px; border-top: 1px solid var(--line); }
+.cls-actions .btn.primary { margin-inline-start: auto; }
+.capbox { width: min(560px, 100%); background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-lg); padding: 16px; display: grid; gap: 12px; }
+.cap-top { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 600; } .cap-top span { display: inline-flex; gap: 6px; align-items: center; color: #8a5cc7; } .cap-top .iconbtn { margin-inline-start: auto; }
+#capText { border: 2px solid color-mix(in srgb, #8a5cc7 40%, var(--line)); border-radius: 14px; padding: 12px; font-size: 18px; background: var(--surface-2); resize: vertical; width: 100%; }
+#capText:focus { outline: none; border-color: #8a5cc7; }
+.cap-row { display: flex; gap: 10px; align-items: center; } .cap-row .btn.primary { flex: 1; justify-content: center; }
+.mic.big { width: 54px; height: 54px; border-radius: 16px; background: color-mix(in srgb, #8a5cc7 12%, var(--surface)); color: #8a5cc7; } .mic.big svg.i { width: 26px; height: 26px; }
+.cap-saved { display: grid; gap: 2px; font-size: 13.5px; color: var(--muted); } .cap-saved b { color: var(--ink); }
+.rf-task { font-family: var(--display); font-size: 19px; font-weight: 600; background: var(--surface-2); border-radius: 12px; padding: 12px; border-inline-start: 4px solid #8a5cc7; overflow-wrap: anywhere; }
+.rf-q { display: grid; gap: 10px; line-height: 1.55; } .rf-q h3 { font-family: var(--display); margin: 0; font-size: 18px; } .rf-q p { margin: 0; color: var(--muted); } .rf-lead { color: #8a5cc7 !important; font-weight: 700; }
+.rf-q textarea { border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: var(--surface-2); resize: vertical; width: 100%; }
+.rf-dec { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .rf-dec .btn { justify-content: center; } .rf-dec .btn.big { grid-column: 1 / -1; }
+.hprog { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.hpc { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--c); border-radius: 16px; padding: 12px 14px; display: grid; gap: 8px; box-shadow: var(--shadow); }
+.hpc-h { display: flex; align-items: center; gap: 8px; } .hpc-h b { flex: 1; font-family: var(--display); font-size: 16px; }
+.hpc-s { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); } .hpc-s b { color: var(--ink); }
+.medals { display: flex; gap: 5px; flex-wrap: wrap; } .medal { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 11.5px; font-weight: 700; background: var(--line); color: var(--muted); }
+.medal.got { background: linear-gradient(135deg, #f2c94c, #e08a1e); color: #fff; box-shadow: 0 2px 6px rgba(224,138,30,.4); }
+.hpc-n { font-size: 12.5px; color: var(--accent); font-weight: 600; }
+.fab { background: linear-gradient(135deg, var(--accent), #1f8a8a); }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -567,6 +661,9 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
 <div class="overlay" id="imp" hidden><div class="ibox" role="dialog" aria-label="ייבוא מ-Trello" id="impBox"></div></div>
 <input type="file" id="impFile" accept=".json,application/json" hidden>
 <input type="file" id="bkFile" accept=".json,application/json" hidden>
+<div class="overlay" id="cls" hidden><div class="clsbox" role="dialog" aria-label="מיון משימות" id="clsBox"></div></div>
+<div class="overlay" id="cap" hidden><div class="capbox" role="dialog" aria-label="הוספה מהירה" id="capBox"></div></div>
+<div class="overlay" id="refl" hidden><div class="clsbox" role="dialog" aria-label="מה עוצר אותי" id="reflBox"></div></div>
 <div class="overlay" id="plan" hidden><div class="pbox" role="dialog" aria-label="תכנון היום" id="planBox"></div></div>
 <script>
 (function () {
@@ -605,6 +702,7 @@ var P = {
   upload: '<path d="M12 21V9M7 14l5-5 5 5M4 3h16"/>',
   copy: '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M4 16V5a2 2 0 0 1 2-2h11"/>',
   target: '<circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/>',
+  inbox: '<path d="M3 13h5l2 3h4l2-3h5"/><path d="M5 5h14l2 8v6H3v-6z"/>',
   due: '<path d="M6 2h12M6 22h12M6 2c0 6 12 6 12 10S6 16 6 22M18 2c0 6-12 6-12 10s12 4 12 10"/>'
 };
 function ic(n, cls) { return '<svg class="i' + (cls ? " " + cls : "") + '" viewBox="0 0 24 24" aria-hidden="true">' + P[n] + "</svg>"; }
@@ -665,7 +763,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "13";
+var APP_VERSION = "14";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -691,12 +789,12 @@ function fbStore(uid) {
   }, function (e) { clearTimeout(timer); fail(e); });
   var u2 = setRef.onSnapshot(function (d) {
     var data = d.exists ? d.data() : null;
-    S.settings = { projects: data && data.projects ? data.projects.slice() : [], habits: data && data.habits ? data.habits.slice() : [], templates: data && data.templates ? data.templates.slice() : [] }; render();
+    S.settings = Object.assign({ projects: [], habits: [], templates: [] }, data || {}); render();
   }, function () {});
   return {
     put: function (id, t) { t = clean(t); S.tasks[id] = t; col.doc(id).set(t).catch(fail); render(); },
     del: function (id) { delete S.tasks[id]; col.doc(id).delete().catch(fail); render(); },
-    putSettings: function (s) { s = clean(Object.assign({}, S.settings, s)); S.settings = s; setRef.set(s).catch(fail); render(); },
+    putSettings: function (s) { s = clean(s); S.settings = Object.assign({}, S.settings, s); setRef.set(s, { merge: true }).catch(fail); render(); },
     putMany: function (items) {
       items = items.map(function (it) { return { id: it.id, t: clean(it.t) }; });
       items.forEach(function (it) { S.tasks[it.id] = it.t; });
@@ -875,11 +973,15 @@ function taskRow(t, o) {
   if (t.due) { var dd = dayDiff(t.due); meta.push('<span class="dueb' + (!t.done && dd < 0 ? " late" : !t.done && dd <= 2 ? " soon" : "") + '">' + ic("due") + "יעד " + relDate(t.due) + "</span>"); }
   if (t.imp) meta.push('<span class="impstar">' + ic("star") + "</span>");
   (t.tags || []).forEach(function (g) { meta.push('<span class="tg">@' + esc(g) + "</span>"); });
+  if (t.status === "waiting") meta.push("<span>⏳ מחכה</span>");
+  if (t.status === "someday") meta.push("<span>💭 אולי פעם</span>");
+  if (t.est) meta.push("<span>" + ic("clock") + (t.est < 60 ? t.est + " דק׳" : t.est / 60 + " ש׳") + "</span>");
+  if (t.inbox && S.view !== "inbox") meta.push('<span style="color:#8a5cc7;font-weight:700">' + ic("inbox") + "בסל</span>");
   if (t.notes) meta.push("<span>" + ic("note") + "</span>");
   if (p && o.proj !== false) meta.push('<span><i class="dot" style="--c:' + esc(p.color) + '"></i>' + esc(p.name) + "</span>");
   return '<div class="trow' + (t.pri ? " p" + t.pri : "") + (t.done ? " done" : "") + (S.detailId === t.id ? " sel" : "") + '" data-id="' + esc(t.id) + '"' + (o.drag ? ' data-drag="1"' : "") + ">" +
     (o.drag ? "" : '<svg class="grip" viewBox="0 0 12 22" aria-hidden="true"><g fill="currentColor"><circle cx="3" cy="5" r="1.6"/><circle cx="9" cy="5" r="1.6"/><circle cx="3" cy="11" r="1.6"/><circle cx="9" cy="11" r="1.6"/><circle cx="3" cy="17" r="1.6"/><circle cx="9" cy="17" r="1.6"/></g></svg>') +
-    '<button class="cb" data-act="toggle" aria-label="' + (t.done ? "החזרה לרשימה" : "סימון כבוצע") + '">' + ic("check") + "</button>" +
+    '<span class="tnum"></span><button class="cb" data-act="toggle" aria-label="' + (t.done ? "החזרה לרשימה" : "סימון כבוצע") + '">' + ic("check") + "</button>" +
     '<button class="tmain" data-act="open"><span class="ttitle">' + esc(t.title) + "</span>" + (meta.length ? '<span class="tmeta">' + meta.join("") + "</span>" : "") + "</button>" +
     (t.time && o.time !== "meta" && o.time !== false ? '<span class="ttime">' + t.time + "</span>" : "") +
     "</div>";
@@ -889,9 +991,9 @@ function section(key, title, items, o) {
   if (!items.length && !o.always && !o.pre) return "";
   var closed = S.folded[key];
   return '<section class="sec' + (closed ? " closed" : "") + '"><div class="sec-h' + (o.late ? " late" : "") + '">' +
-    (o.fold ? '<button class="fold" data-act="fold" data-key="' + key + '">' + ic("chev") + "<span>" + title + "</span></button>" : "<span>" + title + "</span>") +
+    (o.icon ? shic(o.icon[0], o.icon[1]) : "") + (o.fold ? '<button class="fold" data-act="fold" data-key="' + key + '">' + ic("chev") + "<span>" + title + "</span></button>" : "<span>" + title + "</span>") +
     '<span class="n">' + (items.length || "") + "</span>" + (o.act || "") + "</div>" +
-    (items.length || o.pre ? '<div class="card"' + zoneAttr(o.zone) + ">" + (o.pre || "") + items.map(function (t) { return taskRow(t, o.row); }).join("") + "</div>" : (o.emptyHtml ? o.emptyHtml.replace("<div ", "<div" + zoneAttr(o.zone) + " ") : "")) +
+    (items.length || o.pre ? '<div class="card' + (o.cls ? " " + o.cls : "") + '"' + zoneAttr(o.zone) + ">" + (o.pre || "") + items.map(function (t) { return taskRow(t, o.row); }).join("") + "</div>" : (o.emptyHtml ? o.emptyHtml.replace("<div ", "<div" + zoneAttr(o.zone) + " ") : "")) +
     "</section>";
 }
 function zoneAttr(z) { return z ? ' data-zone="1" data-zdate="' + esc(z.date) + '" data-ztime="' + (z.time || "keep") + '" data-zsort="' + (z.sort ? 1 : 0) + '"' + (z.sec != null ? ' data-zsec="' + esc(z.sec) + '"' : "") + (z.proj != null ? ' data-zproj="' + esc(z.proj) + '"' : "") : ""; }
@@ -1052,14 +1154,16 @@ function calStatusHtml(inToday) {
 var VIEWS = [
   { id: "today", name: "היום", icon: "sun", key: "1" },
   { id: "cal", name: "יומן", icon: "cal", key: "2" },
-  { id: "up", name: "הקרוב", icon: "list", key: "3" },
-  { id: "projects", name: "פרויקטים", icon: "hash", key: "4" }
+  { id: "inbox", name: "סל", icon: "inbox", key: "3" },
+  { id: "up", name: "הקרוב", icon: "list", key: "4" },
+  { id: "projects", name: "פרויקטים", icon: "hash", key: "5" }
 ];
 function go(view, projId) {
+  if (view === "today" && S.view !== "today") S.dayOff = 0;
   S.view = view; S.projId = projId || null;
   if (view === "cal") S.calScrollSet = false;
   S.cmpCtx = null;
-  S.cmpDate = (view === "project" || view === "projects" || view === "later") ? "none" : "today";
+  S.cmpDate = (view === "project" || view === "projects" || view === "later" || view === "inbox") ? "none" : "today";
   document.getElementById("content").scrollTop = 0;
   lsSet("myday-view", view === "project" ? "projects" : view === "tag" ? "tags" : view);
   render();
@@ -1070,7 +1174,7 @@ function renderSide() {
   var st = todayStats(), L = list();
   var h = '<div class="brand"><span class="logo">' + ic("check") + "</span>ביצוע משימות</div>";
   VIEWS.forEach(function (v) {
-    var cnt = v.id === "today" ? (st.open || "") : v.id === "up" ? (L.filter(function (t) { return !t.done && t.date > T() && dayDiff(t.date) <= 7; }).length || "") : "";
+    var cnt = v.id === "inbox" ? (L.filter(function (t) { return !t.done && t.inbox; }).length || "") : v.id === "today" ? (st.open || "") : v.id === "up" ? (L.filter(function (t) { return !t.done && t.date > T() && dayDiff(t.date) <= 7; }).length || "") : "";
     var cur = S.view === v.id || (v.id === "projects" && S.view === "project" && false);
     h += '<button class="nav" data-act="go" data-view="' + v.id + '" aria-current="' + cur + '">' + ic(v.icon) + v.name + '<span class="cnt">' + cnt + "</span></button>";
   });
@@ -1092,9 +1196,10 @@ function renderSide() {
   var tb = "";
   VIEWS.forEach(function (v) {
     var cur = S.view === v.id || (v.id === "projects" && S.view === "project");
-    tb += '<button class="tab" data-act="go" data-view="' + v.id + '" aria-current="' + cur + '">' + ic(v.icon) + v.name + (v.id === "today" && st.open ? '<span class="bdg">' + st.open + "</span>" : "") + "</button>";
+    var ib = v.id === "inbox" ? L.filter(function (t) { return !t.done && t.inbox; }).length : 0;
+    tb += '<button class="tab" data-act="go" data-view="' + v.id + '" aria-current="' + cur + '">' + ic(v.icon) + v.name + (v.id === "today" && st.open ? '<span class="bdg">' + st.open + "</span>" : ib ? '<span class="bdg" style="background:#8a5cc7">' + ib + "</span>" : "") + "</button>";
   });
-  var moreCur = ["more", "matrix", "habits", "week", "templates", "tags", "tag", "progress", "later"].indexOf(S.view) >= 0;
+  var moreCur = ["more", "habits", "matrix", "habits", "week", "templates", "tags", "tag", "progress", "later"].indexOf(S.view) >= 0;
   tb += '<button class="tab" data-act="go" data-view="more" aria-current="' + moreCur + '">' + ic("grid") + "עוד</button>";
   document.getElementById("tabs").innerHTML = tb;
 }
@@ -1118,6 +1223,7 @@ function renderTop() {
   } else if (S.view === "templates") { h = '<div class="tt"><h1>תבניות</h1><span class="sub">רשימות שלבים מוכנות למשימות שחוזרות</span></div>' + searchBtn;
   } else if (S.view === "tags") { h = '<div class="tt"><h1>תגיות</h1><span class="sub">תוויות שחוצות פרויקטים</span></div>' + searchBtn;
   } else if (S.view === "tag") { h = '<button class="iconbtn" data-act="go" data-view="tags" aria-label="חזרה לתגיות">' + ic("back") + '</button><div class="tt"><h1>@' + esc(S.tagName || "") + "</h1></div>" + searchBtn;
+  } else if (S.view === "inbox") { h = '<div class="tt"><h1>הסל</h1><span class="sub">כאן נכנס הכול, ומכאן ממיינים</span></div>' + searchBtn;
   } else if (S.view === "progress") { h = '<div class="tt"><h1>התקדמות ותגים</h1><span class="sub">נקודות, רמות, רצף ימים ותגים</span></div>' + searchBtn;
   } else if (S.view === "later") { h = '<button class="iconbtn" data-act="go" data-view="today" aria-label="חזרה להיום">' + ic("back") + '</button><div class="tt"><h1>משימות להמשך</h1><span class="sub">כל מה שעוד אין לו תאריך, לפי נושאים</span></div>' + searchBtn;
   } else if (S.view === "more") { h = '<div class="tt"><h1>עוד</h1><span class="sub">כלים, גיבוי וחשבון</span></div>' + searchBtn;
@@ -1221,8 +1327,8 @@ function viewUp() {
   for (var i = 0; i < 14; i++) {
     var ds = TM(i), d = pd(ds);
     var items = L.filter(function (t) { return t.date === ds; }).sort(dayOrder);
-    var evh = evRows(ds);
-    if (!items.length && !evh && i > 1) continue;
+    var evh = "";
+    if (!items.length && i > 1) continue;
     var title = (i === 0 ? "היום · " : i === 1 ? "מחר · " : "") + "יום " + DAYS[d.getDay()] + " " + d.getDate() + "." + (d.getMonth() + 1);
     h += section("d" + ds, title, items, { always: true, pre: evh || null, zone: { date: ds, time: "keep", sort: 1 }, row: { date: false }, act: '<button class="act" data-act="addOn" data-date="' + ds + '" aria-label="הוספה ליום הזה">' + ic("plus") + "</button>", emptyHtml: '<div class="empty" style="padding:12px">פנוי</div>' });
   }
@@ -1409,6 +1515,7 @@ function render() {
   else if (S.view === "more") c.innerHTML = viewMore();
   else if (S.view === "later") c.innerHTML = viewLater();
   else if (S.view === "progress") c.innerHTML = viewProgress();
+  else if (S.view === "inbox") c.innerHTML = viewInbox();
   c.className = "content" + (S.view === "cal" ? " flush" : "");
   hideComposer = ["more", "habits", "week", "templates", "tags", "progress"].indexOf(S.view) >= 0;
   document.getElementById("composer").style.display = (S.view === "projects" && !isPhone()) || hideComposer ? "none" : "";
@@ -1428,7 +1535,7 @@ var qa = document.getElementById("qa");
 function cmpDefaults() {
   var d = null, time = "";
   if (S.cmpCtx) { d = S.cmpCtx.date; time = S.cmpCtx.time || ""; }
-  else if (S.cmpDate === "today") d = T();
+  else if (S.cmpDate === "today") d = S.view === "today" ? TM(S.dayOff || 0) : T();
   else if (S.cmpDate === "tomorrow") d = TM(1);
   return { date: d, time: time, proj: S.view === "project" ? S.projId : "", tags: S.view === "tag" && S.tagName ? [S.tagName] : [] };
 }
@@ -1464,7 +1571,7 @@ document.getElementById("composer").addEventListener("submit", function (e) {
     title: r.title, notes: "", date: r.date || def.date || "", time: r.time || def.time || "",
     dur: r.dur || 0, pri: r.pri, proj: r.proj ? findOrMakeProject(r.proj) : def.proj || "",
     rep: r.rep, subs: [], done: false, doneAt: 0, created: Date.now(), order: Date.now(),
-    due: r.due || "", tags: r.tags.concat(def.tags.filter(function (g) { return r.tags.indexOf(g) < 0; })), imp: false
+    due: r.due || "", tags: r.tags.concat(def.tags.filter(function (g) { return r.tags.indexOf(g) < 0; })), imp: false, inbox: !def.proj
   };
   if (t.time && !t.date) t.date = T();
   if (t.time && !t.dur) t.dur = 30;
@@ -1528,7 +1635,7 @@ function buildDetail() {
   h += '<div class="d-row"><span class="lab">' + ic("note") + 'הערות</span><label for="dNotes" class="sr">הערות</label><textarea class="d-notes" id="dNotes" placeholder="פרטים, טלפון, קישור…">' + esc(t.notes || "") + "</textarea></div>";
   h += "</div>";
   var created = t.created ? new Date(t.created) : null;
-  h += '<div class="d-foot"><span class="meta">' + (created ? "נוצרה " + created.getDate() + "." + (created.getMonth() + 1) : "") + (t.rep && t.lastDone ? " · בוצעה לאחרונה " + relDate(ymd(new Date(t.lastDone))) : "") + '</span><button class="btn" data-dact="tpl">' + ic("copy") + 'שמירה כתבנית</button><button class="btn" data-dact="focus">' + ic("timer") + 'פוקוס</button><button class="btn danger" data-dact="del">' + ic("trash") + "מחיקה</button></div>";
+  h += '<div class="d-foot"><span class="meta">' + (created ? "נוצרה " + created.getDate() + "." + (created.getMonth() + 1) : "") + (t.rep && t.lastDone ? " · בוצעה לאחרונה " + relDate(ymd(new Date(t.lastDone))) : "") + '</span><button class="btn" data-dact="cls">' + ic("target") + 'מיון</button><button class="btn" data-dact="refl">🧭 מה עוצר אותי?</button><button class="btn" data-dact="tpl">' + ic("copy") + 'שמירה כתבנית</button><button class="btn" data-dact="focus">' + ic("timer") + 'פוקוס</button><button class="btn danger" data-dact="del">' + ic("trash") + "מחיקה</button></div>";
   dEl.innerHTML = h;
   autosize(document.getElementById("dTitle"));
 }
@@ -1581,6 +1688,8 @@ dEl.addEventListener("click", function (e) {
   else if (a === "subDel") { flushDetail(); t = S.tasks[S.detailId]; var k = +b.getAttribute("data-i"); dPatch({ subs: (t.subs || []).filter(function (s, j) { return j !== k; }) }, true); }
   else if (a === "del") removeTask(S.detailId);
   else if (a === "imp") dPatch({ imp: !t.imp }, true);
+  else if (a === "cls") { flushDetail(); var cid = S.detailId; closeDetail(); openClassify([cid], "מיון"); }
+  else if (a === "refl") { flushDetail(); var rid = S.detailId; closeDetail(); openReflect(rid); }
   else if (a === "tpl") {
     flushDetail(); t = S.tasks[S.detailId];
     var steps = (t.subs || []).map(function (s) { return s.t; }).filter(Boolean);
@@ -1668,7 +1777,7 @@ document.addEventListener("click", function (e) {
   var a = b.getAttribute("data-act");
   var row = b.closest("[data-id]"), id = b.getAttribute("data-id") || (row && row.getAttribute("data-id"));
   if (a === "toggle") complete(id);
-  else if (a === "open") openDetail(id);
+  else if (a === "open") { if (S.view === "inbox" && b.closest("#content") && S.tasks[id] && S.tasks[id].inbox) openClassify([id], "מיון"); else openDetail(id); }
   else if (a === "go") { e.preventDefault(); if (b.getAttribute("data-tag")) S.tagName = b.getAttribute("data-tag"); go(b.getAttribute("data-view"), b.getAttribute("data-proj")); }
   else if (a === "search") openSearch();
   else if (a === "fold") { var k = b.getAttribute("data-key"); S.folded[k] = !S.folded[k]; render(); }
@@ -1690,12 +1799,22 @@ document.addEventListener("click", function (e) {
     toast("הרשימה נמחקה. המשימות שלה עברו ל\"ללא רשימה\".");
   }
   else if (a === "trelloSecs") {
-    var pidT = S.projId, tasksT = list().filter(function (t) { return t.proj === pidT && !t.done && trelloListOf(t); }).sort(byOrder);
+    var pidT = S.projId, validS = {}; projSecs(proj(pidT)).forEach(function (s) { validS[s.id] = 1; });
+    var tasksT = list().filter(function (t) { return t.proj === pidT && !t.done && trelloListOf(t) && (!t.sec || !validS[t.sec]); }).sort(byOrder);
     var names = []; tasksT.forEach(function (t) { var n = trelloListOf(t); if (names.indexOf(n) < 0) names.push(n); });
     var mp = ensureSections(pidT, names);
-    tasksT.forEach(function (t) { if (!t.sec) save(t.id, { sec: mp[trelloListOf(t)] }); });
-    toast("המשימות סודרו ב-" + names.length + " רשימות");
+    var upd = tasksT.map(function (t) { return { id: t.id, t: Object.assign({}, S.tasks[t.id], { sec: mp[trelloListOf(t)] }) }; });
+    if (upd.length) store.putMany(upd);
+    toast(upd.length + " משימות סודרו בנושאים שלהן");
   }
+  else if (a === "dayPrev") { S.dayOff = Math.max(-7, (S.dayOff || 0) - 1); render(); }
+  else if (a === "dayNext") { S.dayOff = (S.dayOff || 0) + 1; render(); }
+  else if (a === "dayGo") { S.dayOff = +b.getAttribute("data-off"); render(); }
+  else if (a === "sortByTime") { var dsT = b.getAttribute("data-date"), base = Date.now(); list().filter(function (t) { return !t.done && t.date === dsT; }).sort(dayOrder).forEach(function (t, i) { save(t.id, { order: base + i }); }); toast("סודר לפי שעות"); }
+  else if (a === "clsStart") { var src = b.getAttribute("data-src"), ids = clsIds(src); if (!ids.length) { toast("אין משימות למיון כאן"); return; } openClassify(ids, src === "inbox" ? "מיון הסל" : src === "uncls" ? "מיון משימות" : "מיון נושא"); }
+  else if (a === "capture") openCapture("");
+  else if (a === "reflect") openReflect(b.getAttribute("data-id"));
+  else if (a === "stuckSkip") { lsSet("myday-stuck-day", T()); render(); }
   else if (a === "frogPick") openFrogPick();
   else if (a === "frogDone") { var gf = G(); if (gf.frog && S.tasks[gf.frog.id]) complete(gf.frog.id); }
   else if (a === "setGoal") { var gg = ensureGame(); gg.goal = +b.getAttribute("data-n"); putGame(gg); }
@@ -1801,6 +1920,9 @@ document.addEventListener("keydown", function (e) {
   var typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
   if (e.key === "Escape") {
     if (!fEl.hidden) return;
+    if (!document.getElementById("cls").hidden) { document.getElementById("cls").hidden = true; render(); return; }
+    if (!document.getElementById("cap").hidden) { document.getElementById("cap").hidden = true; render(); return; }
+    if (!document.getElementById("refl").hidden) { document.getElementById("refl").hidden = true; return; }
     if (!document.getElementById("plan").hidden) { document.getElementById("plan").hidden = true; render(); }
     else if (!sEl.hidden) closeSearch();
     else if (S.detailId) closeDetail();
@@ -1812,7 +1934,7 @@ document.addEventListener("keydown", function (e) {
   if (S.view === "project" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) { var bb = document.querySelector('[data-act="bScroll"][data-d="' + (e.key === "ArrowLeft" ? "l" : "r") + '"]'); if (bb) { e.preventDefault(); bb.click(); } return; }
   if (e.key === "n" || e.key === "N" || e.key === "מ") { e.preventDefault(); openComposer(); }
   else if (e.key === "/" || e.key === ".") { e.preventDefault(); openSearch(); }
-  else if (/^[1-4]$/.test(e.key)) go(VIEWS[+e.key - 1].id);
+  else if (/^[1-5]$/.test(e.key)) go(VIEWS[+e.key - 1].id);
 });
 
 /* ---------------- drag & drop (calendar) ---------------- */
@@ -1925,16 +2047,24 @@ document.addEventListener("touchmove", function (e) { if ((drag && drag.active) 
 document.addEventListener("contextmenu", function (e) { if (e.target.closest(".blk, .adchip, [data-drag]") && S.view === "cal") e.preventDefault(); });
 
 /* ---------------- swipe between views (phone) ---------------- */
-var SW_ORDER = ["today", "cal", "up", "projects", "more"], sw = null;
+var SW_ORDER = ["today", "cal", "inbox", "up", "projects", "more"], sw = null;
 var contentEl = document.getElementById("content");
 contentEl.addEventListener("touchstart", function (e) {
-  if (e.touches.length !== 1 || e.target.closest(".board, input, textarea, select, .trow, .hdots")) { sw = null; return; }
+  if (e.touches.length !== 1 || e.target.closest(".board, input, textarea, select, .hdots, .daystrip")) { sw = null; return; }
   sw = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
 }, { passive: true });
 contentEl.addEventListener("touchend", function (e) {
   if (!sw || (ldrag && ldrag.active) || (drag && drag.active)) { sw = null; return; }
   var tc = e.changedTouches[0], dx = tc.clientX - sw.x, dy = tc.clientY - sw.y, dt = Date.now() - sw.t; sw = null;
   if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.8 || dt > 700) return;
+  if (S.view === "today" || S.view === "cal") {
+    if (S.view === "today") S.dayOff = Math.max(-7, (S.dayOff || 0) + (dx < 0 ? 1 : -1));
+    else { S.calStart = ymd(addD(pd(S.calStart || T()), dx < 0 ? 1 : -1)); }
+    render(); if (S.view === "cal") watchCal();
+    contentEl.classList.remove("slideL", "slideR"); void contentEl.offsetWidth;
+    contentEl.classList.add(dx < 0 ? "slideR" : "slideL");
+    return;
+  }
   var cur = S.view === "project" ? 3 : SW_ORDER.indexOf(S.view) >= 0 ? SW_ORDER.indexOf(S.view) : 4, n = cur + (dx > 0 ? 1 : -1);
   if (n < 0 || n >= SW_ORDER.length) return;
   go(SW_ORDER[n]);
@@ -2061,12 +2191,13 @@ function parseTrello(j) {
   if (!j || !Array.isArray(j.cards) || !Array.isArray(j.lists)) throw new Error("not trello");
   var lists = {}; j.lists.forEach(function (l) { lists[l.id] = l; });
   var checks = {}; (j.checklists || []).forEach(function (c) { (checks[c.idCard] = checks[c.idCard] || []).push(c); });
-  var have = {}; list().forEach(function (t) { if (t.trelloId) have[t.trelloId] = 1; });
+  var have = {}; list().forEach(function (t) { if (t.trelloId) have[t.trelloId] = t.id; });
+  var exist = [];
   var out = [], skipped = 0, dup = 0, perList = {};
   j.cards.slice().sort(function (a, b) { return (a.pos || 0) - (b.pos || 0); }).forEach(function (c) {
     var l = lists[c.idList] || { name: "", closed: false };
     if (c.closed || l.closed) { skipped++; return; }
-    if (have[c.id]) { dup++; return; }
+    if (have[c.id]) { dup++; exist.push({ id: have[c.id], list: l.name || "" }); return; }
     var t = { title: (c.name || "").trim() || "(ללא כותרת)", notes: (c.desc || "").trim(), date: "", time: "", dur: 0, pri: 0, proj: "", rep: "", subs: [], done: false, doneAt: 0, created: Date.now(), trelloId: c.id };
     if (c.due) {
       var d = new Date(c.due);
@@ -2087,7 +2218,7 @@ function parseTrello(j) {
     out.push(t);
   });
   var listOrder = j.lists.filter(function (l) { return !l.closed; }).sort(function (a, b) { return (a.pos || 0) - (b.pos || 0); }).map(function (l) { return l.name || ""; });
-  return { board: (j.name || "Trello").trim(), lists: listOrder, tasks: out, skipped: skipped, dup: dup, perList: perList };
+  return { board: (j.name || "Trello").trim(), lists: listOrder, exist: exist, tasks: out, skipped: skipped, dup: dup, perList: perList };
 }
 function impDraw() {
   var box = document.getElementById("impBox");
@@ -2100,11 +2231,11 @@ function impDraw() {
   box.innerHTML = "<h2>ייבוא הלוח ‟" + esc(IMP.board) + "”</h2>" +
     '<div class="stats"><div class="stat"><b>' + open + '</b><span>משימות פתוחות</span></div><div class="stat"><b>' + done + '</b><span>מסומנות כבוצעו</span></div><div class="stat"><b>' + (IMP.skipped + IMP.dup) + "</b><span>יידלגו</span></div></div>" +
     (lists ? "<div><b>לפי רשימות ב-Trello:</b><ul>" + lists + "</ul></div>" : "") +
-    (IMP.dup ? '<p style="margin:0;color:var(--muted);font-size:14px">' + IMP.dup + " כרטיסים כבר יובאו בעבר ולא ייובאו שוב.</p>" : "") +
+    (IMP.dup ? '<p style="margin:0;color:var(--accent);font-size:14px;font-weight:600">' + IMP.dup + " כרטיסים כבר יובאו בעבר. הם לא ייובאו שוב, אבל הנושא שלהם יעודכן לפי הרשימה ב-Trello.</p>" : "") +
     (IMP.skipped ? '<p style="margin:0;color:var(--muted);font-size:14px">' + IMP.skipped + " כרטיסים בארכיון של Trello לא ייובאו.</p>" : "") +
     '<label for="impProj">שם הפרויקט באפליקציה<input type="text" id="impProj" value="' + esc(IMP.board) + '"></label>' +
     (done ? '<label class="ck"><input type="checkbox" id="impDone"> לייבא גם את ' + done + " המשימות שכבר בוצעו</label>" : "") +
-    '<div class="row"><button class="btn" data-imp="close">ביטול</button><button class="btn primary" data-imp="go"' + (open || done ? "" : " disabled") + ">ייבוא</button></div>";
+    '<div class="row"><button class="btn" data-imp="close">ביטול</button><button class="btn primary" data-imp="go"' + (open || done || IMP.dup ? "" : " disabled") + ">" + (open || done ? "ייבוא" : "עדכון הנושאים") + "</button></div>";
 }
 document.getElementById("impFile").addEventListener("change", function (e) {
   var f = e.target.files && e.target.files[0]; if (!f) return;
@@ -2125,12 +2256,14 @@ document.getElementById("imp").addEventListener("click", function (e) {
   var withDone = document.getElementById("impDone") && document.getElementById("impDone").checked;
   var pid = findOrMakeProject(name);
   var chosen = IMP.tasks.filter(function (t) { return withDone || !t.done; });
-  var usedLists = IMP.lists.filter(function (n) { return chosen.some(function (t) { return t._list === n; }); });
+  var usedLists = IMP.lists.filter(function (n) { return chosen.some(function (t) { return t._list === n; }) || IMP.exist.some(function (x) { return x.list === n; }); });
   var secMap = ensureSections(pid, usedLists);
+  var fixes = IMP.exist.filter(function (x) { return S.tasks[x.id] && secMap[x.list]; }).map(function (x) { return { id: x.id, t: Object.assign({}, S.tasks[x.id], { proj: pid, sec: secMap[x.list] }) }; });
+  if (fixes.length) store.putMany(fixes);
   var items = chosen.map(function (t, i) { t.proj = pid; t.sec = secMap[t._list] || ""; delete t._list; t.created = Date.now() + i; t.order = Date.now() + i; return { id: newId() + i, t: t }; });
   store.putMany(items);
   document.getElementById("imp").hidden = true; IMP = null;
-  toast("יובאו " + items.length + " משימות לפרויקט " + name, "הצגה", function () { go("project", pid); });
+  toast("יובאו " + items.length + " משימות חדשות" + (fixes.length ? " ועודכן הנושא של " + fixes.length + " משימות קיימות" : "") + " · " + name, "הצגה", function () { go("project", pid); });
 });
 
 /* ================= motivation: points, levels, streaks, frog, badges ================= */
@@ -2284,7 +2417,8 @@ function viewProgress() {
   var mx = Math.max.apply(null, weeks.map(function (w) { return w.n; }).concat([1]));
   h += '<section class="sec"><div class="sec-h"><span>משימות בשבוע, 8 שבועות אחרונים</span></div><div class="card bars" style="grid-template-columns:repeat(8,1fr)">' + weeks.map(function (w) { return '<div class="barcol"><span class="bn">' + (w.n || "") + '</span><i style="height:' + Math.round(w.n / mx * 100) + '%"></i><span class="bd">' + w.l + "</span></div>"; }).join("") + "</div></section>";
   h += '<section class="sec"><div class="sec-h"><span>תגים</span><span class="n">' + Object.keys(g.badges).length + "/" + BADGES.length + '</span></div><div class="badges">' + BADGES.map(function (b) { var got = g.badges[b.id]; return '<div class="badge' + (got ? " got" : "") + '"><span class="be">' + (got ? b.e : "🔒") + "</span><b>" + b.n + "</b><span>" + b.d + "</span>" + (got ? '<span class="bdate">' + relDate(got) + "</span>" : "") + "</div>"; }).join("") + "</div></section>";
-  h += '<p class="mhint">איך מקבלים נקודות: 10 לכל משימה, +5 לכל דרגת עדיפות, +5 למשימה חשובה ⭐, +10 למשימה שנדחתה 3 פעמים, ו-20 בונוס לצפרדע 🐸.</p>';
+  h += habitsProgressHtml();
+  h += '<p class="mhint">איך מקבלים נקודות: 10 לכל משימה, +5 לכל דרגת עדיפות, +5 למשימה חשובה ⭐, +10 למשימה שנדחתה 3 פעמים, 20 בונוס לצפרדע 🐸, 5 על כל יום של הרגל, ו-15 על כל פעם שאתה עוצר לחשוב על משימה תקועה 🧭.</p>';
   return h;
 }
 
@@ -2351,6 +2485,7 @@ function toggleHabit(id, ds) {
     return Object.assign({}, h, { days: days });
   });
   putSet("habits", hs);
+  habitCheered(id, ds);
 }
 function habitDots(h, n) {
   var out = "";
@@ -2383,7 +2518,8 @@ var QUADS = [
 function quadOf(t) { var u = t.pri === 3, i = !!t.imp; return u && i ? 1 : i ? 2 : u ? 3 : 4; }
 function viewMatrix() {
   var L = list().filter(function (t) { return !t.done; });
-  var h = '<p class="mhint">דחוף = עדיפות "דחופה". חשוב = מסומן בכוכב ⭐ בפרטי המשימה. גרור משימה לריבוע אחר, והעדיפות והכוכב יתעדכנו לבד.</p><div class="matrix">';
+  var uncN = list().filter(function (t) { return !t.done && (t.inbox || !t.cls); }).length;
+  var h = (uncN ? '<button class="capbtn" data-act="clsStart" data-src="' + (list().some(function (t) { return !t.done && t.inbox; }) ? "inbox" : "uncls") + '">' + ic("target") + "<span><b>למיין משימות</b><span>" + uncN + " משימות עוד לא מוינו. בכל כרטיס בוחרים ריבוע, נושא, מתי ועם מה</span></span>" + ic("chev") + "</button>" : "") + '<p class="mhint">דחוף = עדיפות "דחופה". חשוב = מסומן בכוכב ⭐ בפרטי המשימה. גרור משימה לריבוע אחר, והעדיפות והכוכב יתעדכנו לבד.</p><div class="matrix">';
   QUADS.forEach(function (Q) {
     var items = L.filter(function (t) { return quadOf(t) === Q.q; }).sort(byDate);
     h += '<section class="quad" style="--c:' + Q.color + '"><div class="qh"><b>' + Q.name + "</b><span>" + Q.sub + '</span><span class="n">' + (items.length || "") + '</span></div><div class="card qcards"' + zoneAttr({ date: "keep", time: "keep" }) + ' data-zq="' + Q.q + '">' + items.map(function (t) { return taskRow(t); }).join("") + "</div></section>";
@@ -2501,9 +2637,8 @@ function toggleMic() {
 /* ---------- swipe on a task row (phone) ---------- */
 var rs = null;
 document.addEventListener("touchstart", function (e) {
-  if (e.touches.length !== 1 || S.view === "cal") return;
-  var row = e.target.closest("#content .trow[data-id]");
-  if (!row || e.target.closest(".cb") || e.target.closest(".board")) return;
+  return;
+  var row = null;
   var t = S.tasks[row.getAttribute("data-id")]; if (!t || t.done) return;
   rs = { row: row, id: row.getAttribute("data-id"), x: e.touches[0].clientX, y: e.touches[0].clientY, on: false, dx: 0 };
 }, { passive: true });
@@ -2562,15 +2697,364 @@ document.addEventListener("toggle", function (e) {
   if (d.open && !d.querySelector(".trow")) render();
 }, true);
 
+/* ================= v14: day view, inbox, classify, capture, reflection ================= */
+var DTL = ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ש׳"];
+function dayTitle(off) { var d = pd(TM(off)); return off === 0 ? "היום" : off === 1 ? "מחר" : off === -1 ? "אתמול" : "יום " + DAYS[d.getDay()]; }
+function dayHero(D, off) {
+  var L = list(), strip = "";
+  for (var i = 0; i < 7; i++) {
+    var ds = TM(i), d = pd(ds), n = L.filter(function (t) { return !t.done && t.date === ds; }).length;
+    strip += '<button class="dchip' + (i === off ? " on" : "") + '" data-act="dayGo" data-off="' + i + '"><span>' + (i === 0 ? "היום" : DTL[d.getDay()]) + "</span><b>" + d.getDate() + "</b>" + (n ? '<i class="dn">' + n + "</i>" : "<i></i>") + "</button>";
+  }
+  var nT = L.filter(function (t) { return !t.done && t.date === D; }).length, nE = evFor(D).length;
+  return '<div class="hero"><div class="hero-top"><button class="hnav" data-act="dayPrev" aria-label="יום קודם"' + (off <= -7 ? " disabled" : "") + ">" + ic("back") + '</button><div class="hero-t"><b>' + dayTitle(off) + "</b><span>" + longDate(pd(D)) + " · " + nT + " משימות" + (nE ? " · " + nE + " פגישות" : "") + '</span></div><button class="hnav" data-act="dayNext" aria-label="יום הבא">' + ic("chev") + '</button></div><div class="daystrip">' + strip + "</div>" + (isPhone() ? '<div class="hero-hint">החלק ימינה או שמאלה כדי לעבור בין הימים</div>' : "") + "</div>";
+}
+function scheduleHtml(D, isT) {
+  var ev = evFor(D).slice().sort(function (a, b) { return (a.allDay ? "" : a.time) < (b.allDay ? "" : b.time) ? -1 : 1; });
+  var now = new Date(), nm = now.getHours() * 60 + now.getMinutes();
+  var rows = ev.map(function (e) {
+    var past = isT && !e.allDay && mins(e.time) + e.dur < nm;
+    return '<a class="srow' + (past ? " past" : "") + '" href="' + esc(e.link) + '" target="_blank" rel="noopener" style="--c:' + esc(e.color || "var(--p1)") + '"><span class="st">' + (e.allDay ? "כל היום" : e.time + "<small>" + hhmm(mins(e.time) + e.dur) + "</small>") + '</span><span class="sb"></span><span class="sx">' + esc(e.title) + "</span></a>";
+  }).join("");
+  var cs = calStatusHtml(false);
+  return '<section class="sec"><div class="sec-h">' + shic("cal", "#3a73c9") + "<span>הלו״ז שלי " + (isT ? "היום" : dayTitle(S.dayOff || 0).replace("יום ", "ב")) + '</span><span class="n">' + (ev.length || "") + "</span></div>" +
+    (rows ? '<div class="card sched">' + rows + "</div>" : '<div class="empty" style="padding:14px">' + (S.calStatus.state === "ok" ? "אין פגישות ביומן" : "") + (cs ? '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center">' + cs + "</div>" : "") + "</div>") + "</section>";
+}
+function shic(icon, color) { return '<span class="shic" style="--c:' + color + '">' + ic(icon) + "</span>"; }
+function nextUpHtml() {
+  var td = T(), now = new Date(), nm = now.getHours() * 60 + now.getMinutes();
+  var timed = list().filter(function (t) { return !t.done && t.date === td && t.time; });
+  var cands = timed.concat(evFor(td).filter(function (e) { return !e.allDay; })).sort(function (a, b) { return mins(a.time) - mins(b.time); }), nx = null;
+  for (var i = 0; i < cands.length; i++) { var s = mins(cands[i].time), e = s + (cands[i].dur || 30); if (e > nm) { nx = Object.assign({}, cands[i]); nx._now = s <= nm; nx._in = s - nm; break; } }
+  if (!nx) return "";
+  var lbl = (nx._now ? "עכשיו" : nx._in < 60 ? "בעוד " + nx._in + " דק׳" : "הבא בתור") + (nx.ev ? " · ביומן" : "");
+  return (nx.ev ? '<a class="nextup" href="' + esc(nx.link) + '" target="_blank" rel="noopener" style="text-decoration:none">' : '<button class="nextup" data-act="open" data-id="' + esc(nx.id) + '">') + '<span class="nx"><span class="lbl">' + lbl + '</span><span class="big">' + nx.time + '</span></span><span class="nx"><span class="lbl">' + (nx.dur ? nx.dur + " דקות" : "") + '</span><span class="tt">' + esc(nx.title) + "</span></span>" + (nx.ev ? "</a>" : "</button>");
+}
+function viewToday() {
+  var off = S.dayOff || 0, D = TM(off), isT = off === 0, L = list();
+  var h = dayHero(D, off);
+  var g0 = G(), frogOn = isT && g0.frog && g0.frog.date === T() && S.tasks[g0.frog.id];
+  if (frogOn) h += frogHtml();
+  if (isT) h += nextUpHtml();
+  var late = isT ? L.filter(isLate).sort(byDate) : [];
+  if (late.length) h += section("late", "נשאר מימים קודמים", late, { late: true, fold: true, icon: ["clock", "#e8590c"], act: '<button class="act" data-act="lateToday">הכול להיום</button>' });
+  var dayTasks = L.filter(function (t) { return !t.done && t.date === D; }).sort(byOrder);
+  var ttl = isT ? "המשימות שלי להיום" : "המשימות " + (off === 1 ? "למחר" : off === -1 ? "של אתמול" : "ליום " + DAYS[pd(D).getDay()]);
+  var acts = '<span style="margin-inline-start:auto;display:flex;gap:6px;align-items:center">' + (dayTasks.filter(function (t) { return t.time; }).length > 1 ? '<button class="act" data-act="sortByTime" data-date="' + D + '">לפי שעות</button>' : "") + '<span class="seg mini"><button data-act="groupBy" data-v="order" aria-pressed="' + (S.groupBy !== "topic") + '">לפי סדר</button><button data-act="groupBy" data-v="topic" aria-pressed="' + (S.groupBy === "topic") + '">לפי נושא</button></span></span>';
+  if (S.groupBy === "topic" && dayTasks.length) h += '<div class="sec-h" style="margin-top:18px">' + shic("check", "var(--accent)") + "<span>" + ttl + "</span>" + acts + "</div>" + groupedSections("dg", "", dayTasks, { date: D, time: "keep", sort: 1 });
+  else h += section("dtasks", ttl, dayTasks, { icon: ["check", "var(--accent)"], cls: "numbered", row: { date: false }, zone: { date: D, time: "keep", sort: 1 }, always: true, act: acts, emptyHtml: '<div class="empty" style="padding:18px">' + emptyArt(isT && L.some(doneToday) ? "done" : "") + "<b>" + (isT && L.some(doneToday) ? "סיימת את כל מה שתכננת להיום 🎉" : "עוד אין משימות " + (isT ? "להיום" : "ליום הזה")) + "</b><span>הוסף משימה בשורה למעלה, או גרור לכאן מ\"משימות להמשך\". את הסדר קובעים בגרירה: 1, 2, 3…</span></div>" });
+  if (isT) {
+    var inboxN = L.filter(function (t) { return !t.done && t.inbox; }).length;
+    if (inboxN) h += '<button class="inboxpill" data-act="go" data-view="inbox">' + ic("inbox") + "<span>בסל מחכות <b>" + inboxN + "</b> משימות למיון</span>" + ic("chev") + "</button>";
+    if (!frogOn) h += frogHtml();
+    var st = stuckList(), pc = planCandidates().length, hr0 = new Date().getHours();
+    if (pc && lsGet("myday-planned", "") !== T() && lsGet("myday-plan-skip", "") !== T() && hr0 < 14)
+      h += '<div class="banner"><div class="tx"><b>' + (hr0 < 12 ? "בוקר טוב! " : "") + "לתכנן את היום?</b><span>" + pc + ' משימות מחכות להחלטה: מתי לעשות אותן.</span></div><button class="btn primary" data-act="plan">' + ic("sun") + 'תכנון היום</button><button class="btn plain" data-act="planSkip">לא עכשיו</button></div>';
+    if (st.length && lsGet("myday-stuck-day", "") !== T())
+      h += '<div class="banner stuck"><div class="tx"><b>🧭 משימה שתקועה אצלך: ' + esc(st[0].title) + "</b><span>" + stuckInfo(st[0]) + '. בוא נבין יחד מה עוצר אותך, ומה יעזור להתחיל.</span></div><button class="btn primary" data-act="reflect" data-id="' + esc(st[0].id) + '">לחשוב על זה</button><button class="btn plain" data-act="stuckSkip">לא היום</button></div>';
+    h += gameBarHtml();
+    var dueSoon = L.filter(function (t) { return !t.done && t.due && dayDiff(t.due) <= 3 && t.date !== T() && !isLate(t); }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
+    if (dueSoon.length) h += section("duesoon", "יעדים מתקרבים", dueSoon, { icon: ["due", "#e08a1e"], fold: true });
+    var hs = settingsArr("habits");
+    if (hs.length) h += '<section class="sec"><div class="sec-h">' + shic("fire", "#e8590c") + '<span>ההרגלים שלי היום</span></div><div class="habchips">' + hs.map(function (hb) { var on = !!(hb.days || {})[T()], sk = habitStreak(hb); return '<button class="habchip' + (on ? " on" : "") + '" style="--c:' + esc(hb.color) + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + T() + '" aria-pressed="' + on + '"><span class="hc">' + ic("check") + "</span>" + esc(hb.name) + (sk ? '<span class="fs">' + ic("fire") + sk + "</span>" : "") + "</button>"; }).join("") + "</div></section>";
+  }
+  h += scheduleHtml(D, isT);
+  if (isT) h += section("done", "בוצע היום", L.filter(doneToday).sort(function (a, b) { return (b.doneAt || b.lastDone || 0) - (a.doneAt || a.lastDone || 0); }), { fold: true, icon: ["check", "#2f9e44"] });
+  h += laterButton(L.filter(function (t) { return !t.done && !t.date; }).length);
+  return h;
+}
+
+/* ---------- inbox ---------- */
+function viewInbox() {
+  var L = list().filter(function (t) { return !t.done && t.inbox; }).sort(function (a, b) { return (b.created || 0) - (a.created || 0); });
+  var unc = list().filter(function (t) { return !t.done && !t.cls && !t.inbox; }).length;
+  var h = '<div class="inboxhero"><div class="ih-ic">' + ic("inbox") + '</div><div class="tx"><b>' + (L.length ? L.length + " משימות מחכות למיון" : "הסל ריק 🎉") + "</b><span>כל משימה חדשה נכנסת לכאן. במיון מחליטים: כמה היא דחופה וחשובה, לאיזה נושא היא שייכת, מתי עושים אותה, ועם מה.</span></div>" +
+    (L.length ? '<button class="btn big" data-act="clsStart" data-src="inbox">' + ic("target") + "להתחיל למיין</button>" : "") + "</div>";
+  h += '<button class="capbtn" data-act="capture">' + ic("plus") + '<span><b>הוספה מהירה לסל</b><span>כותבים או מקליטים, וממיינים אחר כך</span></span>' + ic("mic") + "</button>";
+  if (L.length) h += section("inb", "בסל", L, { icon: ["inbox", "#8a5cc7"], row: { cls: true } });
+  h += '<section class="sec"><div class="sec-h">' + shic("target", "#e08a1e") + '<span>למיין גם</span></div><div class="card srcs">' +
+    '<button class="srcrow" data-act="clsStart" data-src="uncls"><b>משימות שעוד לא מוינו</b><span>' + unc + " משימות (למשל מה שיובא מ-Trello)</span>" + ic("chev") + "</button>" +
+    topicSources() + "</div></section>";
+  h += '<div class="explain"><b>📲 להוסיף משימה מכל מקום בטלפון</b><p><b>באנדרואיד:</b> לחיצה ארוכה על אייקון האפליקציה במסך הבית ← <b>"משימה מהירה"</b>. אפשר לגרור את הקיצור הזה למסך הבית, ואז לחיצה אחת עליו פותחת ישר את ההוספה. אפשר גם לשתף טקסט או קישור מכל אפליקציה (ווטסאפ, כרום, מייל) ← לבחור <b>"משימות"</b>, והוא נכנס לסל.</p><p><b>באייפון:</b> אפשר ליצור באפליקציית "קיצורים" קיצור שפותח את הכתובת <span class="kbd">' + esc(location.origin + location.pathname) + '?capture=1</span>.</p></div>';
+  return h;
+}
+function topicSources() {
+  var out = "", L = list().filter(function (t) { return !t.done && !t.date; });
+  (S.settings.projects || []).forEach(function (p) {
+    projSecs(p).forEach(function (s) { var n = L.filter(function (t) { return t.proj === p.id && t.sec === s.id; }).length; if (n) out += '<button class="srcrow" data-act="clsStart" data-src="topic:' + esc(p.id) + "|" + esc(s.id) + '"><b><i class="dot" style="--c:' + esc(p.color) + '"></i>' + esc(p.name) + " · " + esc(s.name) + "</b><span>" + n + " משימות בלי תאריך</span>" + ic("chev") + "</button>"; });
+  });
+  return out;
+}
+
+/* ---------- classify (one place for everything) ---------- */
+var CL = null, TAGSUG = ["טלפון", "מחשב", "בחוץ", "בבית", "קניות", "עזרה"];
+function clsIds(src) {
+  var L = list().filter(function (t) { return !t.done; });
+  if (src === "inbox") return L.filter(function (t) { return t.inbox; }).sort(function (a, b) { return (a.created || 0) - (b.created || 0); }).map(function (t) { return t.id; });
+  if (src === "uncls") return L.filter(function (t) { return !t.cls && !t.inbox; }).sort(byOrder).map(function (t) { return t.id; });
+  if (src.indexOf("topic:") === 0) { var k = src.slice(6).split("|"); return L.filter(function (t) { return !t.date && t.proj === k[0] && t.sec === k[1]; }).sort(byOrder).map(function (t) { return t.id; }); }
+  return [];
+}
+function openClassify(ids, label) {
+  CL = { ids: ids, i: 0, label: label || "מיון", n: 0 };
+  document.getElementById("cls").hidden = false; clsLoad(); drawCls();
+}
+function clsLoad() {
+  while (CL.i < CL.ids.length && (!S.tasks[CL.ids[CL.i]] || S.tasks[CL.ids[CL.i]].done)) CL.i++;
+  var t = S.tasks[CL.ids[CL.i]]; if (!t) return;
+  CL.d = { title: t.title, q: t.cls || t.imp || t.pri === 3 ? quadOf(t) : 0, proj: t.proj || "", sec: t.sec || "", date: t.date || "", dmode: t.date ? "keep" : "", tags: (t.tags || []).slice(), est: t.est || 0, energy: t.energy || "", status: t.status || "", edit: false };
+}
+function chip(on, attrs, label, color) { return '<button type="button" class="chip' + (on ? " on" : "") + '"' + (color ? ' style="--c:' + color + '"' : "") + " " + attrs + ' aria-pressed="' + !!on + '">' + label + "</button>"; }
+function drawCls() {
+  var box = document.getElementById("clsBox");
+  if (CL.i >= CL.ids.length) {
+    box.innerHTML = '<div class="plan-end">' + emptyArt("done") + "<h2>" + (CL.n ? "מיינת " + CL.n + " משימות 👏" : "אין משימות למיון כאן") + "</h2><p>כל משימה נשלחה למקום שלה: לנושא, ליום, ולריבוע במטריצה.</p>" + '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn" data-cl="close" data-go="matrix">למטריצה</button><button class="btn primary" data-cl="close" data-go="today">להיום</button></div></div>';
+    return;
+  }
+  var t = S.tasks[CL.ids[CL.i]], d = CL.d, ps = S.settings.projects || [];
+  var p = d.proj ? proj(d.proj) : null;
+  var allT = Object.keys(allTags()), tagList = TAGSUG.concat(allT.filter(function (x) { return TAGSUG.indexOf(x) < 0; })).concat(d.tags.filter(function (x) { return TAGSUG.indexOf(x) < 0 && allT.indexOf(x) < 0; }));
+  var h = '<div class="cls-top"><span>' + ic("target") + esc(CL.label) + '</span><span class="pn">' + (CL.i + 1) + " / " + CL.ids.length + '</span><button class="iconbtn" data-cl="close" aria-label="סגירה">' + ic("x") + "</button></div>" +
+    '<div class="bar" style="--c:var(--accent)"><i style="width:' + Math.round(CL.i / CL.ids.length * 100) + '%"></i></div>';
+  h += '<div class="cls-card q' + d.q + '">' + (d.edit ? '<label class="sr" for="clTitle">שם המשימה</label><input id="clTitle" class="cls-title-in" value="' + esc(d.title) + '">' : '<div class="cls-drag" id="clsDrag">' + '<span class="grabdots">⋮⋮</span><span class="cls-title">' + esc(d.title) + '</span><button type="button" class="editbtn" data-cl="edit" aria-label="עריכת השם">✎</button></div>') +
+    (t.notes ? '<div class="plan-notes">' + esc(t.notes).slice(0, 260) + "</div>" : "") + (isPhone() ? "" : '<div class="cls-hint">גרור את הכרטיס לריבוע המתאים, או לחץ על ריבוע</div>') + "</div>";
+  h += '<div class="cls-sec"><h4>1 · כמה זה דחוף וחשוב?</h4><div class="cls-matrix">' + QUADS.map(function (Q) { return '<button type="button" class="qbtn' + (d.q === Q.q ? " on" : "") + '" style="--c:' + Q.color + '" data-cl="q" data-v="' + Q.q + '"><b>' + Q.name + "</b><span>" + Q.sub + "</span></button>"; }).join("") + "</div></div>";
+  h += '<div class="cls-sec"><h4>2 · לאיזה נושא?</h4><div class="chips">' + chip(!d.proj, 'data-cl="proj" data-v=""', "ללא פרויקט") + ps.map(function (q) { return chip(d.proj === q.id, 'data-cl="proj" data-v="' + esc(q.id) + '"', '<i class="dot" style="--c:' + esc(q.color) + '"></i>' + esc(q.name)); }).join("") + "</div>" +
+    (p ? '<div class="chips" style="margin-top:8px">' + chip(!d.sec, 'data-cl="sec" data-v=""', "ללא נושא") + projSecs(p).map(function (s) { return chip(d.sec === s.id, 'data-cl="sec" data-v="' + esc(s.id) + '"', esc(s.name)); }).join("") + '<form class="inlinenew" id="clNewSec"><input id="clNewSecIn" placeholder="+ נושא חדש"></form></div>' : "") + "</div>";
+  var wk = ymd(addD(sunday(new Date()), 7));
+  h += '<div class="cls-sec"><h4>3 · מתי לעשות?</h4><div class="chips">' + (d.dmode === "keep" && d.date ? chip(true, 'data-cl="when" data-v="keep"', "כמו שהיה · " + relDate(d.date)) : "") +
+    chip(d.date === T() && d.dmode !== "keep", 'data-cl="when" data-v="' + T() + '"', "היום") + chip(d.date === TM(1) && d.dmode !== "keep", 'data-cl="when" data-v="' + TM(1) + '"', "מחר") + chip(d.date === wk && d.dmode !== "keep", 'data-cl="when" data-v="' + wk + '"', "שבוע הבא") + chip(!d.date, 'data-cl="when" data-v=""', "אחר כך") +
+    '<label class="sr" for="clDate">תאריך אחר</label><input type="date" id="clDate" class="chipdate" value="' + (d.date && [T(), TM(1), wk].indexOf(d.date) < 0 ? d.date : "") + '"></div></div>';
+  h += '<div class="cls-sec"><h4>4 · איפה או עם מה? <small>(תגיות, אפשר כמה)</small></h4><div class="chips">' + tagList.map(function (g) { return chip(d.tags.indexOf(g) >= 0, 'data-cl="tag" data-v="' + esc(g) + '"', "@" + esc(g)); }).join("") + '<form class="inlinenew" id="clNewTag"><input id="clNewTagIn" placeholder="+ תגית"></form></div></div>';
+  h += '<div class="cls-sec"><h4>5 · כמה זמן, כמה אנרגיה, ומה המצב?</h4><div class="chips">' + [5, 15, 30, 60, 120].map(function (m) { return chip(d.est === m, 'data-cl="est" data-v="' + m + '"', m < 60 ? m + " דק׳" : m === 60 ? "שעה" : "שעתיים+"); }).join("") + "</div>" +
+    '<div class="chips" style="margin-top:8px">' + chip(d.energy === "high", 'data-cl="energy" data-v="high"', "🧠 צריך ריכוז") + chip(d.energy === "low", 'data-cl="energy" data-v="low"', "🍃 קליל") + "</div>" +
+    '<div class="chips" style="margin-top:8px">' + chip(!d.status, 'data-cl="status" data-v=""', "▶️ לעשות") + chip(d.status === "waiting", 'data-cl="status" data-v="waiting"', "⏳ מחכה למישהו") + chip(d.status === "someday", 'data-cl="status" data-v="someday"', "💭 אולי פעם") + "</div>" +
+    (d.est === 5 ? '<div class="twomin">⚡ לוקח רק כמה דקות? הכי טוב לעשות את זה עכשיו ולגמור עם זה. <button type="button" class="btn primary" data-cl="doneNow">' + ic("check") + "עשיתי</button></div>" : "") + "</div>";
+  h += '<div class="cls-actions"><button type="button" class="btn plain danger" data-cl="del">' + ic("trash") + '</button><button type="button" class="btn" data-cl="skip">דילוג</button><button type="button" class="btn primary big" data-cl="send">' + ic("check") + "שליחה למקום</button></div>";
+  box.innerHTML = h;
+  box.scrollTop = 0;
+}
+function clsApply() {
+  var id = CL.ids[CL.i], t = S.tasks[id], d = CL.d; if (!t) return;
+  var ti = document.getElementById("clTitle"); if (ti && ti.value.trim()) d.title = ti.value.trim();
+  var patch = { title: d.title, inbox: false, cls: true, proj: d.proj, sec: d.sec, tags: d.tags, est: d.est, energy: d.energy, status: d.status };
+  if (d.q) { patch.imp = d.q <= 2; patch.pri = d.q === 1 || d.q === 3 ? 3 : (t.pri === 3 ? 2 : (t.pri || 0)); }
+  if (d.dmode !== "keep") { patch.date = d.date; if (d.date !== t.date) patch.time = ""; }
+  save(id, patch); CL.n++;
+}
+function clsDragInit() {
+  var el = document.getElementById("clsDrag"); if (!el) return;
+  var st = null;
+  el.addEventListener("pointerdown", function (e) { if (e.target.closest(".editbtn")) return; st = { x: e.clientX, y: e.clientY, on: false }; el.setPointerCapture(e.pointerId); });
+  el.addEventListener("pointermove", function (e) {
+    if (!st) return;
+    var dx = e.clientX - st.x, dy = e.clientY - st.y;
+    if (!st.on && Math.sqrt(dx * dx + dy * dy) > 6) { st.on = true; el.classList.add("lift"); }
+    if (!st.on) return;
+    el.style.transform = "translate(" + dx + "px," + dy + "px) rotate(" + (dx / 30) + "deg)";
+    el.style.pointerEvents = "none";
+    var under = document.elementFromPoint(e.clientX, e.clientY), qb = under && under.closest(".qbtn");
+    document.querySelectorAll(".qbtn.hover").forEach(function (q) { q.classList.remove("hover"); });
+    if (qb) qb.classList.add("hover");
+    el.style.pointerEvents = "";
+  });
+  function end(e) {
+    if (!st) return; var was = st.on; st = null;
+    el.classList.remove("lift"); el.style.transform = "";
+    var qb = document.querySelector(".qbtn.hover");
+    if (was && qb) { CL.d.q = +qb.getAttribute("data-v"); try { navigator.vibrate && navigator.vibrate(15); } catch (x) {} drawCls(); clsDragInit(); }
+    document.querySelectorAll(".qbtn.hover").forEach(function (q) { q.classList.remove("hover"); });
+  }
+  el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+}
+
+/* ---------- quick capture ---------- */
+var CAP = { saved: [] };
+function openCapture(prefill) {
+  var o = document.getElementById("cap"); o.hidden = false;
+  drawCapture(prefill || "");
+  setTimeout(function () { var t = document.getElementById("capText"); if (t) { t.focus(); t.setSelectionRange(t.value.length, t.value.length); } }, 80);
+}
+function drawCapture(val) {
+  document.getElementById("capBox").innerHTML = '<div class="cap-top"><span>' + ic("inbox") + 'הוספה מהירה לסל</span><button class="iconbtn" data-cp="close" aria-label="סגירה">' + ic("x") + "</button></div>" +
+    '<label class="sr" for="capText">מה צריך לזכור?</label><textarea id="capText" rows="3" placeholder="מה צריך לזכור? (כל שורה = משימה נפרדת)">' + esc(val) + "</textarea>" +
+    '<div class="cap-row">' + (SR ? '<button class="mic big" id="capMic" data-cp="mic" aria-label="הקלטה">' + ic("mic") + "</button>" : "") + '<button class="btn primary big" data-cp="save">' + ic("check") + "שמירה לסל</button></div>" +
+    (CAP.saved.length ? '<div class="cap-saved"><b>נשמרו עכשיו:</b>' + CAP.saved.slice(-5).map(function (s) { return "<span>✓ " + esc(s) + "</span>"; }).join("") + "</div>" : "") +
+    '<button class="btn plain" data-cp="close">לאפליקציה</button>';
+}
+function captureSave() {
+  var ta = document.getElementById("capText"), v = (ta.value || "").trim();
+  if (!v) return;
+  if (!store) { toast("רגע, מתחבר לחשבון…"); return; }
+  v.split(/\n+/).map(function (x) { return x.trim(); }).filter(Boolean).forEach(function (line, i) {
+    var r = parseQuick(line);
+    store.put(newId() + i, { title: r.title || line, notes: "", date: r.date || "", time: r.time || "", dur: r.dur || 0, pri: r.pri || 0, proj: r.proj ? findOrMakeProject(r.proj) : "", rep: r.rep || "", subs: [], done: false, doneAt: 0, created: Date.now() + i, order: Date.now() + i, due: r.due || "", tags: r.tags || [], imp: false, inbox: true });
+    CAP.saved.push(r.title || line);
+  });
+  celebrate(false); drawCapture("");
+  setTimeout(function () { var t = document.getElementById("capText"); if (t) t.focus(); }, 30);
+}
+function capMic() {
+  if (!SR) return;
+  if (rec) { rec.stop(); return; }
+  var ta = document.getElementById("capText"), base = ta.value ? ta.value + " " : "";
+  rec = new SR(); rec.lang = "he-IL"; rec.interimResults = true;
+  rec.onresult = function (e) { var s = ""; for (var i = 0; i < e.results.length; i++) s += e.results[i][0].transcript; ta.value = base + s; };
+  rec.onerror = function (e) { if (e.error === "not-allowed") toast("צריך לאשר גישה למיקרופון"); };
+  rec.onend = function () { rec = null; var b = document.getElementById("capMic"); if (b) b.classList.remove("on"); };
+  try { rec.start(); document.getElementById("capMic").classList.add("on"); } catch (x) { rec = null; }
+}
+
+/* ---------- stuck tasks & reflection ---------- */
+function stuckInfo(t) {
+  var why = null, last = (t.refl || []).slice(-1)[0];
+  if (last && Date.now() - last.at < 7 * 864e5) return null;
+  if ((t.postponed || 0) >= 3) why = "נדחתה כבר " + t.postponed + " פעמים";
+  else if (t.date && dayDiff(t.date) <= -3) why = "באיחור של " + (-dayDiff(t.date)) + " ימים";
+  else if (!t.date && t.created && Date.now() - t.created > 30 * 864e5) why = "מחכה אצלך כבר " + Math.floor((Date.now() - t.created) / 864e5) + " ימים";
+  return why;
+}
+function stuckList() {
+  return list().filter(function (t) { return !t.done && t.status !== "someday" && stuckInfo(t); }).sort(function (a, b) { return ((b.postponed || 0) * 5 + Math.max(0, -dayDiff(b.date || T()))) - ((a.postponed || 0) * 5 + Math.max(0, -dayDiff(a.date || T()))); });
+}
+var RF = null;
+var RF_WHY = ["לא ברור לי מה הצעד הראשון", "היא גדולה מדי", "היא משעממת", "יש לי חשש או לחץ ממנה", "היא לא באמת חשובה לי", "חסר לי משהו: מידע, כלי או עזרה", "פשוט אין לי זמן", "אני תלוי במישהו אחר"];
+var RF_DEEP = ["פחד להיכשל", "רוצה שזה יהיה מושלם", "חוסר ודאות", "עייפות או עומס", "אי נוחות מול מישהו", "לא בטוח שזה ישנה משהו", "זה לא באמת הרצון שלי"];
+var RF_NEED = { 0: "לפרק את המשימה לשלבים קטנים", 1: "לפרק את המשימה לשלבים קטנים", 2: "לעשות רק 10 דקות עם טיימר", 3: "להזכיר לעצמי למה זה חשוב לי", 4: "לוותר עליה באמת, בלי רגשות אשם", 5: "לבקש עזרה או לברר מה חסר", 6: "לשבץ ביומן חלון זמן קבוע", 7: "לשלוח תזכורת למי שאני מחכה לו" };
+function openReflect(id) {
+  var t = S.tasks[id]; if (!t) return;
+  RF = { id: id, step: 0, why: [], deep: [], need: [], whyT: "", deepT: "", needT: "", next: "" };
+  document.getElementById("refl").hidden = false; drawReflect();
+}
+function rfChips(arr, sel, key) { return '<div class="chips">' + arr.map(function (x, i) { return chip(sel.indexOf(x) >= 0, 'data-rf="pick" data-k="' + key + '" data-v="' + esc(x) + '"', esc(x)); }).join("") + "</div>"; }
+function rfSaveText() { ["whyT", "deepT", "needT", "next"].forEach(function (k) { var el = document.getElementById("rf_" + k); if (el) RF[k] = el.value; }); }
+function drawReflect() {
+  var t = S.tasks[RF.id], box = document.getElementById("reflBox"); if (!t) { document.getElementById("refl").hidden = true; return; }
+  var steps = 5, s = RF.step, h = '<div class="cls-top"><span>🧭 מה עוצר אותי?</span><span class="pn">' + (s + 1) + " / " + (steps + 1) + '</span><button class="iconbtn" data-rf="close" aria-label="סגירה">' + ic("x") + '</button></div><div class="bar" style="--c:#8a5cc7"><i style="width:' + Math.round(s / steps * 100) + '%"></i></div><div class="rf-task">' + esc(t.title) + "</div>";
+  if (s === 0) h += '<div class="rf-q"><p class="rf-lead">' + (stuckInfo(t) || "המשימה הזו מחכה כבר זמן מה") + ".</p><p>זה טבעי לדחות משימות. הדחייה לא אומרת שמשהו לא בסדר איתך. בדרך כלל יש לה סיבה, וכשמבינים אותה, הרבה יותר קל להתחיל.</p><p>בוא נעבור על כמה שאלות קצרות. אין תשובות נכונות או לא נכונות.</p></div>";
+  if (s === 1) h += '<div class="rf-q"><h3>מה מנע ממך לבצע את המשימה עד עכשיו?</h3>' + rfChips(RF_WHY, RF.why, "why") + '<textarea id="rf_whyT" rows="2" placeholder="במילים שלך…">' + esc(RF.whyT) + "</textarea></div>";
+  if (s === 2) h += '<div class="rf-q"><h3>ומה יותר בעומק? מה עולה בך כשאתה חושב על המשימה הזו?</h3>' + rfChips(RF_DEEP, RF.deep, "deep") + '<textarea id="rf_deepT" rows="2" placeholder="מה התחושה? ממה אתה אולי נמנע?">' + esc(RF.deepT) + "</textarea></div>";
+  if (s === 3) { var sug = []; RF.why.forEach(function (w) { var n = RF_NEED[RF_WHY.indexOf(w)]; if (n && sug.indexOf(n) < 0) sug.push(n); }); ["לדבר על זה עם מישהו", "לקבוע מתי בדיוק אני עושה את זה"].forEach(function (x) { if (sug.indexOf(x) < 0) sug.push(x); });
+    h += '<div class="rf-q"><h3>מה אתה צריך כדי להתגבר על המניעה?</h3>' + rfChips(sug, RF.need, "need") + '<textarea id="rf_needT" rows="2" placeholder="מה יעזור לך? ממי אפשר לבקש עזרה?">' + esc(RF.needT) + "</textarea></div>"; }
+  if (s === 4) h += '<div class="rf-q"><h3>מה הצעד הכי קטן הבא?</h3><p>משהו שלוקח פחות מ-5 דקות. למשל: לפתוח את הקובץ, לחפש מספר טלפון, או לכתוב משפט ראשון.</p><input id="rf_next" type="text" class="sub-add" value="' + esc(RF.next) + '" placeholder="הצעד הקטן הבא שלי…"></div>';
+  if (s === 5) h += '<div class="rf-q"><h3>אז מה עושים עם המשימה?</h3><div class="rf-dec">' +
+    '<button class="btn primary big" data-rf="dec" data-v="now">▶️ להתחיל עכשיו, 10 דקות</button><button class="btn" data-rf="dec" data-v="today">📅 לעשות היום</button><button class="btn" data-rf="dec" data-v="tomorrow">📅 מחר</button><button class="btn" data-rf="dec" data-v="split">🪜 לפרק לשלבים</button><button class="btn" data-rf="dec" data-v="help">🙋 לבקש עזרה</button><button class="btn danger" data-rf="dec" data-v="drop">🗑️ לוותר עליה</button></div></div>';
+  h += '<div class="cls-actions">' + (s > 0 ? '<button class="btn" data-rf="back">חזרה</button>' : '<button class="btn plain" data-rf="close">לא עכשיו</button>') + (s < steps ? '<button class="btn primary big" data-rf="next">' + (s === 0 ? "בוא נתחיל" : "המשך") + "</button>" : "") + "</div>";
+  box.innerHTML = h;
+}
+function reflectFinish(dec) {
+  rfSaveText();
+  var t = S.tasks[RF.id]; if (!t) return;
+  var rec = { at: Date.now(), why: RF.why, whyT: RF.whyT, deep: RF.deep, deepT: RF.deepT, need: RF.need, needT: RF.needT, next: RF.next, dec: dec };
+  var patch = { refl: (t.refl || []).concat([rec]), postponed: 0 };
+  if (RF.next.trim()) patch.subs = [{ t: RF.next.trim(), d: false }].concat(t.subs || []);
+  if (dec === "now" || dec === "today") patch.date = T();
+  if (dec === "tomorrow") patch.date = TM(1);
+  if (dec === "help") { patch.tags = (t.tags || []).concat((t.tags || []).indexOf("עזרה") < 0 ? ["עזרה"] : []); patch.status = "waiting"; }
+  document.getElementById("refl").hidden = true;
+  if (dec === "drop") { save(RF.id, { refl: patch.refl }); removeTask(RF.id); return; }
+  save(RF.id, patch);
+  var g = ensureGame(); g.xp += 15; putGame(g); celebrate(false);
+  if (dec === "now") { F.len = 10; startFocus(RF.id); }
+  else if (dec === "split") { openDetail(RF.id); setTimeout(function () { var a = document.getElementById("subAdd"); if (a) a.focus(); }, 300); }
+  toast("כל הכבוד על הכנות 🧭 +15 נקודות");
+}
+
+/* ---------- habit reinforcement ---------- */
+var HB_MS = [3, 7, 14, 21, 30, 50, 100];
+function bestStreak(hb) {
+  var ds = Object.keys(hb.days || {}).sort(), best = 0, cur = 0, prev = null;
+  ds.forEach(function (d) { cur = prev && ymd(addD(pd(prev), 1)) === d ? cur + 1 : 1; if (cur > best) best = cur; prev = d; });
+  return best;
+}
+function habitPct(hb, n) { var c = 0; for (var i = 0; i < n; i++) if ((hb.days || {})[ymd(addD(new Date(), -i))]) c++; return Math.round(c / n * 100); }
+function habitCheered(id, ds) {
+  var hb = settingsArr("habits").filter(function (x) { return x.id === id; })[0]; if (!hb || !(hb.days || {})[ds] || ds !== T()) return;
+  var sk = habitStreak(hb), g = ensureGame(); g.xp += 5; g.hm = Object.assign({}, g.hm || {});
+  var ms = HB_MS.indexOf(sk) >= 0 && !g.hm[id + ":" + sk];
+  if (ms) g.hm[id + ":" + sk] = T();
+  putGame(g); celebrate(ms);
+  toast(ms ? "🏅 " + sk + " ימים ברצף ב" + hb.name + "! אתה מתמיד, וזה מה שבונה הרגל" : sk > 1 ? "🔥 " + hb.name + ": " + sk + " ימים ברצף, ממשיכים!" : "✅ " + hb.name + ": התחלה טובה! +5");
+}
+function habitsProgressHtml() {
+  var hs = settingsArr("habits"), g = G(); if (!hs.length) return '<section class="sec"><div class="sec-h"><span>ההרגלים שלי</span></div><div class="empty">עוד אין הרגלים. <a href="#" data-act="go" data-view="habits">להוסיף הרגל</a></div></section>';
+  return '<section class="sec"><div class="sec-h">' + shic("fire", "#e8590c") + '<span>ההרגלים שלי</span></div><div class="hprog">' + hs.map(function (hb) {
+    var sk = habitStreak(hb), best = bestStreak(hb), pct = habitPct(hb, 30), next = HB_MS.filter(function (m) { return m > sk; })[0];
+    return '<div class="hpc" style="--c:' + esc(hb.color) + '"><div class="hpc-h"><b>' + esc(hb.name) + '</b><span class="streak' + (sk ? " on" : "") + '">' + ic("fire") + sk + " ברצף</span></div>" +
+      '<div class="hpc-s"><span>שיא: <b>' + best + "</b> ימים</span><span>30 יום אחרונים: <b>" + pct + '%</b></span></div><div class="medals">' + HB_MS.map(function (m) { var got = (g.hm || {})[hb.id + ":" + m] || best >= m; return '<span class="medal' + (got ? " got" : "") + '" title="' + m + ' ימים ברצף">' + m + "</span>"; }).join("") + "</div>" +
+      (next ? '<div class="hpc-n">עוד ' + (next - sk) + " ימים למדליה של " + next + "</div>" : "") + "</div>";
+  }).join("") + "</div></section>";
+}
+
+document.getElementById("clsBox").addEventListener("click", function (e) {
+  var b = e.target.closest("[data-cl]"); if (!b || !CL) return;
+  var a = b.getAttribute("data-cl"), v = b.getAttribute("data-v"), d = CL.d;
+  if (a === "close") { document.getElementById("cls").hidden = true; var gv = b.getAttribute("data-go"); if (gv) go(gv); else render(); return; }
+  if (a === "edit") { d.edit = true; drawCls(); var ti = document.getElementById("clTitle"); if (ti) ti.focus(); return; }
+  var ti2 = document.getElementById("clTitle"); if (ti2 && ti2.value.trim()) d.title = ti2.value.trim();
+  if (a === "q") d.q = d.q === +v ? 0 : +v;
+  else if (a === "proj") { if (d.proj !== v) d.sec = ""; d.proj = v; }
+  else if (a === "sec") d.sec = v;
+  else if (a === "when") { if (v === "keep") { d.dmode = "keep"; } else { d.dmode = ""; d.date = v; } }
+  else if (a === "tag") { var k = d.tags.indexOf(v); if (k >= 0) d.tags.splice(k, 1); else d.tags.push(v); }
+  else if (a === "est") d.est = d.est === +v ? 0 : +v;
+  else if (a === "energy") d.energy = d.energy === v ? "" : v;
+  else if (a === "status") d.status = v;
+  else if (a === "doneNow") { clsApply(); complete(CL.ids[CL.i]); CL.i++; clsLoad(); }
+  else if (a === "skip") { CL.i++; clsLoad(); }
+  else if (a === "del") { var did = CL.ids[CL.i]; CL.i++; removeTask(did); clsLoad(); }
+  else if (a === "send") { clsApply(); var dd = CL.d; CL.i++; clsLoad(); var pn = dd.proj && proj(dd.proj); toast("נשלח ✓ " + [dd.q ? QUADS[dd.q - 1].name : "", pn ? pn.name : "", dd.dmode !== "keep" && dd.date ? relDate(dd.date) : dd.dmode !== "keep" ? "להמשך" : ""].filter(Boolean).join(" · ")); }
+  drawCls(); clsDragInit();
+});
+document.getElementById("clsBox").addEventListener("change", function (e) {
+  if (e.target.id === "clDate" && e.target.value) { CL.d.date = e.target.value; CL.d.dmode = ""; drawCls(); clsDragInit(); }
+});
+document.getElementById("clsBox").addEventListener("submit", function (e) {
+  e.preventDefault();
+  if (e.target.id === "clNewTag") { var v = document.getElementById("clNewTagIn").value.replace(/^@/, "").trim(); if (v && CL.d.tags.indexOf(v) < 0) CL.d.tags.push(v); }
+  if (e.target.id === "clNewSec") { var nm = document.getElementById("clNewSecIn").value.trim(); if (nm && CL.d.proj) { var mp = ensureSections(CL.d.proj, [nm]); CL.d.sec = mp[nm]; } }
+  drawCls(); clsDragInit();
+});
+document.getElementById("cls").addEventListener("click", function (e) { if (e.target.id === "cls") { this.hidden = true; render(); } });
+var _drawCls = drawCls; drawCls = function () { _drawCls(); clsDragInit(); };
+document.getElementById("capBox").addEventListener("click", function (e) {
+  var b = e.target.closest("[data-cp]"); if (!b) return;
+  var a = b.getAttribute("data-cp");
+  if (a === "close") { document.getElementById("cap").hidden = true; if (rec) rec.stop(); render(); }
+  else if (a === "save") captureSave();
+  else if (a === "mic") capMic();
+});
+document.getElementById("capBox").addEventListener("keydown", function (e) { if (e.target.id === "capText" && e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); captureSave(); } });
+document.getElementById("cap").addEventListener("click", function (e) { if (e.target.id === "cap") { this.hidden = true; render(); } });
+document.getElementById("reflBox").addEventListener("click", function (e) {
+  var b = e.target.closest("[data-rf]"); if (!b || !RF) return;
+  var a = b.getAttribute("data-rf");
+  rfSaveText();
+  if (a === "close") { document.getElementById("refl").hidden = true; lsSet("myday-stuck-day", T()); render(); return; }
+  if (a === "pick") { var k = b.getAttribute("data-k"), v = b.getAttribute("data-v"), arr = RF[k], i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); }
+  else if (a === "next") RF.step = Math.min(5, RF.step + 1);
+  else if (a === "back") RF.step = Math.max(0, RF.step - 1);
+  else if (a === "dec") { reflectFinish(b.getAttribute("data-v")); return; }
+  drawReflect();
+});
+(function () {
+  var q = new URLSearchParams(location.search);
+  if (q.get("capture") || q.get("text") || q.get("title")) {
+    var pre = [q.get("title"), q.get("text"), q.get("url")].filter(Boolean).join(" ");
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}
+    setTimeout(function () { openCapture(pre); }, 50);
+  }
+})();
+
 /* ---------------- boot ---------------- */
 S.calDays = lsGet("myday-caldays", null) || (isPhone() ? 3 : 7);
 if (isPhone() && S.calDays === 7) S.calDays = 3;
 S.showEv = lsGet("myday-showev", true) !== false;
 S.calColor = lsGet("myday-calcolor", "proj");
 S.groupBy = lsGet("myday-groupby", "order");
-S.openTopics = {};
+S.openTopics = {}; S.dayOff = 0;
 var v0 = lsGet("myday-view", "today");
-if (["today", "cal", "up", "projects", "more", "matrix", "habits", "week", "templates", "tags", "later", "progress"].indexOf(v0) >= 0) S.view = v0;
+if (["today", "cal", "up", "projects", "more", "matrix", "habits", "week", "templates", "tags", "later", "progress", "inbox"].indexOf(v0) >= 0) S.view = v0;
 var lastDay = T();
 setInterval(function () {
   if (drag || !store) return;
