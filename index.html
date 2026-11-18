@@ -339,6 +339,75 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
 @keyframes inFromR { from { transform: translateX(36px); opacity: .2; } to { transform: none; opacity: 1; } }
 .content.slideL { animation: inFromL .2s ease; }
 .content.slideR { animation: inFromR .2s ease; }
+.tg { color: var(--accent); font-weight: 600; }
+.dueb.late { color: var(--late); font-weight: 700; } .dueb.soon { color: var(--p2); font-weight: 700; }
+.impstar { color: #e0a800; } .impstar svg.i { fill: #e0a800; }
+.mic { border: 0; background: none; color: var(--muted); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; }
+.mic:hover { color: var(--accent); background: var(--accent-soft); }
+.mic.on { color: #fff; background: var(--p3); animation: pulse 1.2s infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--p3) 25%, transparent); } }
+.banner { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-inline-start: 4px solid var(--accent); border-radius: var(--r); padding: 12px 14px; box-shadow: var(--shadow); }
+.banner .tx { flex: 1; min-width: 180px; } .banner .tx b { display: block; font-family: var(--display); font-weight: 600; }
+.banner .tx span { color: var(--muted); font-size: 14px; }
+.todaybar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+.habchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.habchip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 12px 4px 8px; font-weight: 600; font-size: 14px; }
+.habchip .hc { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--c); display: grid; place-items: center; color: transparent; }
+.habchip.on .hc { background: var(--c); color: #fff; } .habchip .hc svg.i { width: 11px; height: 11px; stroke-width: 3.4; }
+.habchip .fs { color: var(--muted); font-size: 12px; display: inline-flex; align-items: center; gap: 2px; } .habchip .fs svg.i { width: 13px; height: 13px; color: #e8590c; }
+.habits { display: grid; gap: 12px; margin-top: 14px; }
+.habit { background: var(--surface); border: 1px solid var(--line); border-inline-start: 4px solid var(--c); border-radius: var(--r); padding: 12px 14px; display: grid; gap: 10px; box-shadow: var(--shadow); }
+.hhead { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; } .hhead b { font-family: var(--display); font-size: 17px; font-weight: 600; flex: 1; }
+.streak { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); font-size: 13.5px; font-weight: 700; } .streak.on { color: #e8590c; } .streak svg.i { width: 16px; height: 16px; }
+.hweek { color: var(--muted); font-size: 13px; }
+.habit .del, .pcard .del { border: 0; background: none; color: var(--muted); padding: 4px; border-radius: 6px; display: grid; }
+.habit .del:hover { color: var(--p3); } .habit .del.sure { color: #fff; background: var(--p3); font-size: 12px; font-weight: 700; padding: 3px 8px; }
+.hdots { display: flex; gap: 6px; flex-wrap: wrap; direction: rtl; }
+.hdot { width: 36px; height: 44px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); display: grid; place-items: center; font-size: 11.5px; color: var(--muted); font-weight: 700; padding: 0; }
+.hdot.on { background: var(--c); border-color: var(--c); color: #fff; } .hdot.today { outline: 2px solid var(--ink); outline-offset: 1px; }
+.mhint { color: var(--muted); font-size: 14px; margin: 12px 4px; line-height: 1.5; }
+.matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quad { background: var(--surface-2); border: 1px solid var(--line); border-top: 4px solid var(--c); border-radius: var(--r); padding: 10px; display: grid; gap: 8px; align-content: start; }
+.qh { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; } .qh b { font-family: var(--display); font-weight: 600; color: var(--c); font-size: 16px; } .qh span { color: var(--muted); font-size: 13px; } .qh .n { margin-inline-start: auto; }
+.qcards { min-height: 60px; } .qcards:empty::after { content: "גרור לכאן משימות"; display: grid; place-items: center; min-height: 60px; color: var(--muted); font-size: 13px; }
+.weeknav2 { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px; font-family: var(--display); font-size: 17px; font-variant-numeric: tabular-nums; }
+.iconbtn:disabled { opacity: .35; cursor: default; }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; text-align: center; box-shadow: var(--shadow); }
+.tile b { display: block; font-family: var(--display); font-size: 30px; font-variant-numeric: tabular-nums; color: var(--accent); } .tile span { color: var(--muted); font-size: 13.5px; }
+.bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; padding: 14px 14px 10px; height: 170px; align-items: end; }
+.barcol { display: grid; grid-template-rows: auto 1fr auto; height: 100%; justify-items: center; gap: 4px; }
+.barcol i { display: block; width: 70%; max-width: 36px; align-self: end; background: var(--accent); border-radius: 6px 6px 2px 2px; min-height: 2px; }
+.barcol .bn { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; } .barcol .bd { font-size: 12px; color: var(--muted); }
+.pbars { padding: 10px 14px; display: grid; gap: 8px; }
+.pbar { display: grid; grid-template-columns: minmax(80px, 160px) 1fr 40px; gap: 10px; align-items: center; font-size: 14px; } .pbar b { font-variant-numeric: tabular-nums; text-align: end; }
+.review { display: grid; } .rstep { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-top: 1px solid var(--line); flex-wrap: wrap; } .rstep:first-child { border-top: 0; }
+.rstep > div { flex: 1; min-width: 180px; display: grid; gap: 2px; } .rstep span { color: var(--muted); font-size: 13.5px; } .rstep a { color: var(--accent); font-weight: 600; }
+.rn { width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid !important; place-items: center; font-weight: 700; font-size: 14px !important; }
+.rstep.end { justify-content: flex-end; }
+.tplform { display: grid; gap: 6px; background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); padding: 12px; margin-top: 10px; }
+.tplform label { font-size: 13px; font-weight: 700; color: var(--muted); }
+.tplform input, .tplform textarea { border: 1px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 8px 10px; resize: vertical; }
+.tplform .btn { justify-self: start; margin-top: 4px; }
+.pcard .row2, .backup .row2 { display: flex; gap: 8px; flex-wrap: wrap; }
+.explain { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; margin-top: 12px; line-height: 1.6; } .explain p { margin: 6px 0 0; color: var(--muted); }
+.tagcloud { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.tagbig { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 14px; font-weight: 700; color: var(--accent); display: inline-flex; gap: 8px; align-items: center; box-shadow: var(--shadow); }
+.tagbig span { background: var(--accent-soft); border-radius: 99px; padding: 0 8px; font-size: 13px; }
+.tools { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 14px; }
+.tool { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 4px; text-align: start; box-shadow: var(--shadow); }
+.tool:hover { border-color: var(--accent); } .tool svg.i { width: 24px; height: 24px; color: var(--accent); } .tool b { font-family: var(--display); font-weight: 600; font-size: 16px; } .tool span { color: var(--muted); font-size: 13.5px; }
+.backup { padding: 14px; display: grid; gap: 10px; } .backup p { margin: 0; color: var(--muted); }
+.trow.swiping { transition: none; z-index: 3; background: var(--surface); }
+.trow.swready[data-sw="done"] { box-shadow: inset 0 0 0 2px var(--accent); } .trow.swready[data-sw="later"] { box-shadow: inset 0 0 0 2px var(--p1); }
+.trow:not(.swiping) { transition: transform .18s ease; }
+.pbox { width: min(480px, 100%); background: var(--surface); border-radius: 18px; box-shadow: var(--shadow-lg); padding: 18px; display: grid; gap: 14px; }
+.plan-top { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 600; } .plan-top .pn { color: var(--muted); margin-inline-start: auto; font-variant-numeric: tabular-nums; }
+.plan-card { position: relative; background: var(--surface-2); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 8px; }
+.plan-card.p3 { border-inline-start: 4px solid var(--p3); } .plan-card.p2 { border-inline-start: 4px solid var(--p2); } .plan-card.p1 { border-inline-start: 4px solid var(--p1); }
+.plan-title { font-family: var(--display); font-size: 22px; font-weight: 600; overflow-wrap: anywhere; } .plan-notes { color: var(--muted); font-size: 14px; white-space: pre-line; }
+.plan-q { margin: 0; font-weight: 700; } .plan-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .plan-btns .btn { justify-content: center; padding: 11px; }
+.plan-end { display: grid; justify-items: center; text-align: center; gap: 8px; padding: 10px; } .plan-end h2 { font-family: var(--display); margin: 0; } .plan-end p { margin: 0; color: var(--muted); } .plan-end svg { width: 70px; height: 70px; }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -381,6 +450,10 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
   .toast { bottom: calc(150px + env(safe-area-inset-bottom)); }
   .pgrid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .colb { flex-basis: 86%; }
+  .matrix { grid-template-columns: 1fr; }
+  .tiles b { font-size: 24px; }
+  .pbar { grid-template-columns: 90px 1fr 36px; }
+  .tab { font-size: 11px; }
   .colnew { flex-basis: 70%; }
 }
 @media (max-width: 420px) { .pgrid { grid-template-columns: 1fr; } }
@@ -407,6 +480,7 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
         <span class="plus" aria-hidden="true"></span>
         <label for="qa" class="sr">משימה חדשה</label>
         <input id="qa" type="text" enterkeyhint="done" placeholder="משימה חדשה… למשל: פגישה עם דנה מחר 14:00 #עבודה !!">
+        <span id="micSlot"></span>
         <button class="cmp-go" id="qaGo" type="submit" disabled>הוספה</button>
       </div>
       <div class="chips" id="qaChips"></div>
@@ -437,6 +511,8 @@ body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: non
 
 <div class="overlay" id="imp" hidden><div class="ibox" role="dialog" aria-label="ייבוא מ-Trello" id="impBox"></div></div>
 <input type="file" id="impFile" accept=".json,application/json" hidden>
+<input type="file" id="bkFile" accept=".json,application/json" hidden>
+<div class="overlay" id="plan" hidden><div class="pbox" role="dialog" aria-label="תכנון היום" id="planBox"></div></div>
 <script>
 (function () {
 "use strict";
@@ -463,7 +539,18 @@ var P = {
   subs: '<path d="M4 6h3M4 12h3M4 18h3M10 6h10M10 12h10M10 18h10"/>',
   play: '<path d="M7 4l13 8-13 8z"/>',
   pause: '<path d="M7 4v16M17 4v16"/>',
-  back: '<path d="M9 6l6 6-6 6"/>'
+  back: '<path d="M9 6l6 6-6 6"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+  fire: '<path d="M12 22c4 0 7-2.8 7-6.8 0-4.2-3.4-6.5-4.5-10.2-2.3 1.4-3.3 3.8-3.3 5.6-1.2-.9-1.9-2.3-2-3.6C6.6 9 5 11.6 5 15.2 5 19.2 8 22 12 22z"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/>',
+  chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  download: '<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
+  upload: '<path d="M12 21V9M7 14l5-5 5 5M4 3h16"/>',
+  copy: '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M4 16V5a2 2 0 0 1 2-2h11"/>',
+  target: '<circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/>',
+  due: '<path d="M6 2h12M6 22h12M6 2c0 6 12 6 12 10S6 16 6 22M18 2c0 6-12 6-12 10s12 4 12 10"/>'
 };
 function ic(n, cls) { return '<svg class="i' + (cls ? " " + cls : "") + '" viewBox="0 0 24 24" aria-hidden="true">' + P[n] + "</svg>"; }
 
@@ -523,6 +610,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
+var APP_VERSION = "11";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -548,12 +636,12 @@ function fbStore(uid) {
   }, function (e) { clearTimeout(timer); fail(e); });
   var u2 = setRef.onSnapshot(function (d) {
     var data = d.exists ? d.data() : null;
-    S.settings = { projects: data && data.projects ? data.projects.slice() : [] }; render();
+    S.settings = { projects: data && data.projects ? data.projects.slice() : [], habits: data && data.habits ? data.habits.slice() : [], templates: data && data.templates ? data.templates.slice() : [] }; render();
   }, function () {});
   return {
     put: function (id, t) { t = clean(t); S.tasks[id] = t; col.doc(id).set(t).catch(fail); render(); },
     del: function (id) { delete S.tasks[id]; col.doc(id).delete().catch(fail); render(); },
-    putSettings: function (s) { s = clean(s); S.settings = s; setRef.set(s).catch(fail); render(); },
+    putSettings: function (s) { s = clean(Object.assign({}, S.settings, s)); S.settings = s; setRef.set(s).catch(fail); render(); },
     putMany: function (items) {
       items = items.map(function (it) { return { id: it.id, t: clean(it.t) }; });
       items.forEach(function (it) { S.tasks[it.id] = it.t; });
@@ -621,7 +709,12 @@ function byTime(a, b) {
   return (a.created || 0) - (b.created || 0);
 }
 function byDate(a, b) { if ((a.date || "9") !== (b.date || "9")) return (a.date || "9") < (b.date || "9") ? -1 : 1; return byTime(a, b); }
-function save(id, patch) { if (!store) return null; var t = Object.assign({}, S.tasks[id] || {}, patch); store.put(id, t); return t; }
+function save(id, patch) {
+  if (!store) return null;
+  var old = S.tasks[id] || {};
+  if (patch.date && old.date && patch.date > old.date && !old.done && !patch.lastDone && !patch.done) patch.postponed = (old.postponed || 0) + 1;
+  var t = Object.assign({}, old, patch); store.put(id, t); return t;
+}
 function isLate(t) { return !t.done && t.date && t.date < T(); }
 function doneToday(t) { var td = T(); return (t.done && t.doneAt && ymd(new Date(t.doneAt)) === td) || (t.lastDone && ymd(new Date(t.lastDone)) === td && !t.done); }
 function todayStats() {
@@ -669,6 +762,12 @@ function parseQuick(raw) {
   var s = " " + raw + " ", r = { date: null, time: "", dur: 0, pri: 0, proj: "", rep: "" };
   function take(re, fn) { var m = s.match(re); if (m) { fn(m); s = s.replace(m[0], " "); return true; } return false; }
   take(/\s#([^\s#]+)/, function (m) { r.proj = m[1].replace(/_/g, " "); });
+  r.tags = []; while (take(/\s@([^\s@]+)/, function (m) { if (r.tags.indexOf(m[1]) < 0) r.tags.push(m[1]); })) {}
+  r.due = "";
+  take(/\sעד\s+((?:יום\s+)?(?:מחרתיים|מחר|היום|ראשון|שני|שלישי|רביעי|חמישי|שישי|שבת|סופ["״']?ש)|ה?-?\d{1,2}[./]\d{1,2})(?=\s)/, function (m) {
+    var w = m[1].replace(/^ה?-?(?=\d)/, ""), x = /^\d/.test(w) ? w : (/^(?:יום|מחר|היום|סופ)/.test(w) ? w : "יום " + w);
+    r.due = parseQuick(x).date || "";
+  });
   take(/\s(!{1,3})(?=\s)/, function (m) { r.pri = m[1].length; }) || take(/\sדחוף(?=\s)/, function () { r.pri = 3; });
   take(/\s(?:כל\s+יום\s+(?:חול|עבודה)|בימי\s+(?:חול|עבודה))(?=\s)/, function () { r.rep = "weekdays"; }) ||
     take(/\sכל\s+יום\s+(ראשון|שני|שלישי|רביעי|חמישי|שישי|שבת)(?=\s)/, function (m) { r.rep = "weekly"; var dd = nextDow(WD[m[1]]); r.date = WD[m[1]] === new Date().getDay() ? T() : dd; }) ||
@@ -717,6 +816,9 @@ function taskRow(t, o) {
   if (t.time && o.time === "meta") meta.push("<span>" + ic("clock") + t.time + "</span>");
   if (t.rep) meta.push("<span>" + ic("rep") + REPS[t.rep] + "</span>");
   if (t.subs && t.subs.length) { var dn = t.subs.filter(function (s) { return s.d; }).length; meta.push("<span>" + ic("subs") + dn + "/" + t.subs.length + "</span>"); }
+  if (t.due) { var dd = dayDiff(t.due); meta.push('<span class="dueb' + (!t.done && dd < 0 ? " late" : !t.done && dd <= 2 ? " soon" : "") + '">' + ic("due") + "יעד " + relDate(t.due) + "</span>"); }
+  if (t.imp) meta.push('<span class="impstar">' + ic("star") + "</span>");
+  (t.tags || []).forEach(function (g) { meta.push('<span class="tg">@' + esc(g) + "</span>"); });
   if (t.notes) meta.push("<span>" + ic("note") + "</span>");
   if (p && o.proj !== false) meta.push('<span><i class="dot" style="--c:' + esc(p.color) + '"></i>' + esc(p.name) + "</span>");
   return '<div class="trow' + (t.pri ? " p" + t.pri : "") + (t.done ? " done" : "") + (S.detailId === t.id ? " sel" : "") + '" data-id="' + esc(t.id) + '"' + (o.drag ? ' data-drag="1"' : "") + ">" +
@@ -903,7 +1005,7 @@ function go(view, projId) {
   S.cmpCtx = null;
   S.cmpDate = (view === "project" || view === "projects") ? "none" : "today";
   document.getElementById("content").scrollTop = 0;
-  lsSet("myday-view", view === "project" ? "projects" : view);
+  lsSet("myday-view", view === "project" ? "projects" : view === "tag" ? "tags" : view);
   render();
   watchCal();
 }
@@ -917,13 +1019,16 @@ function renderSide() {
     h += '<button class="nav" data-act="go" data-view="' + v.id + '" aria-current="' + cur + '">' + ic(v.icon) + v.name + '<span class="cnt">' + cnt + "</span></button>";
   });
   h += '<button class="nav" data-act="search">' + ic("search") + "חיפוש" + '<span class="cnt"><span class="kbd">/</span></span></button>';
+  h += "<h3><span>כלים</span></h3>";
+  TOOLS.forEach(function (tl) { h += '<button class="nav" data-act="go" data-view="' + tl.v + '" aria-current="' + (S.view === tl.v || (tl.v === "tags" && S.view === "tag")) + '">' + ic(tl.i) + tl.n + "</button>"; });
+  h += '<button class="nav" data-act="go" data-view="more" aria-current="' + (S.view === "more") + '">' + ic("grid") + "גיבוי ועוד</button>";
   h += '<h3><span>פרויקטים</span><button data-act="go" data-view="projects" aria-label="ניהול פרויקטים">' + ic("plus") + "</button></h3>";
   (S.settings.projects || []).forEach(function (p) {
     var n = L.filter(function (t) { return t.proj === p.id && !t.done; }).length;
     h += '<button class="nav" data-act="go" data-view="project" data-proj="' + esc(p.id) + '" aria-current="' + (S.view === "project" && S.projId === p.id) + '"><i class="dot" style="--c:' + esc(p.color) + '"></i>' + esc(p.name) + '<span class="cnt">' + (n || "") + "</span></button>";
   });
   if (!(S.settings.projects || []).length) h += '<div class="tip">כתוב <b>#שם</b> במשימה כדי ליצור פרויקט, למשל "#עבודה".</div>';
-  var acct = S.user ? '<div class="acct"><span>מחובר כ-<b>' + esc(S.user.email) + '</b></span><button data-act="logout">התנתקות</button></div>' : "";
+  var acct = S.user ? '<div class="acct"><span>מחובר כ-<b>' + esc(S.user.email) + '</b></span><button data-act="logout">התנתקות</button><span>גרסה ' + APP_VERSION + "</span></div>" : "";
   h += '<div class="spacer"></div>' + acct + '<div class="tip">קיצורי מקלדת: <span class="kbd">N</span> משימה חדשה · <span class="kbd">/</span> חיפוש · <span class="kbd">1</span>–<span class="kbd">4</span> מעבר בין מסכים</div>';
   document.getElementById("side").innerHTML = h;
 
@@ -932,6 +1037,8 @@ function renderSide() {
     var cur = S.view === v.id || (v.id === "projects" && S.view === "project");
     tb += '<button class="tab" data-act="go" data-view="' + v.id + '" aria-current="' + cur + '">' + ic(v.icon) + v.name + (v.id === "today" && st.open ? '<span class="bdg">' + st.open + "</span>" : "") + "</button>";
   });
+  var moreCur = ["more", "matrix", "habits", "week", "templates", "tags", "tag"].indexOf(S.view) >= 0;
+  tb += '<button class="tab" data-act="go" data-view="more" aria-current="' + moreCur + '">' + ic("grid") + "עוד</button>";
   document.getElementById("tabs").innerHTML = tb;
 }
 
@@ -948,6 +1055,13 @@ function renderTop() {
     h = '<div class="tt"><h1>הקרוב</h1><span class="sub">השבועיים הקרובים ומה שעוד לא קיבל תאריך</span></div>' + searchBtn;
   } else if (S.view === "projects") {
     h = '<div class="tt"><h1>פרויקטים</h1><span class="sub">כל תחום עבודה בצבע משלו</span></div>' + searchBtn;
+  } else if (S.view === "matrix") { h = '<div class="tt"><h1>מטריצת עדיפויות</h1><span class="sub">מה דחוף, מה חשוב, ומה אפשר לוותר</span></div>' + searchBtn;
+  } else if (S.view === "habits") { h = '<div class="tt"><h1>הרגלים</h1><span class="sub">סמן כל יום מה עשית, וראה את הרצף גדל</span></div>' + searchBtn;
+  } else if (S.view === "week") { h = '<div class="tt"><h1>סיכום שבועי</h1><span class="sub">מה הספקת, ומה הלאה</span></div>' + searchBtn;
+  } else if (S.view === "templates") { h = '<div class="tt"><h1>תבניות</h1><span class="sub">רשימות שלבים מוכנות למשימות שחוזרות</span></div>' + searchBtn;
+  } else if (S.view === "tags") { h = '<div class="tt"><h1>תגיות</h1><span class="sub">תוויות שחוצות פרויקטים</span></div>' + searchBtn;
+  } else if (S.view === "tag") { h = '<button class="iconbtn" data-act="go" data-view="tags" aria-label="חזרה לתגיות">' + ic("back") + '</button><div class="tt"><h1>@' + esc(S.tagName || "") + "</h1></div>" + searchBtn;
+  } else if (S.view === "more") { h = '<div class="tt"><h1>עוד</h1><span class="sub">כלים, גיבוי וחשבון</span></div>' + searchBtn;
   } else if (S.view === "project") {
     var p = proj(S.projId);
     h = '<button class="iconbtn" data-act="go" data-view="projects" aria-label="חזרה לפרויקטים">' + ic("back") + '</button><div class="tt"><h1><i class="dot" style="--c:' + esc(p ? p.color : "") + ';width:14px;height:14px"></i>' + esc(p ? p.name : "פרויקט") + "</h1></div>" + searchBtn;
@@ -975,18 +1089,39 @@ function viewToday() {
   var cs = calStatusHtml(true);
   if (cs) h += '<div class="sec" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">' + cs + "</div>";
   h += section("evtoday", "ביומן היום", [], { pre: evRows(td) || null });
+  var hs = settingsArr("habits");
+  var pc = planCandidates().length, hr0 = new Date().getHours();
+  if (pc && lsGet("myday-planned", "") !== td && lsGet("myday-plan-skip", "") !== td && hr0 < 14)
+    h += '<div class="banner"><div class="tx"><b>' + (hr0 < 12 ? "בוקר טוב! " : "") + "לתכנן את היום?</b><span>" + pc + ' משימות מחכות להחלטה: מתי לעשות אותן.</span></div><button class="btn primary" data-act="plan">' + ic("sun") + 'תכנון היום</button><button class="btn plain" data-act="planSkip">לא עכשיו</button></div>';
+  h += '<div class="todaybar">' + (hs.length ? '<div class="habchips">' + hs.map(function (hb) { var on = !!(hb.days || {})[td], st = habitStreak(hb); return '<button class="habchip' + (on ? " on" : "") + '" style="--c:' + esc(hb.color) + '" data-act="habTog" data-h="' + esc(hb.id) + '" data-d="' + td + '" aria-pressed="' + on + '"><span class="hc">' + ic("check") + "</span>" + esc(hb.name) + (st ? '<span class="fs">' + ic("fire") + st + "</span>" : "") + "</button>"; }).join("") + "</div>" : "") +
+    '<span style="margin-inline-start:auto" class="seg"><button data-act="groupBy" data-v="order" aria-pressed="' + (S.groupBy !== "topic") + '">לפי סדר</button><button data-act="groupBy" data-v="topic" aria-pressed="' + (S.groupBy === "topic") + '">לפי נושא</button></span>' +
+    (!pc ? "" : '<button class="btn plain" data-act="plan" style="font-size:14px">' + ic("sun") + "תכנון</button>") + "</div>";
+  var dueSoon = L.filter(function (t) { return !t.done && t.due && dayDiff(t.due) <= 3 && t.date !== td && !isLate(t); }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
+  if (dueSoon.length) h += section("duesoon", "יעדים מתקרבים", dueSoon, { act: '<span class="n" style="margin-inline-start:auto">גרור ל"במהלך היום" כדי לעבוד עליהן היום</span>' });
   if (late.length) h += section("late", "נשאר מימים קודמים", late, { late: true, act: '<button class="act" data-act="lateToday">הכול להיום</button>' });
   if (tday.length) {
     h += section("timed", "לפי שעות", timed, { row: { date: false }, zone: { date: td, time: "keep" } });
-    h += section("untimed", timed.length ? "במהלך היום" : "להיום", untimed, { row: { date: false }, zone: { date: td, time: "clear", sort: 1 }, always: true, emptyHtml: '<div class="empty" style="padding:14px">גרור לכאן משימה כדי לעשות אותה היום</div>' });
+    if (S.groupBy === "topic" && untimed.length) h += groupedSections("ut", timed.length ? "במהלך היום" : "להיום", untimed, { date: td, time: "clear", sort: 1 });
+    else h += section("untimed", timed.length ? "במהלך היום" : "להיום", untimed, { row: { date: false }, zone: { date: td, time: "clear", sort: 1 }, always: true, emptyHtml: '<div class="empty" style="padding:14px">גרור לכאן משימה כדי לעשות אותה היום</div>' });
   } else {
     h += '<section class="sec"><div class="sec-h"><span>להיום</span></div><div class="empty"' + zoneAttr({ date: td, time: "clear", sort: 1 }) + ">" + emptyArt(dn.length ? "done" : "") + (dn.length ? "<b>סיימת את כל מה שתכננת להיום</b><span>אפשר לנוח, או למשוך משימה מהרשימה שלמטה.</span>" : "<b>אין עדיין משימות להיום</b><span>כתוב משימה בשורה למעלה. אפשר להוסיף שעה, למשל \"שיחה עם יוסי 15:00\".</span>") + "</div></section>";
   }
-  h += section("inbox", "בלי תאריך", inbox, { fold: true, zone: { date: "", time: "clear", sort: 1 }, act: inbox.length ? '<span class="n" style="margin-inline-start:auto">' + (isPhone() ? "לחיצה ארוכה וגרירה" : "גרור") + " משימה ל\"להיום\" או לחץ עליה כדי לתת תאריך</span>" : "" });
+  if (S.groupBy === "topic" && inbox.length) h += groupedSections("ib", "בלי תאריך", inbox, { date: "", time: "clear", sort: 1 });
+  else h += section("inbox", "בלי תאריך", inbox, { fold: true, zone: { date: "", time: "clear", sort: 1 }, act: inbox.length ? '<span class="n" style="margin-inline-start:auto">' + (isPhone() ? "לחיצה ארוכה וגרירה" : "גרור") + " משימה ל\"להיום\" או לחץ עליה כדי לתת תאריך</span>" : "" });
   h += section("done", "בוצע היום", dn, { fold: true });
   return h;
 }
 
+function groupedSections(prefix, title, items, zone) {
+  var groups = {}, order = [];
+  items.forEach(function (t) { var k = t.proj && proj(t.proj) ? t.proj : ""; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(t); });
+  var ps = (S.settings.projects || []).map(function (p) { return p.id; });
+  order.sort(function (a, b) { return (a === "" ? 1e9 : ps.indexOf(a)) - (b === "" ? 1e9 : ps.indexOf(b)); });
+  return order.map(function (k) {
+    var p = proj(k);
+    return section(prefix + k, title + " · " + (p ? '<i class="dot" style="--c:' + esc(p.color) + ';display:inline-block;margin-inline-end:4px"></i>' + esc(p.name) : "ללא פרויקט"), groups[k].sort(byOrder), { row: { date: false, proj: false }, zone: zone });
+  }).join("");
+}
 function viewUp() {
   var L = list().filter(function (t) { return !t.done; }), h = "";
   var late = L.filter(isLate).sort(byDate);
@@ -1021,7 +1156,7 @@ function viewProjects() {
   });
   h += "</div>";
   h += '<div class="impcard"><div class="tx"><b>ייבוא מ-Trello</b><span>מורידים מ-Trello קובץ JSON של לוח, ובוחרים אותו כאן. כל כרטיס הופך למשימה, והלוח הופך לפרויקט.</span></div><button class="btn" data-act="impPick">בחירת קובץ…</button></div>';
-  if (S.user) h += '<div class="acctcard"><span>מחובר כ-<b style="color:var(--ink)">' + esc(S.user.email) + '</b></span><button class="btn" data-act="logout">התנתקות</button></div>';
+  if (S.user) h += '<div class="acctcard"><span>מחובר כ-<b style="color:var(--ink)">' + esc(S.user.email) + '</b> · גרסה ' + APP_VERSION + '</span><button class="btn" data-act="logout">התנתקות</button></div>';
   return h;
 }
 
@@ -1067,7 +1202,7 @@ function ensureSections(pid, names) {
 }
 function quickCreate(raw, def) {
   var r = parseQuick(raw); if (!r.title || !store) return null;
-  var t = { title: r.title, notes: "", date: r.date || def.date || "", time: r.time || "", dur: r.dur || 0, pri: r.pri, proj: r.proj ? findOrMakeProject(r.proj) : def.proj || "", sec: def.sec || "", rep: r.rep, subs: [], done: false, doneAt: 0, created: Date.now(), order: Date.now() };
+  var t = { due: r.due || "", tags: r.tags, imp: false, title: r.title, notes: "", date: r.date || def.date || "", time: r.time || "", dur: r.dur || 0, pri: r.pri, proj: r.proj ? findOrMakeProject(r.proj) : def.proj || "", sec: def.sec || "", rep: r.rep, subs: [], done: false, doneAt: 0, created: Date.now(), order: Date.now() };
   if (t.time && !t.date) t.date = T();
   if (t.time && !t.dur) t.dur = 30;
   if (t.rep && !t.date) t.date = T();
@@ -1153,8 +1288,17 @@ function render() {
   else if (S.view === "projects") { c.innerHTML = viewProjects(); }
   else if (S.view === "project") c.innerHTML = viewProject();
   else if (S.view === "cal") c.innerHTML = viewCal();
+  else if (S.view === "matrix") c.innerHTML = viewMatrix();
+  else if (S.view === "habits") c.innerHTML = viewHabits();
+  else if (S.view === "week") c.innerHTML = viewWeek();
+  else if (S.view === "templates") c.innerHTML = viewTemplates();
+  else if (S.view === "tags") c.innerHTML = viewTags();
+  else if (S.view === "tag") c.innerHTML = viewTag();
+  else if (S.view === "more") c.innerHTML = viewMore();
   c.className = "content" + (S.view === "cal" ? " flush" : "");
+  hideComposer = ["more", "habits", "week", "templates", "tags"].indexOf(S.view) >= 0;
   document.getElementById("composer").style.display = (S.view === "projects" && !isPhone()) || hideComposer ? "none" : "";
+  document.getElementById("fab").style.display = hideComposer ? "none" : "";
   c.scrollTop = keep;
   var nb = document.getElementById("cbody");
   if (nb) {
@@ -1172,7 +1316,7 @@ function cmpDefaults() {
   if (S.cmpCtx) { d = S.cmpCtx.date; time = S.cmpCtx.time || ""; }
   else if (S.cmpDate === "today") d = T();
   else if (S.cmpDate === "tomorrow") d = TM(1);
-  return { date: d, time: time, proj: S.view === "project" ? S.projId : "" };
+  return { date: d, time: time, proj: S.view === "project" ? S.projId : "", tags: S.view === "tag" && S.tagName ? [S.tagName] : [] };
 }
 function renderChips() {
   var r = parseQuick(qa.value), def = cmpDefaults(), h = "";
@@ -1191,6 +1335,8 @@ function renderChips() {
   if (r.proj) { var ex = (S.settings.projects || []).filter(function (p) { return p.name.toLowerCase() === r.proj.toLowerCase(); })[0]; h += '<span class="chip parsed" style="--c:' + esc(ex ? ex.color : "var(--accent)") + '">' + ic("hash") + esc(r.proj) + (ex ? "" : " (חדש)") + "</span>"; }
   else if (def.proj && proj(def.proj)) h += '<span class="chip parsed" style="--c:' + esc(proj(def.proj).color) + '">' + ic("hash") + esc(proj(def.proj).name) + "</span>";
   if (r.rep) h += '<span class="chip parsed">' + ic("rep") + REPS[r.rep] + "</span>";
+  if (r.due) h += '<span class="chip parsed" style="--c:var(--p2)">' + ic("due") + "יעד " + relDate(r.due) + "</span>";
+  r.tags.concat(def.tags.filter(function (g) { return r.tags.indexOf(g) < 0; })).forEach(function (g) { h += '<span class="chip parsed">@' + esc(g) + "</span>"; });
   if (!qa.value) h += '<span class="cmp-hint">אפשר לכתוב: מחר · יום שלישי · 14:30 · ‎#פרויקט · ‎!!! לדחוף · כל שבוע</span>';
   document.getElementById("qaChips").innerHTML = h;
 }
@@ -1203,7 +1349,8 @@ document.getElementById("composer").addEventListener("submit", function (e) {
   var t = {
     title: r.title, notes: "", date: r.date || def.date || "", time: r.time || def.time || "",
     dur: r.dur || 0, pri: r.pri, proj: r.proj ? findOrMakeProject(r.proj) : def.proj || "",
-    rep: r.rep, subs: [], done: false, doneAt: 0, created: Date.now(), order: Date.now()
+    rep: r.rep, subs: [], done: false, doneAt: 0, created: Date.now(), order: Date.now(),
+    due: r.due || "", tags: r.tags.concat(def.tags.filter(function (g) { return r.tags.indexOf(g) < 0; })), imp: false
   };
   if (t.time && !t.date) t.date = T();
   if (t.time && !t.dur) t.dur = 30;
@@ -1258,6 +1405,8 @@ function buildDetail() {
     Object.keys(REP).map(function (k) { return '<option value="' + k + '"' + ((t.rep || "") === k ? " selected" : "") + ">" + REP[k] + "</option>"; }).join("") + "</select></div></div></div>";
   h += '<div class="d-row"><span class="lab">' + ic("clock") + 'שעה ומשך</span><div class="d-2"><div><label for="dTime" class="sr">שעה</label><input type="time" id="dTime" value="' + esc(t.time || "") + '"></div><div><label for="dDur" class="sr">משך</label><select id="dDur"' + (t.time ? "" : " disabled") + ">" + durOpts + "</select></div></div>" + (t.time ? '<div><button type="button" class="chip" data-dact="noTime">בלי שעה</button></div>' : "") + "</div>";
   h += '<div class="d-row"><span class="lab">' + ic("flag") + 'עדיפות</span><div class="flags">' + [3, 2, 1, 0].map(function (p) { return '<button type="button" class="flag' + (p ? " p" + p : "") + '" data-dact="pri" data-v="' + p + '" aria-pressed="' + ((t.pri || 0) === p) + '">' + ic("flag") + PRI[p] + "</button>"; }).join("") + "</div></div>";
+  h += '<div class="d-row"><span class="lab">' + ic("due") + 'תאריך יעד (עד מתי צריך לסיים)</span><div class="d-2"><div><label for="dDue" class="sr">תאריך יעד</label><input type="date" id="dDue" value="' + esc(t.due || "") + '"></div><div><button type="button" class="flag' + (t.imp ? "" : "") + '" data-dact="imp" aria-pressed="' + !!t.imp + '" style="width:100%;--pc:#e0a800">' + ic("star") + (t.imp ? "חשוב" : "לסמן כחשוב") + "</button></div></div></div>";
+  h += '<div class="d-row"><span class="lab">' + ic("tag") + 'תגיות</span><label for="dTags" class="sr">תגיות</label><input type="text" id="dTags" class="sub-add" placeholder="למשל: טלפון, מחשב" value="' + esc((t.tags || []).map(function (g) { return "@" + g; }).join(" ")) + '"></div>';
   h += '<div class="d-row"><span class="lab">' + ic("hash") + 'פרויקט</span><label for="dProj" class="sr">פרויקט</label><select id="dProj"><option value="">ללא פרויקט</option>' + ps.map(function (p) { return '<option value="' + esc(p.id) + '"' + (t.proj === p.id ? " selected" : "") + ">" + esc(p.name) + "</option>"; }).join("") + "</select></div>";
   h += '<div class="d-row"><span class="lab">' + ic("subs") + "שלבים" + (t.subs && t.subs.length ? " (" + t.subs.filter(function (s) { return s.d; }).length + "/" + t.subs.length + ")" : "") + '</span><div class="subs">' +
     (t.subs || []).map(function (s, i) { return '<div class="sub' + (s.d ? " done" : "") + '"><button class="cb" data-dact="subToggle" data-i="' + i + '" aria-label="סימון שלב">' + ic("check") + '</button><label for="sub' + i + '" class="sr">שלב</label><input type="text" id="sub' + i + '" data-sub="' + i + '" value="' + esc(s.t) + '"><button class="del" data-dact="subDel" data-i="' + i + '" aria-label="מחיקת שלב">' + ic("x") + "</button></div>"; }).join("") +
@@ -1265,7 +1414,7 @@ function buildDetail() {
   h += '<div class="d-row"><span class="lab">' + ic("note") + 'הערות</span><label for="dNotes" class="sr">הערות</label><textarea class="d-notes" id="dNotes" placeholder="פרטים, טלפון, קישור…">' + esc(t.notes || "") + "</textarea></div>";
   h += "</div>";
   var created = t.created ? new Date(t.created) : null;
-  h += '<div class="d-foot"><span class="meta">' + (created ? "נוצרה " + created.getDate() + "." + (created.getMonth() + 1) : "") + (t.rep && t.lastDone ? " · בוצעה לאחרונה " + relDate(ymd(new Date(t.lastDone))) : "") + '</span><button class="btn" data-dact="focus">' + ic("timer") + 'פוקוס</button><button class="btn danger" data-dact="del">' + ic("trash") + "מחיקה</button></div>";
+  h += '<div class="d-foot"><span class="meta">' + (created ? "נוצרה " + created.getDate() + "." + (created.getMonth() + 1) : "") + (t.rep && t.lastDone ? " · בוצעה לאחרונה " + relDate(ymd(new Date(t.lastDone))) : "") + '</span><button class="btn" data-dact="tpl">' + ic("copy") + 'שמירה כתבנית</button><button class="btn" data-dact="focus">' + ic("timer") + 'פוקוס</button><button class="btn danger" data-dact="del">' + ic("trash") + "מחיקה</button></div>";
   dEl.innerHTML = h;
   autosize(document.getElementById("dTitle"));
 }
@@ -1294,6 +1443,8 @@ dEl.addEventListener("change", function (e) {
   else if (id === "dDur") dPatch({ dur: +v });
   else if (id === "dProj") dPatch({ proj: v });
   else if (id === "dRep") dPatch({ rep: v, date: v && !t.date ? T() : t.date }, true);
+  else if (id === "dDue") dPatch({ due: v }, true);
+  else if (id === "dTags") dPatch({ tags: parseTagsInput(v) }, true);
 });
 dEl.addEventListener("keydown", function (e) {
   if (e.target.id === "dTitle" && e.key === "Enter") { e.preventDefault(); flushDetail(); e.target.blur(); }
@@ -1315,6 +1466,14 @@ dEl.addEventListener("click", function (e) {
   else if (a === "subToggle") { flushDetail(); t = S.tasks[S.detailId]; var i = +b.getAttribute("data-i"); var subs = (t.subs || []).map(function (s, j) { return j === i ? { t: s.t, d: !s.d } : s; }); dPatch({ subs: subs }, true); }
   else if (a === "subDel") { flushDetail(); t = S.tasks[S.detailId]; var k = +b.getAttribute("data-i"); dPatch({ subs: (t.subs || []).filter(function (s, j) { return j !== k; }) }, true); }
   else if (a === "del") removeTask(S.detailId);
+  else if (a === "imp") dPatch({ imp: !t.imp }, true);
+  else if (a === "tpl") {
+    flushDetail(); t = S.tasks[S.detailId];
+    var steps = (t.subs || []).map(function (s) { return s.t; }).filter(Boolean);
+    if (!steps.length) { toast("כדי לשמור כתבנית, הוסף קודם שלבים למשימה"); return; }
+    putSet("templates", settingsArr("templates").concat([{ id: "t" + newId(), name: t.title, items: steps }]));
+    toast("נשמרה תבנית \"" + t.title + "\"", "לתבניות", function () { closeDetail(); go("templates"); });
+  }
   else if (a === "focus") { flushDetail(); startFocus(S.detailId); }
 });
 
@@ -1337,7 +1496,7 @@ function closeSearch() { sEl.hidden = true; }
 function runSearch() {
   var q = sq.value.trim().toLowerCase(), out = document.getElementById("sres");
   if (!q) { out.innerHTML = '<div class="snone">הקלד מילה מתוך שם המשימה או מההערות</div>'; return; }
-  var r = list().filter(function (t) { return (t.title || "").toLowerCase().indexOf(q) >= 0 || (t.notes || "").toLowerCase().indexOf(q) >= 0; })
+  var r = list().filter(function (t) { return (t.title || "").toLowerCase().indexOf(q) >= 0 || (t.notes || "").toLowerCase().indexOf(q) >= 0 || (t.tags || []).join(" ").toLowerCase().indexOf(q.replace(/^@/, "")) >= 0; })
     .sort(function (a, b) { return (a.done - b.done) || byDate(a, b); }).slice(0, 40);
   out.innerHTML = r.length ? r.map(function (t) { return taskRow(t, { time: "meta" }); }).join("") : '<div class="snone">לא נמצאו משימות</div>';
 }
@@ -1396,7 +1555,7 @@ document.addEventListener("click", function (e) {
   var row = b.closest("[data-id]"), id = b.getAttribute("data-id") || (row && row.getAttribute("data-id"));
   if (a === "toggle") complete(id);
   else if (a === "open") openDetail(id);
-  else if (a === "go") go(b.getAttribute("data-view"), b.getAttribute("data-proj"));
+  else if (a === "go") { e.preventDefault(); if (b.getAttribute("data-tag")) S.tagName = b.getAttribute("data-tag"); go(b.getAttribute("data-view"), b.getAttribute("data-proj")); }
   else if (a === "search") openSearch();
   else if (a === "fold") { var k = b.getAttribute("data-key"); S.folded[k] = !S.folded[k]; render(); }
   else if (a === "lateToday") { list().filter(isLate).forEach(function (t) { save(t.id, { date: T() }); }); toast("הכול הועבר להיום"); }
@@ -1423,6 +1582,30 @@ document.addEventListener("click", function (e) {
     tasksT.forEach(function (t) { if (!t.sec) save(t.id, { sec: mp[trelloListOf(t)] }); });
     toast("המשימות סודרו ב-" + names.length + " רשימות");
   }
+  else if (a === "habTog") toggleHabit(b.getAttribute("data-h"), b.getAttribute("data-d"));
+  else if (a === "habDel") {
+    if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = "למחוק?"; setTimeout(function () { if (b.isConnected) { b.classList.remove("sure"); b.innerHTML = ic("trash"); } }, 3000); return; }
+    putSet("habits", settingsArr("habits").filter(function (x) { return x.id !== b.getAttribute("data-h"); }));
+  }
+  else if (a === "plan") openPlan();
+  else if (a === "planSkip") { lsSet("myday-plan-skip", T()); render(); }
+  else if (a === "groupBy") { S.groupBy = b.getAttribute("data-v"); lsSet("myday-groupby", S.groupBy); render(); }
+  else if (a === "lateNextWeek") { var nw = ymd(addD(sunday(new Date()), 7)); list().filter(isLate).forEach(function (t) { save(t.id, { date: nw, time: "" }); }); toast("המשימות שבאיחור עברו לשבוע הבא"); }
+  else if (a === "reviewDone") { lsSet("myday-review", T()); toast("כל הכבוד! הסקירה השבועית הושלמה"); render(); }
+  else if (a === "wkPrev") { weekOff--; render(); }
+  else if (a === "wkNext") { if (weekOff < 0) weekOff++; render(); }
+  else if (a === "tplUse") {
+    var tp = settingsArr("templates").filter(function (x) { return x.id === b.getAttribute("data-t"); })[0]; if (!tp) return;
+    var nid = newId();
+    store.put(nid, { title: tp.name, notes: "", date: T(), time: "", dur: 0, pri: 0, proj: "", rep: "", subs: tp.items.map(function (s) { return { t: s, d: false }; }), done: false, doneAt: 0, created: Date.now(), order: Date.now(), due: "", tags: [], imp: false });
+    openDetail(nid); toast("נוצרה משימה מהתבנית. אפשר לשנות את השם והתאריך.");
+  }
+  else if (a === "tplDel") {
+    if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = "למחוק?"; setTimeout(function () { if (b.isConnected) { b.classList.remove("sure"); b.innerHTML = ic("trash"); } }, 3000); return; }
+    putSet("templates", settingsArr("templates").filter(function (x) { return x.id !== b.getAttribute("data-t"); }));
+  }
+  else if (a === "bkDown") backupDown();
+  else if (a === "bkUp") { var bf = document.getElementById("bkFile"); bf.value = ""; bf.click(); }
   else if (a === "calColor") { S.calColor = b.getAttribute("data-v"); lsSet("myday-calcolor", S.calColor); render(); }
   else if (a === "logout") { if (auth) auth.signOut(); }
   else if (a === "impPick") { var fi = document.getElementById("impFile"); fi.value = ""; fi.click(); }
@@ -1443,6 +1626,18 @@ document.addEventListener("submit", function (e) {
     var inp = e.target.querySelector("input"), sec = e.target.getAttribute("data-sec");
     if (quickCreate(inp.value, { proj: S.projId, sec: sec })) { inp.value = ""; setTimeout(function () { var again = document.getElementById(inp.id); if (again) again.focus(); }, 0); }
     return;
+  }
+  if (e.target.id === "newHabit") {
+    e.preventDefault(); var hn = document.getElementById("hbName").value.trim(); if (!hn) return;
+    var hs0 = settingsArr("habits");
+    putSet("habits", hs0.concat([{ id: "h" + newId(), name: hn, color: COLORS[(hs0.length + 2) % COLORS.length], days: {} }]));
+    return;
+  }
+  if (e.target.id === "newTpl") {
+    e.preventDefault(); var tn = document.getElementById("tplName").value.trim(), steps = document.getElementById("tplSteps").value.split("\n").map(function (x) { return x.trim(); }).filter(Boolean);
+    if (!tn || !steps.length) { toast("צריך שם לתבנית ולפחות שלב אחד"); return; }
+    putSet("templates", settingsArr("templates").concat([{ id: "t" + newId(), name: tn, items: steps }]));
+    toast("התבנית נשמרה"); return;
   }
   if (e.target.id === "secNew") {
     e.preventDefault();
@@ -1481,7 +1676,8 @@ document.addEventListener("keydown", function (e) {
   var typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
   if (e.key === "Escape") {
     if (!fEl.hidden) return;
-    if (!sEl.hidden) closeSearch();
+    if (!document.getElementById("plan").hidden) { document.getElementById("plan").hidden = true; render(); }
+    else if (!sEl.hidden) closeSearch();
     else if (S.detailId) closeDetail();
     else if (document.body.classList.contains("composing")) closeComposer();
     else if (typing) document.activeElement.blur();
@@ -1603,17 +1799,17 @@ document.addEventListener("touchmove", function (e) { if ((drag && drag.active) 
 document.addEventListener("contextmenu", function (e) { if (e.target.closest(".blk, .adchip, [data-drag]") && S.view === "cal") e.preventDefault(); });
 
 /* ---------------- swipe between views (phone) ---------------- */
-var SW_ORDER = ["today", "cal", "up", "projects"], sw = null;
+var SW_ORDER = ["today", "cal", "up", "projects", "more"], sw = null;
 var contentEl = document.getElementById("content");
 contentEl.addEventListener("touchstart", function (e) {
-  if (e.touches.length !== 1 || e.target.closest(".board, input, textarea, select")) { sw = null; return; }
+  if (e.touches.length !== 1 || e.target.closest(".board, input, textarea, select, .trow, .hdots")) { sw = null; return; }
   sw = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
 }, { passive: true });
 contentEl.addEventListener("touchend", function (e) {
   if (!sw || (ldrag && ldrag.active) || (drag && drag.active)) { sw = null; return; }
   var tc = e.changedTouches[0], dx = tc.clientX - sw.x, dy = tc.clientY - sw.y, dt = Date.now() - sw.t; sw = null;
   if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.8 || dt > 700) return;
-  var cur = S.view === "project" ? 3 : SW_ORDER.indexOf(S.view), n = cur + (dx > 0 ? 1 : -1);
+  var cur = S.view === "project" ? 3 : SW_ORDER.indexOf(S.view) >= 0 ? SW_ORDER.indexOf(S.view) : 4, n = cur + (dx > 0 ? 1 : -1);
   if (n < 0 || n >= SW_ORDER.length) return;
   go(SW_ORDER[n]);
   contentEl.classList.remove("slideL", "slideR"); void contentEl.offsetWidth;
@@ -1692,6 +1888,8 @@ function lEnd(apply) {
   if (zd !== "keep") patch.date = zd;
   if (zt === "clear" || patch.date === "") patch.time = "";
   var zs = z.getAttribute("data-zsec"); if (zs !== null) patch.sec = zs;
+  var zq = z.getAttribute("data-zq");
+  if (zq) { zq = +zq; patch.imp = zq <= 2; patch.pri = zq === 1 || zq === 3 ? 3 : (t.pri === 3 ? 2 : (t.pri || 0)); if (zq === 4 && t.pri === 3) patch.pri = 0; }
   if (z.getAttribute("data-zsort") === "1") {
     var rows = Array.prototype.filter.call(z.querySelectorAll(".trow[data-id]"), function (r) { return r.getAttribute("data-id") !== d.id; });
     var idx = d.before ? rows.indexOf(d.before) : rows.length;
@@ -1789,13 +1987,276 @@ document.getElementById("imp").addEventListener("click", function (e) {
   toast("יובאו " + items.length + " משימות לפרויקט " + name, "הצגה", function () { go("project", pid); });
 });
 
+/* ================= extra features ================= */
+function settingsArr(k) { return (S.settings && S.settings[k]) || []; }
+function putSet(k, v) { var o = {}; o[k] = v; store.putSettings(o); }
+function allTags() {
+  var m = {};
+  list().forEach(function (t) { (t.tags || []).forEach(function (g) { m[g] = m[g] || { open: 0, done: 0 }; if (t.done) m[g].done++; else m[g].open++; }); });
+  return m;
+}
+function parseTagsInput(s) { return (s || "").split(/[,\s]+/).map(function (x) { return x.replace(/^@/, "").trim(); }).filter(Boolean).filter(function (x, i, a) { return a.indexOf(x) === i; }); }
+
+/* ---------- morning planning ---------- */
+var PL = null;
+function planCandidates() {
+  var td = T(), L = list().filter(function (t) { return !t.done; });
+  var late = L.filter(isLate).sort(byDate);
+  var dueSoon = L.filter(function (t) { return t.due && dayDiff(t.due) <= 3 && t.date !== td && !isLate(t); }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
+  var inbox = L.filter(function (t) { return !t.date && dueSoon.indexOf(t) < 0; }).sort(function (a, b) { return (b.pri || 0) - (a.pri || 0) || byOrder(a, b); });
+  var seen = {}, out = [];
+  late.concat(dueSoon, inbox).forEach(function (t) { if (!seen[t.id]) { seen[t.id] = 1; out.push(t.id); } });
+  return out;
+}
+function openPlan() {
+  PL = { ids: planCandidates(), i: 0, today: 0, later: 0, done: 0 };
+  document.getElementById("plan").hidden = false; drawPlan();
+}
+function drawPlan() {
+  var box = document.getElementById("planBox");
+  while (PL.i < PL.ids.length && !S.tasks[PL.ids[PL.i]]) PL.i++;
+  if (PL.i >= PL.ids.length) {
+    var td = T(), nT = list().filter(function (t) { return !t.done && t.date === td; }).length, nE = evFor(td).length;
+    box.innerHTML = '<div class="plan-end">' + emptyArt("done") + "<h2>התוכנית להיום מוכנה</h2><p>" + nT + " משימות" + (nE ? " ו-" + nE + " פגישות" : "") + " להיום." + (PL.ids.length ? " עברת על " + PL.ids.length + " משימות." : "") + '</p><button class="btn primary" data-pl="close">לרשימת היום</button></div>';
+    lsSet("myday-planned", T());
+    return;
+  }
+  var t = Object.assign({ id: PL.ids[PL.i] }, S.tasks[PL.ids[PL.i]]), p = t.proj ? proj(t.proj) : null;
+  var why = isLate(t) ? '<span class="chip" style="color:var(--late)">נשאר מ' + (/^\d/.test(relDate(t.date)) ? "-" : "") + relDate(t.date) + "</span>" : t.due && !t.date ? '<span class="chip">יעד ' + relDate(t.due) + "</span>" : !t.date ? '<span class="chip">בלי תאריך</span>' : '<span class="chip">יעד ' + relDate(t.due) + "</span>";
+  box.innerHTML = '<div class="plan-top"><span>תכנון היום</span><span class="pn">' + (PL.i + 1) + " / " + PL.ids.length + '</span><button class="iconbtn" data-pl="close" aria-label="סגירה">' + ic("x") + "</button></div>" +
+    '<div class="bar" style="--c:var(--accent)"><i style="width:' + Math.round(PL.i / PL.ids.length * 100) + '%"></i></div>' +
+    '<div class="plan-card' + (t.pri ? " p" + t.pri : "") + '"><div class="chips">' + why + (p ? '<span class="chip"><i class="dot" style="--c:' + esc(p.color) + '"></i>' + esc(p.name) + "</span>" : "") + (t.pri ? '<span class="chip" style="color:var(--p' + t.pri + ')">' + ic("flag") + PRI[t.pri] + "</span>" : "") + '</div><div class="plan-title">' + esc(t.title) + "</div>" + (t.notes ? '<div class="plan-notes">' + esc(t.notes).slice(0, 220) + "</div>" : "") + "</div>" +
+    '<p class="plan-q">מתי לעשות את זה?</p><div class="plan-btns">' +
+    '<button class="btn primary" data-pl="today">' + ic("sun") + "היום</button>" +
+    '<button class="btn" data-pl="tomorrow">מחר</button>' +
+    '<button class="btn" data-pl="week">שבוע הבא</button>' +
+    '<button class="btn" data-pl="none">אחר כך</button>' +
+    '<button class="btn" data-pl="done">' + ic("check") + "כבר בוצע</button>" +
+    '<button class="btn plain" data-pl="skip">דילוג</button></div>';
+}
+
+/* ---------- habits ---------- */
+function habitStreak(hb) {
+  var d = new Date(), n = 0, days = hb.days || {};
+  if (!days[ymd(d)]) d = addD(d, -1);
+  while (days[ymd(d)]) { n++; d = addD(d, -1); }
+  return n;
+}
+function toggleHabit(id, ds) {
+  var hs = settingsArr("habits").map(function (h) {
+    if (h.id !== id) return h;
+    var days = Object.assign({}, h.days || {});
+    if (days[ds]) delete days[ds]; else days[ds] = 1;
+    return Object.assign({}, h, { days: days });
+  });
+  putSet("habits", hs);
+}
+function habitDots(h, n) {
+  var out = "";
+  for (var i = n - 1; i >= 0; i--) {
+    var d = addD(new Date(), -i), ds = ymd(d), on = !!(h.days || {})[ds];
+    out += '<button class="hdot' + (on ? " on" : "") + (i === 0 ? " today" : "") + '" style="--c:' + esc(h.color) + '" data-act="habTog" data-h="' + esc(h.id) + '" data-d="' + ds + '" aria-label="' + esc(h.name) + " " + DAYS[d.getDay()] + '" aria-pressed="' + on + '"><span>' + DL[d.getDay()] + "</span></button>";
+  }
+  return out;
+}
+function viewHabits() {
+  var hs = settingsArr("habits");
+  var h = '<form class="newproj" id="newHabit"><label for="hbName" class="sr">הרגל חדש</label><input id="hbName" placeholder="הרגל חדש, למשל: הליכה, קריאה, שתיית מים"><button class="btn primary" type="submit">' + ic("plus") + "הוספה</button></form>";
+  if (!hs.length) return h + '<div class="empty" style="margin-top:14px">' + emptyArt() + "<b>עוד אין הרגלים</b><span>הוסף הרגל שאתה רוצה לעשות כמה שיותר ימים, וסמן כאן כל יום שעשית אותו. הרצף 🔥 יגדל מיום ליום.</span></div>";
+  h += '<div class="habits">';
+  hs.forEach(function (hb) {
+    var st = habitStreak(hb), week = 0;
+    for (var i = 0; i < 7; i++) if ((hb.days || {})[ymd(addD(new Date(), -i))]) week++;
+    h += '<div class="habit" style="--c:' + esc(hb.color) + '"><div class="hhead"><b>' + esc(hb.name) + '</b><span class="streak' + (st ? " on" : "") + '">' + ic("fire") + st + ' ימים ברצף</span><span class="hweek">' + week + '/7 השבוע</span><button class="del" data-act="habDel" data-h="' + esc(hb.id) + '" aria-label="מחיקת ההרגל">' + ic("trash") + '</button></div><div class="hdots">' + habitDots(hb, isPhone() ? 7 : 14) + "</div></div>";
+  });
+  return h + "</div>";
+}
+
+/* ---------- matrix ---------- */
+var QUADS = [
+  { q: 1, name: "לעשות עכשיו", sub: "דחוף וחשוב", color: "var(--p3)" },
+  { q: 2, name: "לתכנן", sub: "חשוב, לא דחוף", color: "var(--accent)" },
+  { q: 3, name: "לקצר או להעביר", sub: "דחוף, לא חשוב", color: "var(--p2)" },
+  { q: 4, name: "אחר כך או לוותר", sub: "לא דחוף ולא חשוב", color: "var(--muted)" }
+];
+function quadOf(t) { var u = t.pri === 3, i = !!t.imp; return u && i ? 1 : i ? 2 : u ? 3 : 4; }
+function viewMatrix() {
+  var L = list().filter(function (t) { return !t.done; });
+  var h = '<p class="mhint">דחוף = עדיפות "דחופה". חשוב = מסומן בכוכב ⭐ בפרטי המשימה. גרור משימה לריבוע אחר, והעדיפות והכוכב יתעדכנו לבד.</p><div class="matrix">';
+  QUADS.forEach(function (Q) {
+    var items = L.filter(function (t) { return quadOf(t) === Q.q; }).sort(byDate);
+    h += '<section class="quad" style="--c:' + Q.color + '"><div class="qh"><b>' + Q.name + "</b><span>" + Q.sub + '</span><span class="n">' + (items.length || "") + '</span></div><div class="card qcards"' + zoneAttr({ date: "keep", time: "keep" }) + ' data-zq="' + Q.q + '">' + items.map(function (t) { return taskRow(t); }).join("") + "</div></section>";
+  });
+  return h + "</div>";
+}
+
+/* ---------- weekly summary & review ---------- */
+var weekOff = 0;
+function viewWeek() {
+  var start = addD(sunday(new Date()), weekOff * 7), end = addD(start, 7), s0 = start.getTime(), e0 = end.getTime();
+  var L = list(), done = L.filter(function (t) { var at = t.doneAt || t.lastDone || 0; return at >= s0 && at < e0; });
+  var created = L.filter(function (t) { return (t.created || 0) >= s0 && (t.created || 0) < e0; }).length;
+  var perDay = [0, 0, 0, 0, 0, 0, 0];
+  done.forEach(function (t) { perDay[new Date(t.doneAt || t.lastDone).getDay()]++; });
+  var mx = Math.max.apply(null, perDay.concat([1]));
+  var h = '<div class="weeknav2"><button class="iconbtn" data-act="wkPrev" aria-label="שבוע קודם">' + ic("next") + '</button><b>' + start.getDate() + "." + (start.getMonth() + 1) + " – " + addD(end, -1).getDate() + "." + (addD(end, -1).getMonth() + 1) + (weekOff === 0 ? " · השבוע" : weekOff === -1 ? " · שבוע שעבר" : "") + '</b><button class="iconbtn" data-act="wkNext" aria-label="שבוע הבא"' + (weekOff >= 0 ? " disabled" : "") + ">" + ic("prev") + "</button></div>";
+  h += '<div class="tiles"><div class="tile"><b>' + done.length + '</b><span>משימות בוצעו</span></div><div class="tile"><b>' + created + '</b><span>משימות חדשות</span></div><div class="tile"><b>' + L.filter(function (t) { return !t.done; }).length + "</b><span>פתוחות עכשיו</span></div></div>";
+  h += '<section class="sec"><div class="sec-h"><span>מה בוצע בכל יום</span></div><div class="card bars">' + perDay.map(function (n, i) { return '<div class="barcol"><span class="bn">' + (n || "") + '</span><i style="height:' + Math.round(n / mx * 100) + '%"></i><span class="bd">' + DL[i] + "</span></div>"; }).join("") + "</div></section>";
+  var byP = {}; done.forEach(function (t) { var k = t.proj || ""; byP[k] = (byP[k] || 0) + 1; });
+  var pk = Object.keys(byP).sort(function (a, b) { return byP[b] - byP[a]; });
+  if (pk.length) h += '<section class="sec"><div class="sec-h"><span>לפי פרויקט</span></div><div class="card pbars">' + pk.map(function (k) { var p = proj(k); return '<div class="pbar" style="--c:' + esc(p ? p.color : "var(--muted)") + '"><span>' + esc(p ? p.name : "ללא פרויקט") + '</span><span class="bar"><i style="width:' + Math.round(byP[k] / done.length * 100) + '%"></i></span><b>' + byP[k] + "</b></div>"; }).join("") + "</div></section>";
+  var hs = settingsArr("habits");
+  if (hs.length) h += '<section class="sec"><div class="sec-h"><span>הרגלים השבוע</span></div><div class="card pbars">' + hs.map(function (hb) { var n = 0; for (var i = 0; i < 7; i++) if ((hb.days || {})[ymd(addD(start, i))]) n++; return '<div class="pbar" style="--c:' + esc(hb.color) + '"><span>' + esc(hb.name) + '</span><span class="bar"><i style="width:' + Math.round(n / 7 * 100) + '%"></i></span><b>' + n + "/7</b></div>"; }).join("") + "</div></section>";
+  var post = L.filter(function (t) { return !t.done && (t.postponed || 0) >= 2; }).sort(function (a, b) { return b.postponed - a.postponed; }).slice(0, 6);
+  if (post.length) h += section("wpost", "נדחו הכי הרבה פעמים", post, { act: '<span class="n" style="margin-inline-start:auto">אולי כדאי לפרק אותן לשלבים קטנים, או לוותר עליהן</span>' });
+  // weekly review
+  var inbox = L.filter(function (t) { return !t.done && !t.date; }).length, late = L.filter(isLate).length;
+  var nextW = L.filter(function (t) { return !t.done && t.date && dayDiff(t.date) > 0 && dayDiff(t.date) <= 7; }).length;
+  var last = lsGet("myday-review", "");
+  h += '<section class="sec"><div class="sec-h"><span>סקירה שבועית</span>' + (last ? '<span class="n">בוצעה לאחרונה ' + relDate(last) + "</span>" : "") + '</div><div class="card review">' +
+    '<div class="rstep"><span class="rn">1</span><div><b>לרוקן את "בלי תאריך"</b><span>' + (inbox ? inbox + " משימות מחכות להחלטה" : "ריק. מעולה!") + "</span></div>" + (inbox ? '<button class="btn" data-act="plan">לעבור עליהן</button>' : "") + "</div>" +
+    '<div class="rstep"><span class="rn">2</span><div><b>לטפל במה שבאיחור</b><span>' + (late ? late + " משימות באיחור" : "אין משימות באיחור") + "</span></div>" + (late ? '<button class="btn" data-act="lateNextWeek">הכול לשבוע הבא</button>' : "") + "</div>" +
+    '<div class="rstep"><span class="rn">3</span><div><b>לעבור על הפרויקטים</b><span>' + (S.settings.projects || []).map(function (p) { return '<a href="#" data-act="go" data-view="project" data-proj="' + esc(p.id) + '">' + esc(p.name) + " (" + L.filter(function (t) { return t.proj === p.id && !t.done; }).length + ")</a>"; }).join(" · ") + "</span></div></div>" +
+    '<div class="rstep"><span class="rn">4</span><div><b>להציץ בשבוע הבא</b><span>' + nextW + " משימות מתוכננות לשבוע הקרוב</span></div>" + '<button class="btn" data-act="go" data-view="up">לשבוע הבא</button></div>' +
+    '<div class="rstep end"><button class="btn primary" data-act="reviewDone">' + ic("check") + "סיימתי את הסקירה</button></div></div></section>";
+  return h;
+}
+
+/* ---------- templates ---------- */
+function viewTemplates() {
+  var ts = settingsArr("templates");
+  var h = '<form class="tplform" id="newTpl"><label for="tplName">שם התבנית</label><input id="tplName" placeholder="למשל: הכנה לאירוע"><label for="tplSteps">השלבים (שלב בכל שורה)</label><textarea id="tplSteps" rows="4" placeholder="להזמין מקום&#10;לשלוח הזמנות&#10;להזמין כיבוד"></textarea><button class="btn primary" type="submit">' + ic("plus") + "שמירת התבנית</button></form>";
+  h += '<p class="mhint">אפשר גם לשמור משימה קיימת כתבנית: פותחים אותה ולוחצים "שמירה כתבנית".</p>';
+  if (!ts.length) return h + '<div class="empty" style="margin-top:6px">' + emptyArt() + "<b>עוד אין תבניות</b><span>תבנית היא רשימת שלבים קבועה. לחיצה על \"יצירת משימה\" פותחת משימה חדשה עם כל השלבים.</span></div>";
+  h += '<div class="pgrid">';
+  ts.forEach(function (tp) {
+    h += '<div class="pcard" style="--c:var(--accent)"><span class="pn">' + ic("copy") + esc(tp.name) + '</span><span class="pm">' + tp.items.map(esc).slice(0, 4).join(" · ") + (tp.items.length > 4 ? " · …" : "") + '</span><div class="row2"><button class="btn primary" data-act="tplUse" data-t="' + esc(tp.id) + '">יצירת משימה</button><button class="btn plain danger" data-act="tplDel" data-t="' + esc(tp.id) + '">' + ic("trash") + "</button></div></div>";
+  });
+  return h + "</div>";
+}
+
+/* ---------- tags ---------- */
+function viewTags() {
+  var m = allTags(), keys = Object.keys(m).sort(function (a, b) { return m[b].open - m[a].open; });
+  var h = '<div class="explain"><b>מה זה תגיות?</b><p>תגית היא תווית שחוצה פרויקטים. כותבים <b>@</b> לפני מילה כשמוסיפים משימה, למשל <span class="kbd">להתקשר לרואה חשבון @טלפון</span>. כשיש לך כמה דקות פנויות, פותחים את התגית ורואים את כל השיחות, מכל הפרויקטים.</p><p>רעיונות: <b>@טלפון</b> · <b>@מחשב</b> · <b>@בחוץ</b> (סידורים) · <b>@בבית</b> · <b>@שם-של-אדם</b> (מה לדבר איתו)</p></div>';
+  if (!keys.length) return h + '<div class="empty">' + emptyArt() + "<b>עוד אין תגיות</b><span>הוסף @ לפני מילה במשימה, והתגית תופיע כאן.</span></div>";
+  return h + '<div class="tagcloud">' + keys.map(function (k) { return '<button class="tagbig" data-act="go" data-view="tag" data-tag="' + esc(k) + '">@' + esc(k) + "<span>" + m[k].open + "</span></button>"; }).join("") + "</div>";
+}
+function viewTag() {
+  var g = S.tagName, L = list().filter(function (t) { return (t.tags || []).indexOf(g) >= 0; });
+  var h = section("tgopen", "פתוחות", L.filter(function (t) { return !t.done; }).sort(byDate), { always: true, emptyHtml: '<div class="empty">אין משימות פתוחות עם התגית הזו.</div>' });
+  return h + section("tgdone", "בוצעו", L.filter(function (t) { return t.done; }).slice(0, 30), { fold: true });
+}
+
+/* ---------- more hub + backup ---------- */
+var TOOLS = [
+  { v: "matrix", n: "מטריצת עדיפויות", d: "דחוף מול חשוב", i: "target" },
+  { v: "habits", n: "הרגלים", d: "סימון יומי ורצף ימים", i: "fire" },
+  { v: "week", n: "סיכום שבועי", d: "מה הספקת, וסקירה שבועית", i: "chart" },
+  { v: "templates", n: "תבניות", d: "רשימות שלבים מוכנות", i: "copy" },
+  { v: "tags", n: "תגיות", d: "‎@טלפון, ‎@מחשב ועוד", i: "tag" }
+];
+function viewMore() {
+  var h = '<div class="tools">' + TOOLS.map(function (t) { return '<button class="tool" data-act="go" data-view="' + t.v + '">' + ic(t.i) + "<b>" + t.n + "</b><span>" + t.d + "</span></button>"; }).join("") +
+    '<button class="tool" data-act="plan">' + ic("sun") + "<b>תכנון היום</b><span>לעבור על מה שמחכה להחלטה</span></button></div>";
+  h += '<section class="sec"><div class="sec-h"><span>גיבוי</span></div><div class="card backup"><p>הורדת כל המשימות, הפרויקטים וההרגלים לקובץ במחשב או בטלפון. אפשר לשחזר ממנו בכל רגע.</p><div class="row2"><button class="btn" data-act="bkDown">' + ic("download") + 'הורדת גיבוי</button><button class="btn" data-act="bkUp">' + ic("upload") + "שחזור מגיבוי</button></div></div></section>";
+  if (S.user) h += '<div class="acctcard"><span>מחובר כ-<b style="color:var(--ink)">' + esc(S.user.email) + "</b> · גרסה " + APP_VERSION + '</span><button class="btn" data-act="logout">התנתקות</button></div>';
+  return h;
+}
+function backupDown() {
+  var data = { app: "tasks", version: APP_VERSION, exported: new Date().toISOString(), tasks: S.tasks, settings: S.settings };
+  var blob = new Blob([JSON.stringify(data, null, 1)], { type: "application/json" });
+  var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "גיבוי-משימות-" + T() + ".json";
+  document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast("הגיבוי הורד");
+}
+function backupRestore(text) {
+  var d; try { d = JSON.parse(text); } catch (e) { toast("הקובץ לא נראה כמו גיבוי של האפליקציה"); return; }
+  if (!d || d.app !== "tasks" || !d.tasks) { toast("הקובץ לא נראה כמו גיבוי של האפליקציה"); return; }
+  var items = Object.keys(d.tasks).map(function (id) { return { id: id, t: d.tasks[id] }; });
+  store.putMany(items);
+  var s = d.settings || {}, cur = S.settings;
+  function merge(a, b) { var m = {}; (a || []).forEach(function (x) { m[x.id] = x; }); (b || []).forEach(function (x) { if (!m[x.id]) m[x.id] = x; }); return Object.keys(m).map(function (k) { return m[k]; }); }
+  store.putSettings({ projects: merge(cur.projects, s.projects), habits: merge(cur.habits, s.habits), templates: merge(cur.templates, s.templates) });
+  toast("שוחזרו " + items.length + " משימות מהגיבוי");
+}
+
+/* ---------- voice input ---------- */
+var SR = window.SpeechRecognition || window.webkitSpeechRecognition, rec = null;
+function micBtn() { return SR ? '<button type="button" class="mic" id="micBtn" aria-label="הוספה בקול">' + ic("mic") + "</button>" : ""; }
+function toggleMic() {
+  if (!SR) return;
+  if (rec) { rec.stop(); return; }
+  rec = new SR(); rec.lang = "he-IL"; rec.interimResults = true; rec.maxAlternatives = 1;
+  var base = qa.value ? qa.value + " " : "";
+  rec.onresult = function (e) { var s = ""; for (var i = 0; i < e.results.length; i++) s += e.results[i][0].transcript; qa.value = base + s; renderChips(); };
+  rec.onerror = function (e) { if (e.error === "not-allowed") toast("צריך לאשר גישה למיקרופון בדפדפן"); else if (e.error !== "aborted" && e.error !== "no-speech") toast("ההקלטה לא הצליחה. נסה שוב."); };
+  rec.onend = function () { rec = null; var b = document.getElementById("micBtn"); if (b) b.classList.remove("on"); qa.focus(); };
+  try { rec.start(); document.getElementById("micBtn").classList.add("on"); } catch (e) { rec = null; }
+}
+
+/* ---------- swipe on a task row (phone) ---------- */
+var rs = null;
+document.addEventListener("touchstart", function (e) {
+  if (e.touches.length !== 1 || S.view === "cal") return;
+  var row = e.target.closest("#content .trow[data-id]");
+  if (!row || e.target.closest(".cb")) return;
+  var t = S.tasks[row.getAttribute("data-id")]; if (!t || t.done) return;
+  rs = { row: row, id: row.getAttribute("data-id"), x: e.touches[0].clientX, y: e.touches[0].clientY, on: false, dx: 0 };
+}, { passive: true });
+document.addEventListener("touchmove", function (e) {
+  if (!rs || (ldrag && ldrag.active)) return;
+  var dx = e.touches[0].clientX - rs.x, dy = e.touches[0].clientY - rs.y;
+  if (!rs.on) {
+    if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { rs = null; return; }
+    if (Math.abs(dx) < 14) return;
+    rs.on = true; if (ldrag) { clearTimeout(ldrag.timer); ldrag = null; }
+    rs.row.classList.add("swiping");
+  }
+  e.preventDefault();
+  rs.dx = dx;
+  rs.row.style.transform = "translateX(" + dx + "px)";
+  rs.row.setAttribute("data-sw", dx > 0 ? "done" : "later");
+  rs.row.classList.toggle("swready", Math.abs(dx) > 90);
+}, { passive: false });
+document.addEventListener("touchend", function () {
+  if (!rs) return;
+  var r = rs; rs = null;
+  if (!r.on) return;
+  suppressClick = true; setTimeout(function () { suppressClick = false; }, 60);
+  r.row.style.transform = ""; r.row.classList.remove("swiping", "swready");
+  if (Math.abs(r.dx) <= 90) return;
+  if (r.dx > 0) complete(r.id);
+  else { var before = Object.assign({}, S.tasks[r.id]); save(r.id, { date: TM(1), time: "" }); toast("נדחה למחר", "ביטול", function () { store.put(r.id, before); }); }
+});
+
+document.getElementById("planBox").addEventListener("click", function (e) {
+  var b = e.target.closest("[data-pl]"); if (!b || !PL) return;
+  var a = b.getAttribute("data-pl"), id = PL.ids[PL.i];
+  if (a === "close") { document.getElementById("plan").hidden = true; render(); return; }
+  if (a === "today") { save(id, { date: T() }); PL.today++; }
+  else if (a === "tomorrow") save(id, { date: TM(1), time: "" });
+  else if (a === "week") save(id, { date: ymd(addD(sunday(new Date()), 7)), time: "" });
+  else if (a === "none") save(id, { date: "", time: "" });
+  else if (a === "done") complete(id);
+  PL.i++; drawPlan();
+});
+document.getElementById("plan").addEventListener("click", function (e) { if (e.target.id === "plan") { this.hidden = true; render(); } });
+document.getElementById("bkFile").addEventListener("change", function (e) {
+  var f = e.target.files && e.target.files[0]; if (!f) return;
+  var rd = new FileReader(); rd.onload = function () { backupRestore(rd.result); }; rd.readAsText(f);
+});
+document.getElementById("micSlot").outerHTML = micBtn();
+if (document.getElementById("micBtn")) document.getElementById("micBtn").addEventListener("click", toggleMic);
+
 /* ---------------- boot ---------------- */
 S.calDays = lsGet("myday-caldays", null) || (isPhone() ? 3 : 7);
 if (isPhone() && S.calDays === 7) S.calDays = 3;
 S.showEv = lsGet("myday-showev", true) !== false;
 S.calColor = lsGet("myday-calcolor", "proj");
+S.groupBy = lsGet("myday-groupby", "order");
 var v0 = lsGet("myday-view", "today");
-if (["today", "cal", "up", "projects"].indexOf(v0) >= 0) S.view = v0;
+if (["today", "cal", "up", "projects", "more", "matrix", "habits", "week", "templates", "tags"].indexOf(v0) >= 0) S.view = v0;
 var lastDay = T();
 setInterval(function () {
   if (drag || !store) return;
