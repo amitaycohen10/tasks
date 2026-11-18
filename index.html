@@ -145,6 +145,17 @@ button.chip:hover { border-color: var(--accent); }
 .tmeta .late { color: var(--late); font-weight: 700; }
 .tmeta .soon { color: var(--accent); font-weight: 700; }
 .ttime { flex: none; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; color: var(--accent); background: var(--accent-soft); border-radius: 8px; padding: 2px 8px; margin-top: 1px; }
+.trow.p1::before, .trow.p2::before, .trow.p3::before { content: ""; position: absolute; inset-block: 7px; inset-inline-start: 0; width: 4px; border-radius: 4px; background: var(--pc); }
+.trow.p3 { background: color-mix(in srgb, var(--p3) 6%, var(--surface)); }
+.trow.p3:hover { background: color-mix(in srgb, var(--p3) 10%, var(--surface)); }
+.trow.done::before { opacity: .35; }
+.grip { position: absolute; inset-inline-start: -2px; top: 50%; transform: translateY(-50%); width: 12px; height: 22px; color: var(--muted); opacity: 0; display: none; cursor: grab; }
+@media (hover: hover) and (pointer: fine) { .grip { display: block; } .trow:hover .grip { opacity: .55; } }
+.trow { -webkit-touch-callout: none; }
+.trow.lifting { opacity: .35; }
+.dropline { height: 3px; background: var(--accent); border-radius: 3px; margin: -1px 10px; position: relative; z-index: 2; }
+[data-zone].zover { outline: 2px dashed var(--accent); outline-offset: 2px; }
+body.ldragging, body.ldragging * { cursor: grabbing !important; user-select: none; -webkit-user-select: none; }
 .empty { display: grid; justify-items: center; gap: 8px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r); padding: 26px 18px; }
 .empty svg { width: 64px; height: 64px; }
 .empty b { color: var(--ink); font-size: 16px; }
@@ -684,6 +695,7 @@ function taskRow(t, o) {
   if (t.notes) meta.push("<span>" + ic("note") + "</span>");
   if (p && o.proj !== false) meta.push('<span><i class="dot" style="--c:' + esc(p.color) + '"></i>' + esc(p.name) + "</span>");
   return '<div class="trow' + (t.pri ? " p" + t.pri : "") + (t.done ? " done" : "") + (S.detailId === t.id ? " sel" : "") + '" data-id="' + esc(t.id) + '"' + (o.drag ? ' data-drag="1"' : "") + ">" +
+    (o.drag ? "" : '<svg class="grip" viewBox="0 0 12 22" aria-hidden="true"><g fill="currentColor"><circle cx="3" cy="5" r="1.6"/><circle cx="9" cy="5" r="1.6"/><circle cx="3" cy="11" r="1.6"/><circle cx="9" cy="11" r="1.6"/><circle cx="3" cy="17" r="1.6"/><circle cx="9" cy="17" r="1.6"/></g></svg>') +
     '<button class="cb" data-act="toggle" aria-label="' + (t.done ? "החזרה לרשימה" : "סימון כבוצע") + '">' + ic("check") + "</button>" +
     '<button class="tmain" data-act="open"><span class="ttitle">' + esc(t.title) + "</span>" + (meta.length ? '<span class="tmeta">' + meta.join("") + "</span>" : "") + "</button>" +
     (t.time && o.time !== "meta" && o.time !== false ? '<span class="ttime">' + t.time + "</span>" : "") +
@@ -696,9 +708,13 @@ function section(key, title, items, o) {
   return '<section class="sec' + (closed ? " closed" : "") + '"><div class="sec-h' + (o.late ? " late" : "") + '">' +
     (o.fold ? '<button class="fold" data-act="fold" data-key="' + key + '">' + ic("chev") + "<span>" + title + "</span></button>" : "<span>" + title + "</span>") +
     '<span class="n">' + (items.length || "") + "</span>" + (o.act || "") + "</div>" +
-    (items.length || o.pre ? '<div class="card">' + (o.pre || "") + items.map(function (t) { return taskRow(t, o.row); }).join("") + "</div>" : (o.emptyHtml || "")) +
+    (items.length || o.pre ? '<div class="card"' + zoneAttr(o.zone) + ">" + (o.pre || "") + items.map(function (t) { return taskRow(t, o.row); }).join("") + "</div>" : (o.emptyHtml ? o.emptyHtml.replace("<div ", "<div" + zoneAttr(o.zone) + " ") : "")) +
     "</section>";
 }
+function zoneAttr(z) { return z ? ' data-zone="1" data-zdate="' + esc(z.date) + '" data-ztime="' + (z.time || "keep") + '" data-zsort="' + (z.sort ? 1 : 0) + '"' : ""; }
+function ordKey(t) { return t.order != null ? t.order : (t.created || 0); }
+function byOrder(a, b) { return ordKey(a) - ordKey(b); }
+function dayOrder(a, b) { if (a.time && b.time) return a.time < b.time ? -1 : a.time > b.time ? 1 : 0; if (a.time) return -1; if (b.time) return 1; return byOrder(a, b); }
 function emptyArt(kind) {
   if (kind === "done") return '<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="var(--accent-soft)"/><path d="M21 33l7 7 15-16" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   return '<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="10" width="40" height="46" rx="8" fill="var(--accent-soft)"/><path d="M22 24h20M22 33h20M22 42h12" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/></svg>';
@@ -862,8 +878,8 @@ function viewToday() {
   var td = T(), L = list(), now = new Date(), nm = now.getHours() * 60 + now.getMinutes();
   var late = L.filter(isLate).sort(byDate);
   var tday = L.filter(function (t) { return !t.done && t.date === td; }).sort(byTime);
-  var timed = tday.filter(function (t) { return t.time; }), untimed = tday.filter(function (t) { return !t.time; });
-  var inbox = L.filter(function (t) { return !t.done && !t.date; }).sort(function (a, b) { return (b.pri || 0) - (a.pri || 0) || (a.created || 0) - (b.created || 0); });
+  var timed = tday.filter(function (t) { return t.time; }), untimed = tday.filter(function (t) { return !t.time; }).sort(byOrder);
+  var inbox = L.filter(function (t) { return !t.done && !t.date; }).sort(byOrder);
   var dn = L.filter(doneToday).sort(function (a, b) { return (b.doneAt || b.lastDone || 0) - (a.doneAt || a.lastDone || 0); });
   var h = "";
   var nx = null;
@@ -879,12 +895,12 @@ function viewToday() {
   h += section("evtoday", "ביומן היום", [], { pre: evRows(td) || null });
   if (late.length) h += section("late", "נשאר מימים קודמים", late, { late: true, act: '<button class="act" data-act="lateToday">הכול להיום</button>' });
   if (tday.length) {
-    h += section("timed", "לפי שעות", timed, {});
-    h += section("untimed", timed.length ? "במהלך היום" : "להיום", untimed, {});
+    h += section("timed", "לפי שעות", timed, { row: { date: false }, zone: { date: td, time: "keep" } });
+    h += section("untimed", timed.length ? "במהלך היום" : "להיום", untimed, { row: { date: false }, zone: { date: td, time: "clear", sort: 1 }, always: true, emptyHtml: '<div class="empty" style="padding:14px">גרור לכאן משימה כדי לעשות אותה היום</div>' });
   } else {
-    h += '<section class="sec"><div class="sec-h"><span>להיום</span></div><div class="empty">' + emptyArt(dn.length ? "done" : "") + (dn.length ? "<b>סיימת את כל מה שתכננת להיום</b><span>אפשר לנוח, או למשוך משימה מהרשימה שלמטה.</span>" : "<b>אין עדיין משימות להיום</b><span>כתוב משימה בשורה למעלה. אפשר להוסיף שעה, למשל \"שיחה עם יוסי 15:00\".</span>") + "</div></section>";
+    h += '<section class="sec"><div class="sec-h"><span>להיום</span></div><div class="empty"' + zoneAttr({ date: td, time: "clear", sort: 1 }) + ">" + emptyArt(dn.length ? "done" : "") + (dn.length ? "<b>סיימת את כל מה שתכננת להיום</b><span>אפשר לנוח, או למשוך משימה מהרשימה שלמטה.</span>" : "<b>אין עדיין משימות להיום</b><span>כתוב משימה בשורה למעלה. אפשר להוסיף שעה, למשל \"שיחה עם יוסי 15:00\".</span>") + "</div></section>";
   }
-  h += section("inbox", "בלי תאריך", inbox, { fold: true, act: inbox.length ? '<span class="n" style="margin-inline-start:auto">לחץ על משימה כדי לתת לה תאריך</span>' : "" });
+  h += section("inbox", "בלי תאריך", inbox, { fold: true, zone: { date: "", time: "clear", sort: 1 }, act: inbox.length ? '<span class="n" style="margin-inline-start:auto">' + (isPhone() ? "לחיצה ארוכה וגרירה" : "גרור") + " משימה ל\"להיום\" או לחץ עליה כדי לתת תאריך</span>" : "" });
   h += section("done", "בוצע היום", dn, { fold: true });
   return h;
 }
@@ -895,16 +911,16 @@ function viewUp() {
   if (late.length) h += section("ulate", "באיחור", late, { late: true, act: '<button class="act" data-act="lateToday">הכול להיום</button>' });
   for (var i = 0; i < 14; i++) {
     var ds = TM(i), d = pd(ds);
-    var items = L.filter(function (t) { return t.date === ds; }).sort(byTime);
+    var items = L.filter(function (t) { return t.date === ds; }).sort(dayOrder);
     var evh = evRows(ds);
     if (!items.length && !evh && i > 1) continue;
     var title = (i === 0 ? "היום · " : i === 1 ? "מחר · " : "") + "יום " + DAYS[d.getDay()] + " " + d.getDate() + "." + (d.getMonth() + 1);
-    h += section("d" + ds, title, items, { always: true, pre: evh || null, row: { date: false }, act: '<button class="act" data-act="addOn" data-date="' + ds + '" aria-label="הוספה ליום הזה">' + ic("plus") + "</button>", emptyHtml: '<div class="empty" style="padding:12px">פנוי</div>' });
+    h += section("d" + ds, title, items, { always: true, pre: evh || null, zone: { date: ds, time: "keep", sort: 1 }, row: { date: false }, act: '<button class="act" data-act="addOn" data-date="' + ds + '" aria-label="הוספה ליום הזה">' + ic("plus") + "</button>", emptyHtml: '<div class="empty" style="padding:12px">פנוי</div>' });
   }
   var later = L.filter(function (t) { return t.date && dayDiff(t.date) >= 14; }).sort(byDate);
   h += section("later", "מאוחר יותר", later, {});
-  var none = L.filter(function (t) { return !t.date; }).sort(function (a, b) { return (b.pri || 0) - (a.pri || 0); });
-  h += section("unone", "בלי תאריך", none, {});
+  var none = L.filter(function (t) { return !t.date; }).sort(byOrder);
+  h += section("unone", "בלי תאריך", none, { zone: { date: "", time: "clear", sort: 1 } });
   return h;
 }
 
@@ -936,7 +952,7 @@ function viewProject() {
     '</div><button class="btn plain danger" data-act="pDel">' + ic("trash") + "מחיקת הפרויקט</button></div>";
   var open = L.filter(function (t) { return !t.done; });
   h += section("pdated", "עם תאריך", open.filter(function (t) { return t.date; }).sort(byDate), { row: { proj: false } });
-  h += section("pnone", "בלי תאריך", open.filter(function (t) { return !t.date; }).sort(function (a, b) { return (b.pri || 0) - (a.pri || 0); }), { row: { proj: false } });
+  h += section("pnone", "בלי תאריך", open.filter(function (t) { return !t.date; }).sort(byOrder), { row: { proj: false }, zone: { date: "", time: "clear", sort: 1 } });
   if (!open.length) h += '<div class="empty" style="margin-top:14px">' + emptyArt("done") + "<b>אין משימות פתוחות בפרויקט</b><span>משימות שתוסיף מכאן ישויכו אליו אוטומטית.</span></div>";
   h += section("pdone", "בוצעו", L.filter(function (t) { return t.done; }).sort(function (a, b) { return (b.doneAt || 0) - (a.doneAt || 0); }).slice(0, 30), { fold: true, row: { proj: false } });
   return h;
@@ -967,12 +983,14 @@ function layoutDay(items) {
   });
   return items;
 }
+function priColor(t) { return t.pri === 3 ? "var(--p3)" : t.pri === 2 ? "var(--p2)" : t.pri === 1 ? "var(--p1)" : "var(--muted)"; }
+function taskColor(t) { var p = t.proj ? proj(t.proj) : null; if (S.calColor === "pri") return priColor(t); return p ? p.color : (t.pri ? priColor(t) : "var(--accent)"); }
 function blkHtml(it, hp) {
   var t = it.t, p = t.proj ? proj(t.proj) : null;
   var top = (it.s - CS * 60) / 60 * hp, h = Math.max(20, (it.e - it.s) / 60 * hp - 2);
   var w = 100 / it.lanes;
   if (t.ev) return '<a class="blk ev" href="' + esc(t.link) + '" target="_blank" rel="noopener" title="' + esc(t.title) + ' · יומן Google" style="top:' + top + "px;height:" + h + "px;inset-inline-start:calc(" + (it.lane * w) + "% + 2px);width:calc(" + w + '% - 4px)"><div class="bt">' + esc(t.title) + '</div><div class="bm">' + hhmm(it.s) + "–" + hhmm(it.e) + "</div></a>";
-  var color = p ? p.color : (t.pri === 3 ? "var(--p3)" : t.pri === 2 ? "var(--p2)" : "var(--accent)");
+  var color = taskColor(t);
   return '<div class="blk' + (t.done ? " done" : "") + '" data-id="' + esc(t.id) + '" data-act="open" style="--c:' + esc(color) + ";top:" + top + "px;height:" + h + "px;inset-inline-start:calc(" + (it.lane * w) + "% + 2px);width:calc(" + w + '% - 4px)"><div class="bt">' + esc(t.title) + '</div><div class="bm">' + hhmm(it.s) + "–" + hhmm(it.e) + '</div><div class="rs" data-rs="1"></div></div>';
 }
 function viewCal() {
@@ -980,13 +998,13 @@ function viewCal() {
   var a = pd(days[0]), b = pd(days[days.length - 1]);
   var rng = days.length === 1 ? longDate(a) : a.getDate() + (a.getMonth() !== b.getMonth() ? " ב" + MONTHS[a.getMonth()] : "") + " – " + b.getDate() + " ב" + MONTHS[b.getMonth()];
   var segs = (isPhone() ? [1, 3] : [1, 3, 7]).map(function (n) { return '<button data-act="calDays" data-n="' + n + '" aria-pressed="' + (S.calDays === n) + '">' + (n === 1 ? "יום" : n === 3 ? "3 ימים" : "שבוע") + "</button>"; }).join("");
-  var h = '<div class="calwrap"><div class="cal"><div class="calbar"><span class="rng">' + rng + '</span><button class="btn" data-act="calToday">היום</button><button class="iconbtn" data-act="calPrev" aria-label="קודם">' + ic("next") + '</button><button class="iconbtn" data-act="calNext" aria-label="הבא">' + ic("prev") + '</button><div class="seg">' + segs + '</div>' + (mcpNS ? '<button class="chip" data-act="toggleEv" aria-pressed="' + S.showEv + '">' + ic("cal") + "פגישות מהיומן</button>" : "") + calStatusHtml(false) + "</div>";
+  var h = '<div class="calwrap"><div class="cal"><div class="calbar"><span class="rng">' + rng + '</span><button class="btn" data-act="calToday">היום</button><button class="iconbtn" data-act="calPrev" aria-label="קודם">' + ic("next") + '</button><button class="iconbtn" data-act="calNext" aria-label="הבא">' + ic("prev") + '</button><div class="seg">' + segs + '</div><div class="seg" title="צבע המשימות ביומן"><button data-act="calColor" data-v="proj" aria-pressed="' + (S.calColor !== "pri") + '">לפי פרויקט</button><button data-act="calColor" data-v="pri" aria-pressed="' + (S.calColor === "pri") + '">לפי דחיפות</button></div>' + (mcpNS ? '<button class="chip" data-act="toggleEv" aria-pressed="' + S.showEv + '">' + ic("cal") + "פגישות מהיומן</button>" : "") + calStatusHtml(false) + "</div>";
   h += '<div class="calgrid" style="--days:' + days.length + '"><div class="chead"><div></div>';
   days.forEach(function (ds) { var d = pd(ds); h += '<div class="' + (ds === td ? "today" : "") + '"><span class="dn">' + (days.length > 3 && isPhone() ? DL[d.getDay()] : DAYS[d.getDay()]) + '</span><span class="dd">' + d.getDate() + "</span></div>"; });
   h += '</div><div class="callday"><div>ללא שעה</div>';
   days.forEach(function (ds) {
     var items = L.filter(function (t) { return t.date === ds && !t.time; }).sort(function (x, y) { return (x.done - y.done) || ((y.pri || 0) - (x.pri || 0)); });
-    h += '<div data-allday="' + ds + '">' + evFor(ds).filter(function (e) { return e.allDay; }).map(function (e) { return '<a class="adchip ev" href="' + esc(e.link) + '" target="_blank" rel="noopener">' + esc(e.title) + "</a>"; }).join("") + items.map(function (t) { var p = t.proj ? proj(t.proj) : null; return '<div class="adchip' + (t.done ? " done" : "") + '" data-id="' + esc(t.id) + '" data-drag="1" data-act="open" style="--c:' + esc(p ? p.color : "var(--accent)") + '">' + esc(t.title) + "</div>"; }).join("") + "</div>";
+    h += '<div data-allday="' + ds + '">' + evFor(ds).filter(function (e) { return e.allDay; }).map(function (e) { return '<a class="adchip ev" href="' + esc(e.link) + '" target="_blank" rel="noopener">' + esc(e.title) + "</a>"; }).join("") + items.map(function (t) { return '<div class="adchip' + (t.done ? " done" : "") + '" data-id="' + esc(t.id) + '" data-drag="1" data-act="open" style="--c:' + esc(taskColor(t)) + '">' + esc(t.title) + "</div>"; }).join("") + "</div>";
   });
   h += '</div><div class="cbody" id="cbody"><div class="cgrid" style="height:' + ((CE - CS) * hp) + 'px"><div class="hours">';
   for (var hr = CS; hr < CE; hr++) h += "<div>" + pad(hr) + ":00</div>";
@@ -1007,7 +1025,7 @@ function viewCal() {
 
 /* ---------------- render ---------------- */
 function render() {
-  if (drag && drag.active) return; // don't disturb an ongoing drag
+  if ((drag && drag.active) || (ldrag && ldrag.active)) return; // don't disturb an ongoing drag
   renderSide(); renderTop();
   var c = document.getElementById("content");
   var cb = document.getElementById("cbody"), calScroll = cb ? cb.scrollTop : null;
@@ -1068,7 +1086,7 @@ document.getElementById("composer").addEventListener("submit", function (e) {
   var t = {
     title: r.title, notes: "", date: r.date || def.date || "", time: r.time || def.time || "",
     dur: r.dur || 0, pri: r.pri, proj: r.proj ? findOrMakeProject(r.proj) : def.proj || "",
-    rep: r.rep, subs: [], done: false, doneAt: 0, created: Date.now()
+    rep: r.rep, subs: [], done: false, doneAt: 0, created: Date.now(), order: Date.now()
   };
   if (t.time && !t.date) t.date = T();
   if (t.time && !t.dur) t.dur = 30;
@@ -1274,6 +1292,7 @@ document.addEventListener("click", function (e) {
   else if (a === "calNext") { S.calStart = ymd(addD(pd(S.calStart), S.calDays)); render(); watchCal(); }
   else if (a === "toggleEv") { S.showEv = !S.showEv; lsSet("myday-showev", S.showEv); if (S.showEv) watchCal(); else stopCal(); render(); }
   else if (a === "calApprove") approveCal();
+  else if (a === "calColor") { S.calColor = b.getAttribute("data-v"); lsSet("myday-calcolor", S.calColor); render(); }
   else if (a === "logout") { if (auth) auth.signOut(); }
   else if (a === "impPick") { var fi = document.getElementById("impFile"); fi.value = ""; fi.click(); }
   else if (a === "npColor") { newProjColor = b.getAttribute("data-c"); document.querySelectorAll('[data-act="npColor"]').forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); }
@@ -1430,8 +1449,93 @@ function endDrag(apply) {
 }
 document.addEventListener("pointerup", function () { endDrag(true); });
 document.addEventListener("pointercancel", function () { endDrag(false); });
-document.addEventListener("touchmove", function (e) { if (drag && drag.active) e.preventDefault(); }, { passive: false });
+document.addEventListener("touchmove", function (e) { if ((drag && drag.active) || (ldrag && ldrag.active)) e.preventDefault(); }, { passive: false });
 document.addEventListener("contextmenu", function (e) { if (e.target.closest(".blk, .adchip, [data-drag]") && S.view === "cal") e.preventDefault(); });
+
+/* ---------------- drag to reorder / move between lists ---------------- */
+var ldrag = null;
+function zoneUnder(x, y) {
+  var el = document.elementFromPoint(x, y);
+  return el ? el.closest("[data-zone]") : null;
+}
+document.addEventListener("pointerdown", function (e) {
+  if (S.view === "cal") return;
+  var row = e.target.closest("#content .trow[data-id]");
+  if (!row || e.target.closest(".cb")) return;
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+  var t = S.tasks[row.getAttribute("data-id")]; if (!t || t.done) return;
+  ldrag = { id: row.getAttribute("data-id"), row: row, x0: e.clientX, y0: e.clientY, active: false, touch: e.pointerType !== "mouse" };
+  if (ldrag.touch) ldrag.timer = setTimeout(function () { lActivate(e.clientX, e.clientY); }, 380);
+});
+function lActivate(x, y) {
+  if (!ldrag) return;
+  ldrag.active = true;
+  try { navigator.vibrate && navigator.vibrate(12); } catch (e) {}
+  ldrag.row.classList.add("lifting");
+  document.body.classList.add("ldragging");
+  var g = document.createElement("div"); g.className = "ghost"; g.textContent = (S.tasks[ldrag.id] || {}).title || ""; document.body.appendChild(g); ldrag.ghost = g;
+  ldrag.line = document.createElement("div"); ldrag.line.className = "dropline";
+  lMove(x, y);
+}
+function lMove(x, y) {
+  ldrag.ghost.style.left = x + "px"; ldrag.ghost.style.top = y + "px";
+  var c = document.getElementById("content"), cr = c.getBoundingClientRect();
+  if (y < cr.top + 40) c.scrollTop -= 14; else if (y > cr.bottom - 60) c.scrollTop += 14;
+  document.querySelectorAll(".zover").forEach(function (z) { z.classList.remove("zover"); });
+  if (ldrag.line.parentNode) ldrag.line.remove();
+  var z = zoneUnder(x, y);
+  ldrag.zone = z; ldrag.before = null;
+  if (!z) return;
+  if (z.getAttribute("data-zsort") === "1" && z.classList.contains("card")) {
+    var rows = Array.prototype.filter.call(z.querySelectorAll(".trow[data-id]"), function (r) { return r !== ldrag.row; });
+    var before = null;
+    for (var i = 0; i < rows.length; i++) { var r = rows[i].getBoundingClientRect(); if (y < r.top + r.height / 2) { before = rows[i]; break; } }
+    ldrag.before = before;
+    if (before) z.insertBefore(ldrag.line, before); else z.appendChild(ldrag.line);
+  } else z.classList.add("zover");
+}
+document.addEventListener("pointermove", function (e) {
+  if (!ldrag) return;
+  var dx = e.clientX - ldrag.x0, dy = e.clientY - ldrag.y0, dist = Math.sqrt(dx * dx + dy * dy);
+  if (!ldrag.active) {
+    if (ldrag.touch) { if (dist > 8) { clearTimeout(ldrag.timer); ldrag = null; } return; }
+    if (dist > 6) lActivate(e.clientX, e.clientY); else return;
+  }
+  e.preventDefault();
+  lMove(e.clientX, e.clientY);
+});
+function lEnd(apply) {
+  if (!ldrag) return;
+  clearTimeout(ldrag.timer);
+  var d = ldrag; ldrag = null;
+  if (!d.active) return;
+  suppressClick = true; setTimeout(function () { suppressClick = false; }, 50);
+  document.body.classList.remove("ldragging");
+  if (d.ghost) d.ghost.remove();
+  if (d.line && d.line.parentNode) d.line.remove();
+  document.querySelectorAll(".zover").forEach(function (z) { z.classList.remove("zover"); });
+  var t = S.tasks[d.id];
+  if (!apply || !d.zone || !t) { render(); return; }
+  var z = d.zone, patch = {};
+  var zd = z.getAttribute("data-zdate"), zt = z.getAttribute("data-ztime");
+  if (zd !== "keep") patch.date = zd;
+  if (zt === "clear" || patch.date === "") patch.time = "";
+  if (z.getAttribute("data-zsort") === "1") {
+    var rows = Array.prototype.filter.call(z.querySelectorAll(".trow[data-id]"), function (r) { return r.getAttribute("data-id") !== d.id; });
+    var idx = d.before ? rows.indexOf(d.before) : rows.length;
+    var prev = rows[idx - 1] ? S.tasks[rows[idx - 1].getAttribute("data-id")] : null;
+    var next = rows[idx] ? S.tasks[rows[idx].getAttribute("data-id")] : null;
+    patch.order = prev && next ? (ordKey(prev) + ordKey(next)) / 2 : prev ? ordKey(prev) + 1000 : next ? ordKey(next) - 1000 : Date.now();
+  }
+  var changed = Object.keys(patch).some(function (k) { return (t[k] == null ? "" : t[k]) !== patch[k]; });
+  if (changed) {
+    save(d.id, patch);
+    if (patch.date !== undefined && patch.date !== (t.date || "")) toast(patch.date ? "הועבר " + (patch.date === T() ? "להיום" : "ל" + relDate(patch.date)) : "הועבר לרשימה בלי תאריך");
+  } else render();
+}
+document.addEventListener("pointerup", function () { lEnd(true); });
+document.addEventListener("pointercancel", function () { lEnd(false); });
+document.addEventListener("contextmenu", function (e) { if (e.target.closest("#content .trow") && S.view !== "cal") e.preventDefault(); });
 
 /* ---------------- Trello import ---------------- */
 var IMP = null;
@@ -1512,6 +1616,7 @@ document.getElementById("imp").addEventListener("click", function (e) {
 S.calDays = lsGet("myday-caldays", null) || (isPhone() ? 3 : 7);
 if (isPhone() && S.calDays === 7) S.calDays = 3;
 S.showEv = lsGet("myday-showev", true) !== false;
+S.calColor = lsGet("myday-calcolor", "proj");
 var v0 = lsGet("myday-view", "today");
 if (["today", "cal", "up", "projects"].indexOf(v0) >= 0) S.view = v0;
 var lastDay = T();
