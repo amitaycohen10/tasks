@@ -632,6 +632,12 @@ body { background: radial-gradient(1200px 500px at 80% -10%, color-mix(in srgb, 
 .cp-go { background: color-mix(in srgb, var(--accent) 12%, var(--surface)); color: var(--ink); border-radius: 10px; padding: 7px 10px; }
 .cp-in { background: color-mix(in srgb, #8a5cc7 10%, var(--surface)); border-radius: 10px; padding: 7px 10px; color: var(--muted); }
 .cap-tip { font-size: 12.5px; color: var(--muted); }
+.dropbar { position: sticky; top: -2px; z-index: 5; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 8px 0; background: var(--bg); }
+.dz { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 56px; border: 2px dashed color-mix(in srgb, var(--accent) 45%, var(--line)); border-radius: 16px; color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); font-size: 16px; transition: .15s; }
+.dz svg.i { width: 20px; height: 20px; }
+body.ldragging .dz { min-height: 76px; background: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
+body.ldragging .dz.zover, .dz.zover { background: var(--accent); color: var(--accent-ink); border-style: solid; transform: scale(1.04); }
+.inbgrp h3 { color: #8a5cc7; } .inbgrp .card { border-color: color-mix(in srgb, #8a5cc7 35%, var(--line)); }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -839,7 +845,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "20";
+var APP_VERSION = "23";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -1396,8 +1402,12 @@ function laterButton(n) {
 }
 function viewLater() {
   var L = list().filter(function (t) { return !t.done && !t.date; });
-  var h = '<p class="mhint">כאן המשימות בלי תאריך, לפי פרויקט ונושא. לחץ על נושא כדי לפתוח אותו. כדי לתכנן משימה, לחץ עליה ובחר תאריך, או גרור אותה לנושא אחר.</p>';
+  var h = '<div class="dropbar"><div class="dz"' + zoneAttr({ date: T(), time: "keep" }) + '>' + ic("sun") + '<b>להיום</b></div><div class="dz"' + zoneAttr({ date: TM(1), time: "keep" }) + '>' + ic("cal") + '<b>למחר</b></div></div>' +
+    '<p class="mhint">' + (isPhone() ? "לחיצה ארוכה על משימה, ואז גרירה" : "גרור משימה") + ' ל"להיום" או ל"למחר" שלמעלה. אפשר גם לגרור לנושא אחר.</p>';
   if (!L.length) return h + '<div class="empty">' + emptyArt("done") + "<b>אין משימות בלי תאריך</b></div>";
+  var inb = L.filter(function (t) { return t.inbox; }).sort(function (a, b) { return (b.created || 0) - (a.created || 0); });
+  if (inb.length) h += '<div class="lgrp inbgrp"><h3>' + ic("inbox") + 'מהסל · נוספו לאחרונה<span class="n">' + inb.length + '</span></h3><div class="card"' + zoneAttr({ date: "", time: "clear", sort: 0 }) + ">" + inb.map(function (t) { return taskRow(t, { proj: false }); }).join("") + "</div></div>";
+  L = L.filter(function (t) { return !t.inbox; });
   var ps = (S.settings.projects || []).slice(); ps.push(null);
   ps.forEach(function (p) {
     var pid = p ? p.id : "";
@@ -1856,7 +1866,7 @@ function startFocus(id) { F.habit = null; F.id = id; F.len = F.len || 25; F.left
 function drawFocus() {
   var t = S.tasks[F.id], hb = F.habit ? settingsArr("habits").filter(function (x) { return x.id === F.habit; })[0] : null;
   document.getElementById("fTitle").textContent = hb ? "🎯 " + hb.name : t ? t.title : "";
-  document.getElementById("fLens").innerHTML = [15, 25, 50].map(function (n) { return '<button class="chip" data-f="len" data-n="' + n + '" aria-pressed="' + (F.len === n) + '">' + n + " דק׳</button>"; }).join("");
+  document.getElementById("fLens").innerHTML = [5, 10, 15, 25, 50].map(function (n) { return '<button class="chip" data-f="len" data-n="' + n + '" aria-pressed="' + (F.len === n) + '">' + n + " דק׳</button>"; }).join("");
   document.getElementById("fBtns").innerHTML = (F.left > 0 ? '<button class="btn primary" data-f="pp">' + ic(F.run ? "pause" : "play") + (F.run ? "השהיה" : "המשך") + '</button><button class="btn" data-f="plus">+5 דק׳</button>' + (F.habit ? '<button class="btn" data-f="doneTask">' + ic("check") + "סיימתי כבר</button>" : "") : '<button class="btn primary" data-f="doneTask">' + ic("check") + (F.habit ? "מעולה! ההרגל סומן ✓" : "סיימתי את המשימה") + "</button>") + '<button class="btn" data-f="stop">סגירה</button>';
   document.getElementById("fLabel").textContent = F.left > 0 ? "פוקוס" : "הזמן נגמר";
 }
@@ -2335,6 +2345,7 @@ function lEnd(apply) {
   var z = d.zone, patch = {};
   var zd = z.getAttribute("data-zdate"), zt = z.getAttribute("data-ztime");
   if (zd !== "keep") patch.date = zd;
+  if (patch.date && t.inbox) patch.inbox = false;
   if (zt === "clear" || patch.date === "") patch.time = "";
   var zs = z.getAttribute("data-zsec"); if (zs !== null) patch.sec = zs;
   var zp = z.getAttribute("data-zproj"); if (zp !== null) patch.proj = zp;
@@ -3095,8 +3106,9 @@ function drawCls() {
     '<h4 style="margin-top:14px">6 · מתי בדיוק? <small>(אם… אז… · לא חובה)</small></h4><div class="chips">' + TRIG_SUG.slice(0, 5).map(function (s) { return chip(d.trigger === s, 'data-cl="trig" data-v="' + esc(s) + '"', "🔗 " + esc(s)); }).join("") + '</div><input id="clTrig" class="sub-add" style="margin-top:8px" placeholder="או כתוב בעצמך: כש… / אחרי…" value="' + esc(d.trigger || "") + '">' +
     (d.est === 5 ? '<div class="twomin">⚡ לוקח רק כמה דקות? הכי טוב לעשות את זה עכשיו ולגמור עם זה. <button type="button" class="btn primary" data-cl="doneNow">' + ic("check") + "עשיתי</button></div>" : "") + "</div>";
   h += '<div class="cls-actions"><button type="button" class="btn plain danger" data-cl="del">' + ic("trash") + '</button>' + (CL.i > 0 ? '<button type="button" class="btn" data-cl="prev">' + ic("back") + "הקודמת</button>" : "") + '<button type="button" class="btn" data-cl="skip">דילוג' + ic("chev") + '</button><button type="button" class="btn primary big" data-cl="send">' + ic("check") + "שליחה למקום</button></div>";
+  var keep = box._clsI === CL.i ? box.scrollTop : 0;
   box.innerHTML = h;
-  box.scrollTop = 0;
+  box.scrollTop = keep; box._clsI = CL.i;
 }
 function clsPrev() {
   var j = CL.i - 1;
