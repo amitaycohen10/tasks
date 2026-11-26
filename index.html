@@ -683,6 +683,11 @@ body.ldragging .dz.zover, .dz.zover { background: var(--accent); color: var(--ac
 .folcal { display: grid; gap: 4px; } .folcal input { border: 2px solid color-mix(in srgb, #e0a800 50%, var(--line)); border-radius: 12px; padding: 10px; font-size: 16px; background: var(--surface); width: 100%; }
 .folchosen { font-size: 14px; background: var(--surface); border-radius: 10px; padding: 8px 10px; }
 .adchip.fol { border: 0; width: 100%; text-align: start; --c: #e0a800; color: var(--ink); cursor: pointer; }
+.folmon { padding: 10px; margin-top: 10px; } .fmh { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; } .fmh b { font-family: var(--display); font-size: 16px; }
+.fmg { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; } .fmd { text-align: center; font-size: 12px; color: var(--muted); }
+.fmc { position: relative; aspect-ratio: 1; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; font-size: 14px; color: var(--ink); display: grid; place-items: center; }
+.fmc.past { opacity: .45; } .fmc.today { border: 2px solid var(--accent); font-weight: 700; } .fmc.has { background: color-mix(in srgb, #e0a800 18%, var(--surface)); }
+.fmc.on { background: #e0a800; color: #fff; border-color: #e0a800; } .fmc i { position: absolute; top: 2px; inset-inline-end: 3px; font-style: normal; font-size: 10px; font-weight: 700; color: #b07d00; } .fmc.on i { color: #fff; }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -890,7 +895,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "31";
+var APP_VERSION = "32";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -1705,7 +1710,7 @@ function render() {
   else if (S.view === "progress") c.innerHTML = viewProgress();
   else if (S.view === "inbox") c.innerHTML = viewInbox();
   c.className = "content" + (S.view === "cal" ? " flush" : "");
-  hideComposer = ["more", "habits", "week", "templates", "tags", "progress"].indexOf(S.view) >= 0;
+  hideComposer = ["more", "habits", "week", "templates", "tags", "progress", "follow", "dayrep", "dups"].indexOf(S.view) >= 0;
   document.getElementById("composer").style.display = (S.view === "projects" && !isPhone()) || hideComposer ? "none" : "";
   document.getElementById("fab").style.display = hideComposer || S.view === "matrix" ? "none" : "";
   c.scrollTop = keep;
@@ -2063,6 +2068,8 @@ document.addEventListener("click", function (e) {
   else if (a === "repNext") { S.repOff = Math.min(0, (S.repOff || 0) + 1); render(); }
   else if (a === "repGo") { S.repOff = dayDiff(b.getAttribute("data-d")); go("dayrep"); }
   else if (a === "repOpenDay") { S.dayOff = Math.max(-7, S.repOff || 0); go("today"); }
+  else if (a === "folMon") { S.folMon = (S.folMon || 0) + +b.getAttribute("data-v"); render(); }
+  else if (a === "folPick") { var pdd = b.getAttribute("data-d"); S.folPick = S.folPick === pdd ? "" : pdd; render(); }
   else if (a === "folClose") { var ft = S.tasks[b.getAttribute("data-id")]; save(ft.id || b.getAttribute("data-id"), { follow: Object.assign({}, ft.follow, { closed: true, closedAt: Date.now() }) }); toast("✓ המעקב נסגר. כל הכבוד!"); }
   else if (a === "folSnooze") { var fs = S.tasks[b.getAttribute("data-id")]; save(b.getAttribute("data-id"), { follow: Object.assign({}, fs.follow, { at: TM(2) }) }); toast("⏰ המעקב יקפוץ שוב " + relDate(TM(2))); }
   else if (a === "folReopen") { var fo = S.tasks[b.getAttribute("data-id")]; save(b.getAttribute("data-id"), { done: false, doneAt: 0, date: T(), time: "", follow: Object.assign({}, fo.follow, { closed: true }) }); toast("↩ המשימה חזרה להיום"); }
@@ -2120,6 +2127,7 @@ document.addEventListener("submit", function (e) {
     if (!document.getElementById("sd").hidden && SHARE_ID) openShare(SHARE_ID);
     return;
   }
+  if (e.target.id === "folNew") { folNewSubmit(e); return; }
   if (e.target.id === "wkAdd") {
     e.preventDefault(); var wt = document.getElementById("wkAddT").value.trim(); if (!wt) return;
     var r = parseQuick(wt);
@@ -3281,6 +3289,7 @@ var BLOCKS = [
   ["time", "⌛ אין לי זמן", "אם זה חשוב, זה צריך מקום ביומן. תן לזה יום ושעה.", "לבחור יום ושעה ביומן"],
   ["meh", "🤔 לא בטוח שזה חשוב", "אולי אפשר לוותר? למחוק, או לסמן \"אולי פעם\". גם זו החלטה.", "להחליט: למחוק, להעביר למישהו או לדחות"]
 ];
+document.addEventListener("input", function (e) { var k = { fnTitle: "t", fnNote: "n", fnTime: "tm" }[e.target.id]; if (k) { S.fnDraft = S.fnDraft || {}; S.fnDraft[k] = e.target.value; } });
 document.addEventListener("change", function (e) { if (e.target.id === "folDate" && e.target.value) { folSync(); buildDetail(); } });
 document.addEventListener("input", function (e) { if (e.target.id === "clFirst" && CL.d) CL.d.first = e.target.value; if (e.target.id === "clBlockTxt" && CL.d) CL.d.blockTxt = e.target.value; });
 function clsPrev() {
@@ -3924,11 +3933,42 @@ function followTodayHtml(D) {
   if (!L.length) return "";
   return '<section class="sec"><div class="sec-h">' + shic("rep", "#e0a800") + "<span>🔁 מעקב: לבדוק " + (D === T() ? "היום" : "ביום הזה") + '</span><span class="n">' + L.length + '</span><button class="act" data-act="go" data-view="follow">כל המעקבים</button></div><div class="card folcard">' + L.map(function (t) { return followRow(t, D > T()); }).join("") + "</div></section>";
 }
+function folMonthHtml(L) {
+  var base = new Date(); base.setDate(1); base.setMonth(base.getMonth() + (S.folMon || 0));
+  var y = base.getFullYear(), m = base.getMonth(), first = new Date(y, m, 1), days = new Date(y, m + 1, 0).getDate();
+  var cnt = {}; L.forEach(function (t) { if (t.follow.at) cnt[t.follow.at] = (cnt[t.follow.at] || 0) + 1; });
+  var MN = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
+  var h = '<div class="card folmon"><div class="fmh"><button class="iconbtn" data-act="folMon" data-v="-1" aria-label="חודש קודם">' + ic("next") + "</button><b>" + MN[m] + " " + y + '</b><button class="iconbtn" data-act="folMon" data-v="1" aria-label="חודש הבא">' + ic("prev") + '</button></div><div class="fmg">' +
+    DTL.map(function (x) { return '<span class="fmd">' + x + "</span>"; }).join("");
+  for (var i = 0; i < first.getDay(); i++) h += "<span></span>";
+  for (var d = 1; d <= days; d++) {
+    var ds = y + "-" + pad(m + 1) + "-" + pad(d), past = ds < T();
+    h += '<button class="fmc' + (ds === T() ? " today" : "") + (S.folPick === ds ? " on" : "") + (cnt[ds] ? " has" : "") + (past ? " past" : "") + '" data-act="folPick" data-d="' + ds + '"' + (past && !cnt[ds] ? " disabled" : "") + ">" + d + (cnt[ds] ? "<i>" + cnt[ds] + "</i>" : "") + "</button>";
+  }
+  return h + "</div></div>";
+}
+function folNewHtml() {
+  var at = S.folPick && S.folPick >= T() ? S.folPick : "", FN = S.fnDraft || {};
+  return '<form class="folform" id="folNew"><b>➕ מעקב חדש</b>' +
+    '<label for="fnTitle">מה עשיתי / מה ביקשתי?</label><input id="fnTitle" class="sub-add" placeholder="למשל: ביקשתי ממישהי שתעזור לבת שלי" value="' + esc(FN.t || "") + '" autocomplete="off">' +
+    '<label for="fnNote">על מה או ממי אני מחכה? <small>(לא חובה)</small></label><input id="fnNote" class="sub-add" placeholder="למשל: שתחזור אליי עם תשובה" value="' + esc(FN.n || "") + '" autocomplete="off">' +
+    '<div class="d-2"><div class="folcal"><label for="fnDate">📅 מתי לבדוק?</label><input type="date" id="fnDate" min="' + T() + '" value="' + (at || TM(3)) + '"></div><div class="folcal"><label for="fnTime">שעה <small>(לא חובה)</small></label><input type="time" id="fnTime" value="' + esc(FN.tm || "") + '"></div></div>' +
+    '<p class="mhint" style="margin:0">טיפ: אפשר גם ללחוץ על יום בלוח השנה למעלה.</p><button class="btn primary" type="submit">' + ic("check") + "הוספה למעקב</button></form>";
+}
 function viewFollow() {
   var L = openFollows();
-  var h = '<p class="mhint">כאן משימות שעשית את החלק שלך בהן, ועכשיו מחכים למישהו אחר. ביום שבחרת, המשימה תקפוץ לך ב"היום" כדי לבדוק מה קורה איתה.</p>';
+  var h = '<p class="mhint">כאן משימות שעשית את החלק שלך בהן, ועכשיו מחכים למישהו אחר. ביום שבחרת, המשימה תקפוץ לך ב"היום" וביומן כדי לבדוק מה קורה איתה.</p>' + folMonthHtml(L) + folNewHtml();
+  if (S.folPick) { var PL = L.filter(function (t) { return t.follow.at === S.folPick; }); h += '<div class="sec-h" style="margin-top:14px"><span>מעקבים ל-' + relDate(S.folPick) + '</span><span class="n">' + PL.length + '</span><button class="act" data-act="folPick" data-d="">להציג הכול</button></div>'; L = PL; }
+  else h += '<div class="sec-h" style="margin-top:14px"><span>כל המעקבים הפתוחים</span><span class="n">' + L.length + "</span></div>";
+  if (!L.length) return h + '<div class="empty" style="padding:16px">' + (S.folPick ? "אין מעקבים ביום הזה" : "אין משימות במעקב") + "</div>";
   if (!L.length) return h + '<div class="empty">' + emptyArt("done") + '<b>אין משימות במעקב</b><span>כדי להעביר משימה למעקב: פותחים אותה ולוחצים "🔁 עשיתי, עכשיו מחכה".</span></div>';
   return h + '<div class="card folcard">' + L.map(function (t) { return followRow(t); }).join("") + "</div>";
+}
+function folNewSubmit(e) {
+  e.preventDefault(); var ti = document.getElementById("fnTitle").value.trim(); if (!ti) { document.getElementById("fnTitle").focus(); toast("כתוב קודם מה עשית או ביקשת"); return; }
+  var at = document.getElementById("fnDate").value || TM(3), tm = document.getElementById("fnTime").value || "", note = document.getElementById("fnNote").value.trim();
+  store.put(newId(), { title: ti, notes: "", date: "", time: "", dur: 0, pri: 0, proj: "", rep: "", subs: [], done: true, doneAt: Date.now(), created: Date.now(), order: Date.now(), due: "", tags: [], imp: false, inbox: false, follow: { at: at, time: tm, note: note, closed: false, since: Date.now() } });
+  S.folPick = ""; S.fnDraft = null; toast("🔁 נוסף למעקב. יקפוץ לך " + relDate(at) + (tm ? " ב-" + tm : ""));
 }
 function followFormHtml(t) {
   var f = t.follow || {}, FD = S.folDraft || { at: f.at || TM(3), time: f.time || "", note: f.note || "" };
