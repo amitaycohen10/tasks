@@ -680,6 +680,9 @@ body.ldragging .dz.zover, .dz.zover { background: var(--accent); color: var(--ac
 .folform { display: grid; gap: 6px; margin: 6px 0 12px; padding: 12px; border-radius: 14px; background: color-mix(in srgb, #e0a800 9%, var(--surface)); border: 1px solid color-mix(in srgb, #e0a800 35%, var(--line)); }
 .folform label { font-size: 13px; font-weight: 700; color: var(--muted); } .folform label small { font-weight: 400; }
 .repj { display: flex; gap: 12px; align-items: center; padding: 12px 14px; margin-top: 12px; } .repj .rm { font-size: 32px; } .repj p { margin: 0; white-space: pre-line; }
+.folcal { display: grid; gap: 4px; } .folcal input { border: 2px solid color-mix(in srgb, #e0a800 50%, var(--line)); border-radius: 12px; padding: 10px; font-size: 16px; background: var(--surface); width: 100%; }
+.folchosen { font-size: 14px; background: var(--surface); border-radius: 10px; padding: 8px 10px; }
+.adchip.fol { border: 0; width: 100%; text-align: start; --c: #e0a800; color: var(--ink); cursor: pointer; }
 .impcard { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
 .impcard .tx { flex: 1; min-width: 200px; display: grid; gap: 2px; }
 .impcard .tx b { font-family: var(--display); font-weight: 600; }
@@ -887,7 +890,7 @@ function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch
 /* ---------------- storage ---------------- */
 function notice(msg) { var n = document.getElementById("notice"); n.hidden = !msg; n.textContent = msg || ""; }
 
-var APP_VERSION = "30";
+var APP_VERSION = "31";
 var FB_CONFIG = {
   apiKey: "AIzaSyA4HSN0QWBiOaNb0mTLwANyqkb7RTybdzk",
   authDomain: "loz-and-mecimot.firebaseapp.com",
@@ -1651,7 +1654,7 @@ function viewCal() {
   h += '</div><div class="callday"><div>ללא שעה</div>';
   days.forEach(function (ds) {
     var items = L.filter(function (t) { return t.date === ds && !t.time; }).sort(function (x, y) { return (x.done - y.done) || ((y.pri || 0) - (x.pri || 0)); });
-    h += '<div data-allday="' + ds + '">' + evFor(ds).filter(function (e) { return e.allDay; }).map(function (e) { return '<a class="adchip ev" href="' + esc(e.link) + '" target="_blank" rel="noopener"' + (e.color ? ' style="--c:' + esc(e.color) + '"' : "") + ">" + esc(e.title) + "</a>"; }).join("") + items.map(function (t) { return '<div class="adchip' + (t.done ? " done" : "") + '" data-id="' + esc(t.id) + '" data-drag="1" data-act="open" style="--c:' + esc(taskColor(t)) + '">' + esc(t.title) + "</div>"; }).join("") + "</div>";
+    h += '<div data-allday="' + ds + '">' + evFor(ds).filter(function (e) { return e.allDay; }).map(function (e) { return '<a class="adchip ev" href="' + esc(e.link) + '" target="_blank" rel="noopener"' + (e.color ? ' style="--c:' + esc(e.color) + '"' : "") + ">" + esc(e.title) + "</a>"; }).join("") + items.map(function (t) { return '<div class="adchip' + (t.done ? " done" : "") + '" data-id="' + esc(t.id) + '" data-drag="1" data-act="open" style="--c:' + esc(taskColor(t)) + '">' + esc(t.title) + "</div>"; }).join("") + openFollows().filter(function (t) { return t.follow.at === ds; }).map(function (t) { return '<button class="adchip fol" data-act="open" data-id="' + esc(t.id) + '">🔁 ' + (t.follow.time ? t.follow.time + " " : "") + esc(t.title) + "</button>"; }).join("") + "</div>";
   });
   h += '</div><div class="cbody" id="cbody"><div class="cgrid" style="height:' + ((CE - CS) * hp) + 'px"><div class="hours">';
   for (var hr = CS; hr < CE; hr++) h += "<div>" + pad(hr) + ":00</div>";
@@ -1820,7 +1823,7 @@ function buildDetail() {
   h += '<div class="d-row"><span class="lab">' + ic("subs") + "שלבים" + (t.subs && t.subs.length ? " (" + t.subs.filter(function (s) { return s.d; }).length + "/" + t.subs.length + ")" : "") + '</span><div class="subs">' +
     (t.subs || []).map(function (s, i) { return '<div class="sub' + (s.d ? " done" : "") + '"><button class="cb" data-dact="subToggle" data-i="' + i + '" aria-label="סימון שלב">' + ic("check") + '</button><label for="sub' + i + '" class="sr">שלב</label><input type="text" id="sub' + i + '" data-sub="' + i + '" value="' + esc(s.t) + '"><button class="del" data-dact="subDel" data-i="' + i + '" aria-label="מחיקת שלב">' + ic("x") + "</button></div>"; }).join("") +
     '</div><label for="subAdd" class="sr">שלב חדש</label><input class="sub-add" id="subAdd" placeholder="+ הוספת שלב (Enter)"></div>';
-  h += S.folOpen === S.detailId ? followFormHtml(t) : '<button class="btn folbtn" data-dact="folOpen">🔁 ' + (t.follow && !t.follow.closed ? "במעקב: לבדוק " + (t.follow.at ? relDate(t.follow.at) : "") + " · עריכה" : t.done ? "להעביר למעקב" : "עשיתי, עכשיו מחכה (מעקב)") + "</button>";
+  h += S.folOpen === S.detailId ? followFormHtml(t) : '<button class="btn folbtn" data-dact="folOpen">🔁 ' + (t.follow && !t.follow.closed ? "במעקב: לבדוק " + (t.follow.at ? relDate(t.follow.at) : "") + " · עריכה" : t.done ? "להעביר למעקב" : "מעקב: עשיתי ומחכה, או לקבוע מראש") + "</button>";
   h += '<div class="d-row"><span class="lab">' + ic("note") + 'הערות</span><label for="dNotes" class="sr">הערות</label><textarea class="d-notes" id="dNotes" placeholder="פרטים, טלפון, קישור…">' + esc(t.notes || "") + "</textarea></div>";
   h += "</div>";
   var created = t.created ? new Date(t.created) : null;
@@ -1886,7 +1889,7 @@ dEl.addEventListener("click", function (e) {
     folSync(); var fid = S.detailId, FD = S.folDraft || {};
     if (!FD.at) FD.at = TM(3);
     save(fid, { follow: { at: FD.at, time: FD.time || "", note: (FD.note || "").trim(), closed: false, since: Date.now() } });
-    if (!t.done) complete(fid);
+    if (!t.done && !b.getAttribute("data-keep")) complete(fid);
     S.folOpen = null; closeDetail(); toast("🔁 עבר למעקב. יקפוץ לך " + relDate(FD.at) + (FD.time ? " ב-" + FD.time : ""));
   }
   else if (a === "cls") { flushDetail(); var cid = S.detailId; closeDetail(); openClassify([cid], "מיון"); }
@@ -3278,6 +3281,7 @@ var BLOCKS = [
   ["time", "⌛ אין לי זמן", "אם זה חשוב, זה צריך מקום ביומן. תן לזה יום ושעה.", "לבחור יום ושעה ביומן"],
   ["meh", "🤔 לא בטוח שזה חשוב", "אולי אפשר לוותר? למחוק, או לסמן \"אולי פעם\". גם זו החלטה.", "להחליט: למחוק, להעביר למישהו או לדחות"]
 ];
+document.addEventListener("change", function (e) { if (e.target.id === "folDate" && e.target.value) { folSync(); buildDetail(); } });
 document.addEventListener("input", function (e) { if (e.target.id === "clFirst" && CL.d) CL.d.first = e.target.value; if (e.target.id === "clBlockTxt" && CL.d) CL.d.blockTxt = e.target.value; });
 function clsPrev() {
   var j = CL.i - 1;
@@ -3912,7 +3916,7 @@ function viewDayRep() {
 function openFollows() { return list().filter(function (t) { return t.follow && !t.follow.closed; }).sort(function (a, b) { return (a.follow.at || "9") < (b.follow.at || "9") ? -1 : 1; }); }
 function followRow(t, ro) {
   var f = t.follow, due = f.at && f.at <= T(), late = f.at && f.at < T();
-  return '<div class="folrow' + (due ? " due" : "") + '"><button class="tmain" data-act="open" data-id="' + esc(t.id) + '"><span class="ttitle">' + esc(t.title) + '</span><span class="tmeta">' + (f.note ? '<span>⏳ ' + esc(f.note) + "</span>" : "") + "<span>" + (f.at ? (late ? "היה לבדוק " : "לבדוק ") + relDate(f.at) + (f.time ? " " + f.time : "") : "בלי תאריך") + "</span>" + (t.doneAt ? "<span>בוצע " + relDate(ymd(new Date(t.doneAt))) + "</span>" : "") + "</span></button>" +
+  return '<div class="folrow' + (due ? " due" : "") + '"><button class="tmain" data-act="open" data-id="' + esc(t.id) + '"><span class="ttitle">' + esc(t.title) + '</span><span class="tmeta">' + (f.note ? '<span>⏳ ' + esc(f.note) + "</span>" : "") + "<span>" + (f.at ? (late ? "היה לבדוק " : "לבדוק ") + relDate(f.at) + (f.time ? " " + f.time : "") : "בלי תאריך") + "</span>" + (t.done && t.doneAt ? "<span>בוצע " + relDate(ymd(new Date(t.doneAt))) + "</span>" : !t.done ? "<span>המשימה עדיין פתוחה</span>" : "") + "</span></button>" +
     (ro ? "" : '<div class="folbtns"><button class="btn primary" data-act="folClose" data-id="' + esc(t.id) + '">' + ic("check") + 'התבצע</button><button class="btn" data-act="folSnooze" data-id="' + esc(t.id) + '">⏰ עוד יומיים</button><button class="btn plain" data-act="folReopen" data-id="' + esc(t.id) + '">↩ לפתוח מחדש</button></div>') + "</div>";
 }
 function followTodayHtml(D) {
@@ -3932,9 +3936,11 @@ function followFormHtml(t) {
   var opts = [[TM(1), "מחר"], [TM(3), "עוד 3 ימים"], [TM(7), "עוד שבוע"], [TM(14), "עוד שבועיים"]];
   return '<div class="folform"><b>🔁 עשיתי את החלק שלי, עכשיו מחכה</b><p class="mhint" style="margin:0">המשימה תסומן כבוצעה ותעבור למעקב. ביום שתבחר היא תקפוץ ב"היום" כדי לבדוק שהדבר באמת קרה.</p>' +
     '<label for="folNote">על מה או ממי אני מחכה?</label><input id="folNote" class="sub-add" placeholder="למשל: שרינה תחזור אליי לגבי העזרה" value="' + esc(FD.note) + '" autocomplete="off">' +
-    '<label>מתי לבדוק?</label><div class="chips">' + opts.map(function (o) { return '<button type="button" class="chip' + (FD.at === o[0] ? " on" : "") + '" data-dact="folAt" data-v="' + o[0] + '">' + o[1] + "</button>"; }).join("") + '<input type="date" id="folDate" class="chipdate" value="' + (opts.some(function (o) { return o[0] === FD.at; }) ? "" : FD.at) + '" aria-label="תאריך אחר"></div>' +
+    '<label>מתי לבדוק?</label><div class="chips">' + opts.map(function (o) { return '<button type="button" class="chip' + (FD.at === o[0] ? " on" : "") + '" data-dact="folAt" data-v="' + o[0] + '">' + o[1] + "</button>"; }).join("") + "</div>" +
+    '<div class="folcal"><label for="folDate">📅 או לבחור תאריך בלוח השנה:</label><input type="date" id="folDate" min="' + T() + '" value="' + esc(FD.at) + '"></div>' +
+    '<div class="folchosen">המעקב יקפוץ לך: <b>יום ' + DAYS[pd(FD.at).getDay()] + ", " + pd(FD.at).getDate() + "." + (pd(FD.at).getMonth() + 1) + " (" + relDate(FD.at) + ")</b></div>" +
     '<label for="folTime">שעה <small>(לא חובה)</small></label><input type="time" id="folTime" class="sub-add" value="' + esc(FD.time) + '">' +
-    '<div class="row2" style="display:flex;gap:8px;margin-top:8px"><button class="btn primary" data-dact="folSave">' + ic("check") + 'שמירה למעקב</button><button class="btn plain" data-dact="folCancel">ביטול</button></div></div>';
+    '<div class="row2" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button class="btn primary" data-dact="folSave">' + ic("check") + (t.done ? "שמירה למעקב" : "סימון כבוצעה + מעקב") + "</button>" + (t.done ? "" : '<button class="btn" data-dact="folSave" data-keep="1">🔁 רק לקבוע מעקב (המשימה נשארת פתוחה)</button>') + '<button class="btn plain" data-dact="folCancel">ביטול</button></div></div>';
 }
 
 /* ---------------- boot ---------------- */
